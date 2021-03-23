@@ -62,9 +62,9 @@ Nous pourrons également nous interesser aux raisons qui ont poussés les étudi
 
 ### Etude comparative sur les matières
 En considérant tous les axes d’études présentés précédemment, il sera aussi envisageable d’identifier quels facteurs contribuent à la réussite en mathématiques ou en portuguais. **Est-ce que le métier des parents donnerait-il plus ou moins de chances à un élève de réussir dans l’une ou l’autre des matières?** Quels pourraient être les facteurs qui expliqueraient qu’un même élève réussisse mieux dans une matière que dans l’autre? (sexe, ambition dans les études, le choix de l'école...).
+<hr>
 
-
-**CONCLUSION**
+**CONCLUSION** <br>
 Ces questions nous permettront donc de se faire une idée du « combo » parfait pour la réussite d’un étudiant. On aura donc accès à suffisamment d’informations pour définir un profil type de l’élève qui réussit dans ces établissements.
 
 
