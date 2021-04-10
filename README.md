@@ -1,4 +1,4 @@
-#Introduction
+# Introduction
 
 ## Données
 
@@ -70,5 +70,7 @@ Ces questions nous permettront donc de se faire une idée du « combo » parfait
 
 ## Liens et références
 
-Site permettant d’obtenir le dataset : https://discord.com/channels/814045298090311730/814851123794018305/822459775961792533 <br>
+Lien des 2 datasets : <br>
+ https://www.kaggle.com/dipam7/student-grade-prediction <br>
+ https://www.kaggle.com/uciml/student-alcohol-consumption?select=student-mat.csv <br>
 Etude sur le jeu de données : http://www3.dsi.uminho.pt/pcortez/student.pdf
