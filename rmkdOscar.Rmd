@@ -5,7 +5,39 @@ date: "23/04/2021"
 output: html_document
 ---
 
-```{r}
+Importons dans un premier temps les datasets
 
+```{r}
+library(readr)
+dfMaths <- read_csv("data/student-mat.csv")
+dfPortugais <- read_csv("data/student-por.csv")
+```
+
+Regardons l'influence du sexe sur les résultats
+
+```{r}
+library(ggplot2)
+library(scales)
+
+ggplot(dfMaths, aes(x = school, fill = sex)) + 
+  geom_bar(position = "fill") + 
+  geom_text(aes(label = after_stat(count)), stat = "count", position = position_fill(.5)) + 
+  xlab("Ecole") + 
+  ylab("Effectifs") +
+  labs(fill = "Sexe", title = "Part des effectifs Masculins et Féminins dans chaque école") + 
+  scale_y_continuous(labels = percent) +
+  theme(panel.grid = element_blank(), panel.border = element_blank())
+```
+```{r}
+library(dplyr)
+
+ggplot(filter(dfMaths, age < 20), aes(x = age, fill = sex)) + 
+    geom_bar(position = position_dodge(.9)) + 
+    geom_text(aes(label = after_stat(count)), stat = "count", position = position_dodge(.9), vjust = "top") +
+    xlab("Age") + 
+    scale_x_continuous(breaks = seq(14, 19, 1)) +
+    ylab("Effectifs") +
+    labs(fill = "Sexe", title = "Part des effectifs Masculins et Féminins selon l'âge") + 
+    theme(panel.grid = element_blank(), panel.border = element_blank())
 ```
 
