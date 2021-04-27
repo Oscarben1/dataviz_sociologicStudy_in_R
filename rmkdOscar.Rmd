@@ -125,5 +125,3 @@ Cette fois-ci, le travail paye ! Les filles ont en effet de meilleurs résultats
   #ggplot(df, aes(x=age, y=G3, fill=age)) + geom_boxplot()+labs(title="Repartition des notes finales G3 selon l'age",x="age", y = "Note finale")+
   # theme_classic()
 ```
-
-On peut alors regarder si les filles habitent + en ville ou en campagne
