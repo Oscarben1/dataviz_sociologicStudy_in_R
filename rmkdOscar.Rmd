@@ -5,39 +5,71 @@ date: "23/04/2021"
 output: html_document
 ---
 
+Importons ici toutes les libraries utiles à notre projet
+```{r message = FALSE}
+library(readr)
+library(ggplot2)
+library(dplyr)
+```
+
+
 Importons dans un premier temps les datasets
 
-```{r}
-library(readr)
+```{r message = FALSE}
 dfMaths <- read_csv("data/student-mat.csv")
+head(dfMaths)
 dfPortugais <- read_csv("data/student-por.csv")
+head(dfPortugais)
 ```
+Regardons l'influence du sexe sur les résultats à l'école
 
-Regardons l'influence du sexe sur les résultats
+----------------------------------------------------------
 
-```{r}
-library(ggplot2)
-library(scales)
+Tout d'abord, regardons les effectifs dans les différentes écoles
+
+```{r message = FALSE}
 
 ggplot(dfMaths, aes(x = school, fill = sex)) + 
-  geom_bar(position = "fill") + 
-  geom_text(aes(label = after_stat(count)), stat = "count", position = position_fill(.5)) + 
-  xlab("Ecole") + 
-  ylab("Effectifs") +
-  labs(fill = "Sexe", title = "Part des effectifs Masculins et Féminins dans chaque école") + 
-  scale_y_continuous(labels = percent) +
-  theme(panel.grid = element_blank(), panel.border = element_blank())
+  geom_bar(position = position_dodge(0.9)) + 
+  scale_fill_brewer(palette = "Dark2") + 
+  labs(fill = "Sexe", x = "Ecole", y = "Effectifs", title = "Part des effectifs Masculins et Féminins dans chaque école")
 ```
-```{r}
-library(dplyr)
 
-ggplot(filter(dfMaths, age < 20), aes(x = age, fill = sex)) + 
-    geom_bar(position = position_dodge(.9)) + 
-    geom_text(aes(label = after_stat(count)), stat = "count", position = position_dodge(.9), vjust = "top") +
-    xlab("Age") + 
+Regardons maintenant les effectifs par sexe selon les ages (entre 14 et 19 ans uniquement, les effectifs etant trop bas au dessus de cet age)
+
+```{r message = FALSE}
+#préparation des données
+df <- dfMaths %>% filter(age < 20)
+
+#plot 
+ggplot(df, aes(x = age, fill = sex)) + 
+    geom_bar(position = position_dodge(.9)) +
+    scale_fill_brewer(palette = "Dark2") + 
     scale_x_continuous(breaks = seq(14, 19, 1)) +
-    ylab("Effectifs") +
-    labs(fill = "Sexe", title = "Part des effectifs Masculins et Féminins selon l'âge") + 
-    theme(panel.grid = element_blank(), panel.border = element_blank())
+    labs(fill = "Sexe", x = "Age", y = "Effectifs",title = "Part des effectifs Masculins et Féminins selon l'âge")
 ```
 
+Regardons la note finale selon le genre
+
+```{r message = FALSE}
+#preparation des données
+df <- dfMaths %>% select(sex, G3)
+
+ggplot(df, aes(x = sex, y = G3)) + 
+  geom_boxplot(aes(fill = sex),alpha = .6,size = 1) + 
+  scale_fill_brewer(palette = "Dark2") +
+  ggtitle("Répartition des notes en fonction du genre")
+  
+
+```
+
+Le graph nous montre que la moyenne des notes des garcons est plus élevée que celle des filles, indépendamment de l'âge
+
+```{r message = FALSE}
+#preparation des données
+df <- dfMaths %>% select(age, G3)
+head(df)
+
+  ggplot(df, aes(x=age, y=G3, fill=age)) + geom_boxplot()+labs(title="Repartition des notes finales G3 selon l'age",x="age", y = "Note finale")+
+   theme_classic()
+```
