@@ -17,6 +17,7 @@ Importons dans un premier temps les datasets
 
 ```{r message = FALSE}
 dfMaths <- read_csv("data/student-mat.csv")
+dfMaths <- dfMaths %>% filter(age < 20)
 head(dfMaths)
 dfPortugais <- read_csv("data/student-por.csv")
 head(dfPortugais)
@@ -31,7 +32,7 @@ Tout d'abord, regardons les effectifs dans les différentes écoles pour avoir u
 ```{r message = FALSE}
 
 ggplot(dfMaths, aes(x = school, fill = sex)) + 
-  geom_bar(position = position_dodge(0.9)) + 
+  geom_bar(position = position_dodge(0.9), alpha = 0.6) + 
   scale_fill_brewer(palette = "Dark2") + 
   labs(fill = "Sexe", x = "Ecole", y = "Effectifs", title = "Part des effectifs Masculins et Féminins dans chaque école")
 ```
@@ -44,7 +45,7 @@ df <- dfMaths %>% filter(age < 20)
 
 #Barplot 
 ggplot(df, aes(x = age, fill = sex)) + 
-    geom_bar(position = position_dodge(.9)) +
+    geom_bar(position = position_dodge(.9), alpha = 0.6) +
     scale_fill_brewer(palette = "Dark2") + 
     scale_x_continuous(breaks = seq(14, 19, 1)) +
     labs(fill = "Sexe", x = "Age", y = "Effectifs",title = "Part des effectifs Masculins et Féminins selon l'âge")
@@ -58,7 +59,7 @@ df <- dfMaths %>% select(sex, studytime)
 
 #BoxPlot
 ggplot(df, aes(x = sex, y = studytime)) + 
-  geom_boxplot(aes(fill = sex),alpha = .6,size = 1) + 
+  geom_boxplot(aes(fill = sex),alpha = 0.6,size = 1) + 
   stat_summary(fun = "mean", geom = "point", shape= 21, size= 2, fill= "white") +
   scale_fill_brewer(palette = "Dark2") +
   ggtitle("Répartition des notes en fonction du genre")
@@ -99,6 +100,7 @@ ggplot(df, aes(x = sex, y = studytime)) +
   ggtitle("Temps de travail en portugais en fonction du genre")
 
 ```
+
 Les hommes travaillent en effet moins que les femmes en moyenne, en portugais également, mais cet écart se réduit pour la matière de portugais. Regardons le résultat sur les notes.
 
 ```{r message = FALSE}
@@ -117,11 +119,62 @@ ggplot(df, aes(x = sex, y = G3)) +
 
 Cette fois-ci, le travail paye ! Les filles ont en effet de meilleurs résultats en portugais que les garcons.
 
-```{r message = FALSE}
-#preparation des données // NE MARCHE PAS JSP PQ
-#df <- dfMaths %>% select(age, G3)
-#head(df)
+Peut être que les filles sortent plus que les garcons ?
 
-  #ggplot(df, aes(x=age, y=G3, fill=age)) + geom_boxplot()+labs(title="Repartition des notes finales G3 selon l'age",x="age", y = "Note finale")+
-  # theme_classic()
+```{r}
+df <- dfMaths %>% select(goout, sex);
+
+ggplot(df, aes(x= goout, fill =sex)) +
+    geom_density(alpha = 0.6) + 
+    scale_fill_brewer(palette = "Dark2") +
+    xlab("Fréquence de sorties") +
+    labs(title="répartition de la fréquence de sorties chez les persones en couple");
 ```
+
+Finlement, la fréquence des sorties sont sensiblement pareil entre les filles et les garcons.
+
+-----------------------------------
+
+INFLUENCE DE L'AGE
+
+On regarde tout d'abord la répartition des ages dans le dataset dfMaths
+
+```{r}
+#preparation des donnees
+df <- dfMaths %>% select(age)
+
+ggplot(df, aes(x = age)) +
+  geom_bar(fill = "lightblue", alpha = 0.7)
+```
+
+On voit que les élèves de 20, 21 et 22 ans sont négligeables, on ne les prendra sonc pas en compte dans notre analyse.
+
+On regarde la répartition des notes selon les ages
+
+```{r message = FALSE}
+
+#preparation des données 
+df <- dfMaths
+
+#BoxPlot
+df$age=factor(df$age)
+  ggplot(df, aes(x=age, y=G3, fill=age)) +
+    geom_boxplot(alpha = 0.6)+
+    labs(title="Repartition des notes finales G3 selon l'age",x="age", y = "Note finale") +
+    scale_fill_brewer(palette = "Dark2") +
+    stat_summary(fun = "mean", geom = "point", shape= 21, size= 2, fill= "white")  
+```
+
+On distingue que dans les ages bas (15,16 et 17), les notes sont sensiblement les mêmes, des variations opèrent dans les ages plus avancés notamment ceux de 20 ans qui obtiennent de bien meilleurs résultats.
+
+
+```{r}
+dfMaths$Fedu=factor(dfMaths$Fedu)
+ggplot(dfMaths, aes(x = Fedu, y = G3)) + 
+    geom_boxplot(aes(fill = Fedu),alpha = .6,size = 1) + 
+    scale_fill_brewer(palette = "Dark2") + 
+    stat_summary(fun.y = "mean", geom = "point", shape= 21, size= 2, fill= "white") +
+    labs(title = "Répartiton des notes en fonction de l'éduction du père", x = "Education du père", y = "notes") + 
+    theme(axis.title.y=element_blank()) + theme(axis.title.x=element_blank())
+```
+
