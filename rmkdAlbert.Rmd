@@ -1,0 +1,181 @@
+---
+title: "rmkdAlbert"
+author: "Albert ELOMBO"
+date: "23/04/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r libraries, include=FALSE}
+library(dplyr);
+library(ggplot2);
+library(DataExplorer);
+```
+
+```{r data, include=FALSE}
+mat <- as_tibble(read.csv("data/student-mat.csv"));
+por <- as_tibble(read.csv("data/student-por.csv"));
+```
+
+
+
+# Introduction 
+
+Dans le cadre de l'exploration des datasets du [projet](README.Rmd) ayant pour but de ressortir toute information pertinante de ces données, ce document se concentrera sur quatre aspecs. Il s'agit :
+* De l'exploration des relations entre les activités extra-scolaires des élèves et les autres aspects de leur vie.
+
+* De l'étude du cadre familial par ses implications et les déductions ou hypothèses qu'on peut soulever enprenant en considération certains paramètres
+
+* D'une étude comparative sur le portuguais et les mathématiques.
+
+* Des relations entre les cours privés et les autres paramètres de la vie des élèves.
+
+## Les activités extra-scolaires.
+
+### Relations entre les sorties et les absences en classe
+
+#### Hypothèses
+
+On pourrait penser que pour les élèves ayant un nombre important de sorties, on aurait une répercution de celles-ci sur les absences.
+
+#### Bar plot du nombre d'absences en fonction de la fréquence des sorties
+
+Dataset sur les mathématiques:
+
+```{r xtra_scol_1, echo=FALSE}
+# preparer les données
+data <- as_tibble(mat %>% select(goout, absences));
+# alternative: data <- as_tibble(tapply(data$absences, data$goout, mean))
+data <- data %>%group_by(goout) %>% summarise_all(mean);
+
+
+# Effectuer le graphique
+ggplot(data, aes(x = goout, y = absences, fill = "red")) +
+  geom_col() + 
+  xlab("Fréquence de sorties") +
+  ylab("Moyenne d'absences par élève") +
+  labs(title = "Absences en fonction de la fréquence des sorties");
+  
+```
+Dataset sur le portuguais
+
+```{r xtra_scol_2, echo=FALSE}
+# preparer les données
+data <- as_tibble(por %>% select(goout, absences));
+# alternative: data <- as_tibble(tapply(data$absences, data$goout, mean))
+data <- data %>%group_by(goout) %>% summarise_all(mean);
+
+
+# Effectuer le graphique
+ggplot(data, aes(x = goout, y = absences, fill = "red")) +
+  geom_col() + 
+  xlab("Fréquence de sorties") +
+  ylab("Moyenne d'absences par élève") +
+  labs(title = "Absences en fonction de la fréquence des sorties");
+```
+#### Conclusions
+
+
+
+### Influence de la vie de couple sur les activités extra-scolaires
+
+#### Hypothèses
+
+IL se peut que les personnes en couple en moyenne sortent beaucoup plus que les célibataires
+
+#### Visualisations
+
+Dataset sur les mathématiques
+
+```{r xtra_scol_3, echo=FALSE}
+# Préparation des données
+data <- mat %>% select(romantic,goout);
+data_mean <- data %>% group_by(romantic) %>% summarise_all(mean);
+
+#Réalisation du graphique
+ggplot(data_mean, aes(x = romantic, y = goout, fill = "red")) +
+  geom_col() + 
+  xlab("En couple") +
+  ylab("Fréquence de sorties") +
+  labs(title = "Fréquence des sorties en fonction de la vie en couple");
+```
+```{r}
+# préparation des données
+
+data <- mat %>% filter(romantic =="yes") %>% select(goout);
+
+ggplot(data, aes(x= goout, fill ="purple")) +
+  geom_density() + 
+  xlab("Fréquence de sorties") +
+  labs(title="répartition de la fréquence de sorties chez les persones en couple");
+```
+
+```{r}
+# préparation des données
+
+data <- mat %>% filter(romantic =="no") %>% select(goout);
+
+ggplot(data, aes(x= goout, fill ="purple")) +
+  geom_density() + 
+  xlab("Fréquence de sorties") +
+  labs(title="répartition de la fréquence de sorties chez les persones célibataires");
+```
+
+
+dataset sur le portuguais
+
+```{r}
+# Préparation des données
+data <- por %>% select(romantic,goout);
+data_mean <- data %>% group_by(romantic) %>% summarise_all(mean);
+head(data_mean)
+#Réalisation du graphique
+ggplot(data_mean, aes(x = romantic, y = goout, fill = "red")) +
+  geom_col() + 
+  xlab("En couple") +
+  ylab("Fréquence de sorties") +
+  labs(title = "Fréquence des sorties en fonction de la vie en couple");
+```
+
+#### Conclusions
+
+### Influence des sorties sur le temps d'étude
+
+#### Hypothèses
+
+Sortir plus réduirait le temps d'étude
+
+#### Visualisations
+Dataset sur les mathématiques
+
+```{r}
+data <- mat %>% select(goout, studytime);
+data_mean <- data %>% group_by(goout) %>% summarise_all(mean);
+head(data_mean)
+#Réalisation du graphique
+ggplot(data_mean, aes(x = goout, y = studytime, fill = "red")) +
+  geom_col() + 
+  xlab("Fréquence des sorties") +
+  ylab("Temps d'étude") +
+  labs(title = "Temps d'étude en fonction de la Fréquence des sorties");
+```
+
+
+
+Dataset sur le portuguais
+
+```{r}
+data <- por %>% select(goout, studytime);
+data_mean <- data %>% group_by(goout) %>% summarise_all(mean);
+head(data_mean)
+#Réalisation du graphique
+ggplot(data_mean, aes(x = goout, y = studytime, fill = "red")) +
+  geom_col() + 
+  xlab("Fréquence des sorties") +
+  ylab("Temps d'étude") +
+  labs(title = "Temps d'étude en fonction de la Fréquence des sorties");
+```
+
