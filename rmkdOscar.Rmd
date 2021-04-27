@@ -20,6 +20,7 @@ dfMaths <- read_csv("data/student-mat.csv")
 dfMaths <- dfMaths %>% filter(age < 20)
 head(dfMaths)
 dfPortugais <- read_csv("data/student-por.csv")
+dfPortugais <- dfPortugais %>% filter(age < 20)
 head(dfPortugais)
 ```
 
@@ -66,9 +67,9 @@ ggplot(df, aes(x = sex, y = studytime)) +
 
 ```
 
-On peut voir que les filles travaillent généralement plus que les garcons dans notre dataset. On peut alors se dire que le travail paye et qu'elles doivent obtenir de meilleurs résultats. Verifions le.
+On peut voir que les filles travaillent généralement plus que les garcons en maths dans notre dataset dfMaths. On peut alors se dire que le travail paye et qu'elles doivent obtenir de meilleurs résultats dans cette matière. Verifions le.
 
-Regardons la note finale selon le genre
+Regardons la note finale selon le genre, en mathématiques
 
 ```{r message = FALSE}
 #preparation des données
@@ -84,7 +85,9 @@ ggplot(df, aes(x = sex, y = G3)) +
 
 ```
 
-Le graph nous montre que la moyenne des notes des garcons en maths est plus élevée que celle des filles, ce qui est étonnant puisque ces derniers travaillent moins que les filles. Réalisons la même étude pour le portugais.
+Le graph nous montre que la moyenne des notes des garcons en maths est plus élevée que celle des filles, ce qui est étonnant puisque ces derniers travaillent moins que les filles. On peut se dire qu'être un garcon est un avantage pour être l'élève modèle en maths.
+
+Réalisons la même étude pour le portugais.
 
 BoxPlot repartition du temps de travail selon le sexe en matiere de portugais
 
@@ -131,7 +134,7 @@ ggplot(df, aes(x= goout, fill =sex)) +
     labs(title="répartition de la fréquence de sorties chez les persones en couple");
 ```
 
-Finlement, la fréquence des sorties sont sensiblement pareil entre les filles et les garcons.
+Finlement, la fréquence des sorties est sensiblement pareil entre les filles et les garcons.
 
 -----------------------------------
 
@@ -149,10 +152,9 @@ ggplot(df, aes(x = age)) +
 
 On voit que les élèves de 20, 21 et 22 ans sont négligeables, on ne les prendra sonc pas en compte dans notre analyse.
 
-On regarde la répartition des notes selon les ages
+On regarde la répartition des notes selon les ages en mathématiques.
 
 ```{r message = FALSE}
-
 #preparation des données 
 df <- dfMaths
 
@@ -165,10 +167,25 @@ df$age=factor(df$age)
     stat_summary(fun = "mean", geom = "point", shape= 21, size= 2, fill= "white")  
 ```
 
-On distingue que dans les ages bas (15,16 et 17), les notes sont sensiblement les mêmes, des variations opèrent dans les ages plus avancés notamment ceux de 20 ans qui obtiennent de bien meilleurs résultats.
+On distingue que dans les ages bas (15,16 et 17), les notes sont sensiblement les mêmes, des variations opèrent dans les ages plus avancés notamment ceux de 20 ans qui obtiennent de bien meilleurs résultats en maths. Dans ce cas, avoir 20 ans est un avantage pour être l'élève modèle.
 
+Regardons si la répartition est la même pour le portugais
+```{r message = FALSE}
+#preparation des données 
+df <- dfPortugais
 
-```{r}
+#BoxPlot
+df$age=factor(df$age)
+  ggplot(df, aes(x=age, y=G3, fill=age)) +
+    geom_boxplot(alpha = 0.6)+
+    labs(title="Repartition des notes finales G3 selon l'age",x="age", y = "Note finale") +
+    scale_fill_brewer(palette = "Dark2") +
+    stat_summary(fun = "mean", geom = "point", shape= 21, size= 2, fill= "white")  
+```
+
+On distingue toujours que dans les ages bas (15,16 et 17), les notes sont sensiblement les mêmes, cependant, les variations n'opèrent pas forcément comme pour les mathématiques, cette fois les moyennes des notes en portugais selon les ages sont sensiblement les mêmes.
+
+```{r message = FALSE}
 dfMaths$Fedu=factor(dfMaths$Fedu)
 ggplot(dfMaths, aes(x = Fedu, y = G3)) + 
     geom_boxplot(aes(fill = Fedu),alpha = .6,size = 1) + 
