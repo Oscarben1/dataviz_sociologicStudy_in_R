@@ -1,0 +1,394 @@
+---
+title: "address_visualisation"
+author: "Clément Malidor"
+date: "4/22/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library("ggplot2")
+library("dplyr")
+
+df_mat <- read.csv("data/student-mat.csv")
+df_por <- read.csv("data/student-por.csv")
+```
+
+# Lieu de vie
+
+## Répartition des élèves venant de la ville et de la campagne
+
+```{r nb_student_address}
+ggplot(
+  filter(df_mat), aes(x = 1, fill = address)) + 
+  geom_bar(position = "fill") +
+  labs(fill = "Adresse", title = "Répartition des élèves venant de la ville et de la campagne (df_mat)") + 
+  coord_polar(theta = "y") +
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_por), aes(x = 1, fill = address)) + 
+  geom_bar(position = "fill") +
+  labs(fill = "Adresse", title = "Répartition des élèves venant de la ville et de la campagne (df_por)") + 
+  coord_polar(theta = "y") +
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+```
+
+<br> **Conclusion** : on remarque une nette domination d'élèves provenant de la ville (+/- 75 %).</br> 
+
+
+
+## Répartition des élèves dans les écoles suivant leur adresse
+
+```{r address_school}
+ggplot(
+  filter(df_mat, address == "R"), aes(x = 1, fill = school)) + 
+  geom_bar(position = "fill") +
+  labs(fill = "Ecole", title = "Répartition des élèves dans les écoles venant de la campagne (df_mat)") + 
+  coord_polar(theta = "y") +
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_por, address == "R"), aes(x = 1, fill = school)) + 
+  geom_bar(position = "fill") +
+  labs(fill = "Ecole", title = "Répartition des élèves dans les écoles venant de la campagne (df_por)") + 
+  coord_polar(theta = "y") +
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_mat, address == "U"), aes(x = 1, fill = school)) + 
+  geom_bar(position = "fill") +
+  labs(fill = "Ecole", title = "Répartition des élèves dans les écoles venant de la ville (df_mat)") + 
+  coord_polar(theta = "y") +
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_por, address == "U"), aes(x = 1, fill = school)) + 
+  geom_bar(position = "fill") +
+  labs(fill = "Ecole", title = "Répartition des élèves dans les écoles venant de la ville (df_por)") + 
+  coord_polar(theta = "y") +
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+```
+
+<br> **Conclusion** : 
+<ul>
+  <li> campagne : on ne peut rien conclure (75%). </li>
+  <li>  les élèves de la ville vont **globalement** à GP (90%). </li>
+</ul>
+</br> 
+
+
+## Taille de la famille suivant leur adresse
+
+```{r address_famsize}
+ggplot(
+  filter(df_mat, address == "R"), aes(x = 1, fill = famsize)) + 
+  geom_bar(position = "fill") +
+  labs(fill = "Taille de la famille", title = "Taille de la famille des élèves venant de la campagne (df_mat)") + 
+  coord_polar(theta = "y") +
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_por, address == "R"), aes(x = 1, fill = famsize)) + 
+  geom_bar(position = "fill") +
+  labs(fill = "Taille de la famille", title = "Taille de la famille des élèves venant de la campagne (df_por)") + 
+  coord_polar(theta = "y") +
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_mat, address == "U"), aes(x = 1, fill = famsize)) + 
+  geom_bar(position = "fill") +
+  labs(fill = "Taille de la famille", title = "Taille de la famille des élèves venant de la campagne (df_mat)") + 
+  coord_polar(theta = "y") +
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_por, address == "U"), aes(x = 1, fill = famsize)) + 
+  geom_bar(position = "fill") +
+  labs(fill = "Taille de la famille", title = "Taille de la famille des élèves venant de la campagne (df_por)") + 
+  coord_polar(theta = "y") +
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+```
+
+<br> **Conclusion** : globalement les familles ont plus de 3 enfants par famille.</br> 
+
+
+## Job des parents suivant l'adresse
+
+```{r address_PJobs}
+ggplot(
+  filter(df_mat, address == "R"), aes(x = Fjob)) + 
+  geom_bar() +
+  labs(title = "Métiers du père des élèves venant de la campagne (df_mat)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_por, address == "R"), aes(x = Fjob)) + 
+  geom_bar() +
+  labs(title = "Métiers du père des élèves venant de la campagne (df_por)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_mat, address == "R"), aes(x = Mjob)) + 
+  geom_bar() +
+  labs(title = "Métiers de la mère des élèves venant de la campagne (df_mat)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_por, address == "R"), aes(x = Mjob)) + 
+  geom_bar() +
+  labs(title = "Métiers de la mère des élèves venant de la campagne (df_por)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_mat, address == "U"), aes(x = Fjob)) + 
+  geom_bar() +
+  labs(title = "Métiers du père des élèves venant de la ville (df_mat)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_por, address == "U"), aes(x = Fjob)) + 
+  geom_bar() +
+  labs(title = "Métiers du père des élèves venant de la ville (df_por)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_mat, address == "U"), aes(x = Mjob)) + 
+  geom_bar() +
+  labs(title = "Métiers de la mère des élèves venant de la ville (df_mat)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_por, address == "U"), aes(x = Mjob)) + 
+  geom_bar() +
+  labs(title = "Métiers de la mère des élèves venant de la ville (df_por)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+```
+
+<br> **Conclusion** : </br> 
+
+## Temps de trajet suivant l'adresse
+
+```{r address_traveltime}
+ggplot(
+  filter(df_mat, address == "R"), aes(x = traveltime)) + 
+  geom_bar() +
+  labs(title = "Temps de trajet des élèves venant de la campagne (df_mat)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_mat, address == "U"), aes(x = traveltime)) + 
+  geom_bar() +
+  labs(title = "Temps de trajet des élèves venant de la ville (df_mat)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_por, address == "R"), aes(x = traveltime)) + 
+  geom_bar() +
+  labs(title = "Temps de trajet des élèves venant de la campagne (df_por)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_por, address == "U"), aes(x = traveltime)) + 
+  geom_bar() +
+  labs(title = "Temps de trajet des élèves venant de la ville (df_por)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+```
+
+<br> **Conclusion** : le temps de trajet des étudiants venant de la ville est nettement inférieur à ceux venant de la campagne.</br> 
+
+## Accès à internet suivant l'adresse
+
+```{r address_internet}
+ggplot(
+  filter(df_mat, address == "R"), aes(x = 1, fill = internet)) + 
+  geom_bar(position = "fill") +
+  labs(fill = "Accès a internet pour les ", title = "Accès à internet des élèves venant de la campagne (df_mat)") + 
+  coord_polar(theta = "y") +
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_mat, address == "U"), aes(x = 1, fill = internet)) + 
+  geom_bar(position = "fill") +
+  labs(fill = "Accès a internet ", title = "Accès à internet des élèves venant de la ville (df_mat)") + 
+  coord_polar(theta = "y") +
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_por, address == "R"), aes(x = 1, fill = internet)) + 
+  geom_bar(position = "fill") +
+  labs(fill = "Accès a internet pour les ", title = "Accès à internet des élèves venant de la campagne (df_por)") + 
+  coord_polar(theta = "y") +
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_por, address == "U"), aes(x = 1, fill = internet)) + 
+  geom_bar(position = "fill") +
+  labs(fill = "Accès a internet ", title = "Accès à internet des élèves venant de la ville (df_por)") + 
+  coord_polar(theta = "y") +
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+```
+
+<br> **Conclusion** : les élèves de la ville ont plus internet que ceux de la campagne</br> 
+
+## Temps de travail suivant leur adresse
+
+```{r address_studytime}
+ggplot(
+  filter(df_mat, address == "R"), aes(x = studytime)) + 
+  geom_bar() +
+  labs(title = "Temps de travail des élèves venant de la campagne (df_mat)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_mat, address == "U"), aes(x = studytime)) + 
+  geom_bar() +
+  labs(title = "Temps de travail des élèves venant de la ville (df_mat)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_por, address == "R"), aes(x = studytime)) + 
+  geom_bar() +
+  labs(title = "Temps de travail des élèves venant de la campagne (df_por)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_por, address == "U"), aes(x = studytime)) + 
+  geom_bar() +
+  labs(title = "Temps de travail des élèves venant de la ville (df_por)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+```
+
+<br> **Conclusion** : pas très concluant</br> 
+
+## Distribution des absences selon le lieu de vie
+
+```{r absences}
+ggplot(
+  filter(df_mat, address == "R"), aes(x = absences)) + 
+  geom_density() +
+  labs(title = "Nombre d'absences des étudiants de la campagne (df_mat)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_por, address == "R"), aes(x = absences)) + 
+  geom_density() +
+  labs(title = "Nombre d'absences des étudiants de la campagne (df_por)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_mat, address == "U"), aes(x = absences)) + 
+  geom_density() +
+  labs(title = "Nombre d'absences des étudiants de la ville (df_mat)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_por, address == "U"), aes(x = absences)) + 
+  geom_density() +
+  labs(title = "Nombre d'absences des étudiants de la ville (df_por)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+```
+
+<br> **Conclusion** : pas très concluant.</br> 
+
+## Consommation d'alcool journalier
+
+```{r Dalc_address}
+ggplot(
+  filter(df_mat, address == "R"), aes(x = Dalc)) + 
+  geom_bar() +
+  labs(title = "Consommation d'alcool journalier des élèves venant de la campagne (df_mat)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_por, address == "R"), aes(x = Dalc)) + 
+  geom_bar() +
+  labs(title = "Consommation d'alcool journalier des élèves venant de la campagne (df_por)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_mat, address == "U"), aes(x = Dalc)) + 
+  geom_bar() +
+  labs(title = "Consommation d'alcool journalier des élèves venant de la ville (df_mat)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_por, address == "U"), aes(x = Dalc)) + 
+  geom_bar() +
+  labs(title = "Consommation d'alcool journalier des élèves venant de la ville (df_por)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+```
+
+<br> **Conclusion** : similarité</br>
+
+## Consommation d'alcool le week-end
+
+```{r Walc_address}
+ggplot(
+  filter(df_mat, address == "R"), aes(x = Walc)) + 
+  geom_bar() +
+  labs(title = "Consommation d'alcool journalier des élèves venant de la campagne (df_mat)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_por, address == "R"), aes(x = Walc)) + 
+  geom_bar() +
+  labs(title = "Consommation d'alcool journalier des élèves venant de la campagne (df_por)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_mat, address == "U"), aes(x = Walc)) + 
+  geom_bar() +
+  labs(title = "Consommation d'alcool journalier des élèves venant de la ville (df_mat)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_por, address == "U"), aes(x = Walc)) + 
+  geom_bar() +
+  labs(title = "Consommation d'alcool journalier des élèves venant de la ville (df_por)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+```
+
+<br> **Conclusion** : légère plus grosse consommation des étudiants venant de la campagne</br> 
+
