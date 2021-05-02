@@ -250,3 +250,5 @@ ggplot(df, aes(x = studytime, y = mean_Gmean)) +
     labs(title = "Notes en fonction du temps de travail en maths", x = "temps de travail", y = "moyenne des notes")
 
 ```
+
+Meme constat pour le portugais. On peut se dire que pour optimiser son temps, ne travailler que 3h et profiter de l'heure restant pour se détendre ou faire du sport est surement la bonne solution.
