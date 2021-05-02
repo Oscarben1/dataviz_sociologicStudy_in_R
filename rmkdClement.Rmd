@@ -292,7 +292,7 @@ ggplot(
 
 ## Distribution des absences selon le lieu de vie
 
-```{r absences}
+```{r absences_address}
 ggplot(
   filter(df_mat, address == "R"), aes(x = absences)) + 
   geom_density() +
@@ -392,3 +392,763 @@ ggplot(
 
 <br> **Conclusion** : légère plus grosse consommation des étudiants venant de la campagne</br> 
 
+
+<hr>
+
+
+
+# Volonté de faire des grandes études
+## Répartition des élèves voulant faire des grandes études
+```{r higher}
+ggplot(
+  filter(df_mat), aes(x = 1, fill = higher)) + 
+  geom_bar(position = "fill") +
+  labs(fill = "Etudes sup", title = "Répartition des élèves voulant faire des grandes études(df_mat)") + 
+  coord_polar(theta = "y") +
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_por), aes(x = 1, fill = higher)) + 
+  geom_bar(position = "fill") +
+  labs(fill = "Etudes sup", title = "Répartition des élèves voulant faire des grandes études(df_por)") + 
+  coord_polar(theta = "y") +
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+```
+<br> **Conclusion :** 80-90% des élèves souhaitent faire des études suppérieur </br>
+
+## Absences selon la volonté d'aller en sup
+```{r absences_higher}
+ggplot(
+  filter(df_mat, higher == "yes"), aes(x = absences)) + 
+  geom_density() +
+  labs(title = "Nombre d'absences des étudiants voulant aller en sup (df_mat)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_por, higher == "yes"), aes(x = absences)) + 
+  geom_density() +
+  labs(title = "Nombre d'absences des étudiants voulant aller en sup (df_por)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_mat, higher == "no"), aes(x = absences)) + 
+  geom_density() +
+  labs(title = "Nombre d'absences des étudiants ne voulant pas aller en sup (df_mat)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_por, higher == "no"), aes(x = absences)) + 
+  geom_density() +
+  labs(title = "Nombre d'absences des étudiants ne voulant pas aller en sup (df_por)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+```
+<br> **Conclusion :** taux d'abscences suppérieur pour élèves qui ne veulent pas aller en sup </br>
+
+## Lieu d'habitation selon la volonté d'aller en sup
+```{r address_higher}
+ggplot(
+  filter(df_mat, higher == "yes"), aes(x = 1, fill = address)) + 
+  geom_bar(position = "fill") +
+  labs(fill = "Etudes sup", title = "Adresse des élèves voulant faire des grandes études(df_mat)") + 
+  coord_polar(theta = "y") +
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_por, higher == "yes"), aes(x = 1, fill = address)) + 
+  geom_bar(position = "fill") +
+  labs(fill = "Etudes sup", title = "Adresse des élèves voulant faire des grandes études(df_por)") + 
+  coord_polar(theta = "y") +
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_mat, higher == "no"), aes(x = 1, fill = address)) + 
+  geom_bar(position = "fill") +
+  labs(fill = "Etudes sup", title = "Adresse des élèves ne voulant pas faire des grandes études(df_mat)") + 
+  coord_polar(theta = "y") +
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_por, higher == "no"), aes(x = 1, fill = address)) + 
+  geom_bar(position = "fill") +
+  labs(fill = "Etudes sup", title = "Adresse des élèves ne voulant pas faire des grandes études(df_por)") + 
+  coord_polar(theta = "y") +
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+```
+<br> **Conclusion :**  plus grande proportion de personnes venant de la ville, néanmoins est-ce pertinant au vue de la répartition de personnes venant de la ville et de la campagne ?</br>
+
+## Travail des parents selon la volonté d'aller en sup
+```{r PJob_higher}
+
+ggplot(
+  filter(df_mat, higher == "yes"), aes(x = Fjob)) + 
+  geom_bar() +
+  labs(title = "Métiers du père des élèves voulant faire des études sup (df_mat)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_mat, higher == "yes"), aes(x = Mjob)) + 
+  geom_bar() +
+  labs(title = "Métiers de la mère des élèves voulant faire des études sup (df_mat)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_por, higher == "yes"), aes(x = Fjob)) + 
+  geom_bar() +
+  labs(title = "Métiers du père des élèves voulant faire des études sup (df_por)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_por, higher == "yes"), aes(x = Mjob)) + 
+  geom_bar() +
+  labs(title = "Métiers de la mère des élèves voulant faire des études sup (df_por)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_mat, higher == "no"), aes(x = Fjob)) + 
+  geom_bar() +
+  labs(title = "Métiers du père des élèves voulant ne voulant pas des études sup (df_mat)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_mat, higher == "no"), aes(x = Mjob)) + 
+  geom_bar() +
+  labs(title = "Métiers de la mère des élèves ne voulant pas faire des études sup (df_mat)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_por, higher == "no"), aes(x = Fjob)) + 
+  geom_bar() +
+  labs(title = "Métiers du père des élèves ne voulant pas faire des études sup (df_por)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_por, higher == "no"), aes(x = Mjob)) + 
+  geom_bar() +
+  labs(title = "Métiers de la mère des élèves ne voulant pas faire des études sup (df_por)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+```
+<br> **Conclusion :**  </br>
+## Education des parents selon la volonté d'aller en sup
+```{r PEdu_higher}
+ggplot(
+  filter(df_mat, higher == "yes"), aes(x = Fedu)) + 
+  geom_bar() +
+  labs(title = "Education du père des élèves voulant faire des études sup (df_mat)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_mat, higher == "yes"), aes(x = Medu)) + 
+  geom_bar() +
+  labs(title = "Education de la mère des élèves voulant faire des études sup (df_mat)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_por, higher == "yes"), aes(x = Fedu)) + 
+  geom_bar() +
+  labs(title = "Education du père des élèves voulant faire des études sup (df_por)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_por, higher == "yes"), aes(x = Medu)) + 
+  geom_bar() +
+  labs(title = "Education de la mère des élèves voulant faire des études sup (df_por)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_mat, higher == "no"), aes(x = Fedu)) + 
+  geom_bar() +
+  labs(title = "Education du père des élèves voulant ne voulant pas des études sup (df_mat)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_mat, higher == "no"), aes(x = Medu)) + 
+  geom_bar() +
+  labs(title = "Education de la mère des élèves ne voulant pas faire des études sup (df_mat)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_por, higher == "no"), aes(x = Fedu)) + 
+  geom_bar() +
+  labs(title = "Education du père des élèves ne voulant pas faire des études sup (df_por)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_por, higher == "no"), aes(x = Medu)) + 
+  geom_bar() +
+  labs(title = "Education de la mère des élèves ne voulant pas faire des études sup (df_por)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+```
+<br> **Conclusion :**  </br>
+## Relation familiale selon la volonté d'aller en sup
+```{r relfam_higher}
+ggplot(
+  filter(df_mat, higher == "yes"), aes(x = famrel)) + 
+  geom_bar() +
+  labs(title = "Relation familiale des élèves voulant aller en sup (df_mat)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_por, higher == "yes"), aes(x = famrel)) + 
+  geom_bar() +
+  labs(title = "Relation familiale des élèves voulant aller en sup (df_por)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_mat, higher == "no"), aes(x = famrel)) + 
+  geom_bar() +
+  labs(title = "Relation familiale des élèves ne voulant pas aller en sup (df_mat)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_por, higher == "no"), aes(x = famrel)) + 
+  geom_bar() +
+  labs(title = "Relation familiale des élèves ne voulant pas aller en sup (df_por)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+```
+<br> **Conclusion :**  </br>
+## Notes selon la volonté d'aller en sup
+```{r mark_higher}
+ggplot(
+  filter(df_mat, higher == "yes"), aes(x = G1)) + 
+  geom_bar() +
+  labs(title = "Notes G1 des élèves voulant aller en sup (df_mat)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_por, higher == "yes"), aes(x = G1)) + 
+  geom_bar() +
+  labs(title = "Notes G1 des élèves voulant aller en sup (df_por)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_mat, higher == "no"), aes(x = G1)) + 
+  geom_bar() +
+  labs(title = "Notes G1 des élèves ne voulant pas aller en sup (df_mat)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_por, higher == "no"), aes(x = G1)) + 
+  geom_bar() +
+  labs(title = "Notes G1 des élèves ne voulant pas aller en sup (df_por)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_mat, higher == "yes"), aes(x = G2)) + 
+  geom_bar() +
+  labs(title = "Notes G2 des élèves voulant aller en sup (df_mat)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_por, higher == "yes"), aes(x = G2)) + 
+  geom_bar() +
+  labs(title = "Notes G2 des élèves voulant aller en sup (df_por)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_mat, higher == "no"), aes(x = G2)) + 
+  geom_bar() +
+  labs(title = "Notes G2 des élèves ne voulant pas aller en sup (df_mat)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_por, higher == "no"), aes(x = G2)) + 
+  geom_bar() +
+  labs(title = "Notes G2 des élèves ne voulant pas aller en sup (df_por)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_mat, higher == "yes"), aes(x = G3)) + 
+  geom_bar() +
+  labs(title = "Notes G3 des élèves voulant aller en sup (df_mat)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_por, higher == "yes"), aes(x = G3)) + 
+  geom_bar() +
+  labs(title = "Notes G3 des élèves voulant aller en sup (df_por)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_mat, higher == "no"), aes(x = G3)) + 
+  geom_bar() +
+  labs(title = "Notes G3 des élèves ne voulant pas aller en sup (df_mat)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_por, higher == "no"), aes(x = G3)) + 
+  geom_bar() +
+  labs(title = "Notes G3 des élèves ne voulant pas aller en sup (df_por)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+```
+<br> **Conclusion :**  </br>
+
+## Echec selon la volonté d'aller en sup
+```{r echec_higher}
+ggplot(
+  filter(df_mat, higher == "yes"), aes(x = failures)) + 
+  geom_bar() +
+  labs(title = "Nombre d'échecs des élèves voulant aller en sup (df_mat)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_por, higher == "yes"), aes(x = failures)) + 
+  geom_bar() +
+  labs(title = "Nombre d'échecs des élèves voulant aller en sup (df_por)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_mat, higher == "no"), aes(x = failures)) + 
+  geom_bar() +
+  labs(title = "Nombre d'échecs des élèves ne voulant pas aller en sup (df_mat)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_por, higher == "no"), aes(x = failures)) + 
+  geom_bar() +
+  labs(title = "Nombre d'échecs des élèves ne voulant pas aller en sup (df_por)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+```
+<br> **Conclusion :**  </br>
+## Passage par la maternelle selon la volonté d'aller en sup
+```{r nursery_higher}
+ggplot(
+  filter(df_mat, higher == "yes"), aes(x = 1, fill = nursery)) + 
+  geom_bar(position = "fill") +
+  labs(fill = "Etudes sup", title = "Passage par la maternelle des élèves voulant faire des grandes études(df_mat)") + 
+  coord_polar(theta = "y") +
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_por, higher == "yes"), aes(x = 1, fill = nursery)) + 
+  geom_bar(position = "fill") +
+  labs(fill = "Etudes sup", title = "Passage par la maternelle des élèves voulant faire des grandes études(df_por)") + 
+  coord_polar(theta = "y") +
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_mat, higher == "no"), aes(x = 1, fill = nursery)) + 
+  geom_bar(position = "fill") +
+  labs(fill = "Etudes sup", title = "Passage par la maternelle des élèves ne voulant pas faire des grandes études (df_mat)") + 
+  coord_polar(theta = "y") +
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_por, higher == "no"), aes(x = 1, fill = nursery)) + 
+  geom_bar(position = "fill") +
+  labs(fill = "Etudes sup", title = "Passage par la maternelle des élèves ne voulant pas faire des grandes études (df_por)") + 
+  coord_polar(theta = "y") +
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+```
+<br> **Conclusion :**  </br>
+## Cours payants selon la volonté d'aller en sup
+```{r paid_higher}
+ggplot(
+  filter(df_mat, higher == "yes"), aes(x = 1, fill = paid)) + 
+  geom_bar(position = "fill") +
+  labs(fill = "Etudes sup", title = "Cours payants des élèves voulant faire des grandes études(df_mat)") + 
+  coord_polar(theta = "y") +
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_por, higher == "yes"), aes(x = 1, fill = paid)) + 
+  geom_bar(position = "fill") +
+  labs(fill = "Etudes sup", title = "Cours payants des élèves voulant faire des grandes études(df_por)") + 
+  coord_polar(theta = "y") +
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_mat, higher == "no"), aes(x = 1, fill = paid)) + 
+  geom_bar(position = "fill") +
+  labs(fill = "Etudes sup", title = "Cours payants des élèves ne voulant pas faire des grandes études (df_mat)") + 
+  coord_polar(theta = "y") +
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_por, higher == "no"), aes(x = 1, fill = paid)) + 
+  geom_bar(position = "fill") +
+  labs(fill = "Etudes sup", title = "Cours payants des élèves ne voulant pas faire des grandes études (df_por)") + 
+  coord_polar(theta = "y") +
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+```
+<br> **Conclusion :**  </br>
+
+## Soutient scolaire selon la volonté d'aller en sup
+```{r schoolsup_higher}
+ggplot(
+  filter(df_mat, higher == "yes"), aes(x = 1, fill = schoolsup)) + 
+  geom_bar(position = "fill") +
+  labs(fill = "Etudes sup", title = "Soutient scolaire des élèves voulant faire des grandes études(df_mat)") + 
+  coord_polar(theta = "y") +
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_por, higher == "yes"), aes(x = 1, fill = schoolsup)) + 
+  geom_bar(position = "fill") +
+  labs(fill = "Etudes sup", title = "Soutient scolaire des élèves voulant faire des grandes études(df_por)") + 
+  coord_polar(theta = "y") +
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_mat, higher == "no"), aes(x = 1, fill = schoolsup)) + 
+  geom_bar(position = "fill") +
+  labs(fill = "Etudes sup", title = "Soutient scolaire des élèves ne voulant pas faire des grandes études (df_mat)") + 
+  coord_polar(theta = "y") +
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_por, higher == "no"), aes(x = 1, fill = schoolsup)) + 
+  geom_bar(position = "fill") +
+  labs(fill = "Etudes sup", title = "Soutient scolaire des élèves ne voulant pas faire des grandes études (df_por)") + 
+  coord_polar(theta = "y") +
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+```
+<br> **Conclusion :**  </br>
+
+## Aide familiale selon la volonté d'aller en sup
+```{r familysup_higher}
+ggplot(
+  filter(df_mat, higher == "yes"), aes(x = 1, fill = famsup)) + 
+  geom_bar(position = "fill") +
+  labs(fill = "Etudes sup", title = "Soutient familial des élèves voulant faire des grandes études(df_mat)") + 
+  coord_polar(theta = "y") +
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_por, higher == "yes"), aes(x = 1, fill = famsup)) + 
+  geom_bar(position = "fill") +
+  labs(fill = "Etudes sup", title = "Soutient familial des élèves voulant faire des grandes études(df_por)") + 
+  coord_polar(theta = "y") +
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_mat, higher == "no"), aes(x = 1, fill = famsup)) + 
+  geom_bar(position = "fill") +
+  labs(fill = "Etudes sup", title = "Soutient familial des élèves ne voulant pas faire des grandes études (df_mat)") + 
+  coord_polar(theta = "y") +
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_por, higher == "no"), aes(x = 1, fill = famsup)) + 
+  geom_bar(position = "fill") +
+  labs(fill = "Etudes sup", title = "Soutient familial des élèves ne voulant pas faire des grandes études (df_por)") + 
+  coord_polar(theta = "y") +
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+```
+<br> **Conclusion :**  </br>
+## Sexe selon la volonté d'aller en sup
+```{r sex_higher}
+ggplot(
+  filter(df_mat, higher == "yes"), aes(x = 1, fill = sex)) + 
+  geom_bar(position = "fill") +
+  labs(fill = "Etudes sup", title = "Sexe des élèves voulant faire des grandes études(df_mat)") + 
+  coord_polar(theta = "y") +
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_por, higher == "yes"), aes(x = 1, fill = sex)) + 
+  geom_bar(position = "fill") +
+  labs(fill = "Etudes sup", title = "Sexe des élèves voulant faire des grandes études(df_por)") + 
+  coord_polar(theta = "y") +
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_mat, higher == "no"), aes(x = 1, fill = sex)) + 
+  geom_bar(position = "fill") +
+  labs(fill = "Etudes sup", title = "Sexe des élèves ne voulant pas faire des grandes études (df_mat)") + 
+  coord_polar(theta = "y") +
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_por, higher == "no"), aes(x = 1, fill = sex)) + 
+  geom_bar(position = "fill") +
+  labs(fill = "Etudes sup", title = "Sexe des élèves ne voulant pas faire des grandes études (df_por)") + 
+  coord_polar(theta = "y") +
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+```
+<br> **Conclusion :**  </br>
+## Voir la volonté d'aller en sup selon l'école
+```{r school_higher}
+ggplot(
+  filter(df_mat, school == "MS"), aes(x = 1, fill = higher)) + 
+  geom_bar(position = "fill") +
+  labs(fill = "Ecole", title = "Volonté d'aller dans le sup à MS (df_mat)") + 
+  coord_polar(theta = "y") +
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_por, school == "MS"), aes(x = 1, fill = higher)) + 
+  geom_bar(position = "fill") +
+  labs(fill = "Ecole", title = "Volonté d'aller dans le sup à MS (df_por)") + 
+  coord_polar(theta = "y") +
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_mat, school == "GP"), aes(x = 1, fill = higher)) + 
+  geom_bar(position = "fill") +
+  labs(fill = "Ecole", title = "Volonté d'aller dans le sup à GP (df_mat)") + 
+  coord_polar(theta = "y") +
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_por, school == "GP"), aes(x = 1, fill = higher)) + 
+  geom_bar(position = "fill") +
+  labs(fill = "Ecole", title = "Volonté d'aller dans le sup à GP (df_por)") + 
+  coord_polar(theta = "y") +
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+```
+<br> **Conclusion :**  </br>
+## Temps passé dehors selon la volonté d'aller en sup
+```{r goout_higher}
+ggplot(
+  filter(df_mat, higher == "yes"), aes(x = goout)) + 
+  geom_bar() +
+  labs(title = "Temps passé dehors des élèves voulant aller en sup (df_mat)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_por, higher == "yes"), aes(x = goout)) + 
+  geom_bar() +
+  labs(title = "Temps passé dehors des élèves voulant aller en sup (df_por)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_mat, higher == "no"), aes(x = goout)) + 
+  geom_bar() +
+  labs(title = "Temps passé dehors des élèves ne voulant pas aller en sup (df_mat)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_por, higher == "no"), aes(x = goout)) + 
+  geom_bar() +
+  labs(title = "Temps passé dehors des élèves ne voulant pas aller en sup (df_por)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+```
+<br> **Conclusion :**  </br>
+
+<hr>
+
+# Vie sentimentale
+## Répartition des élèves en couple
+```{r romantic}
+ggplot(
+  filter(df_mat), aes(x = 1, fill = romantic)) + 
+  geom_bar(position = "fill") +
+  labs(fill = "Etudes sup", title = "Répartition des élèves en couple (df_mat)") + 
+  coord_polar(theta = "y") +
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_por), aes(x = 1, fill = romantic)) + 
+  geom_bar(position = "fill") +
+  labs(fill = "Etudes sup", title = "Répartition des élèves en couple (df_por)") + 
+  coord_polar(theta = "y") +
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+```
+
+## Absences
+```{r absences_romantic}
+ggplot(
+  filter(df_mat, romantic == "yes"), aes(x = absences)) + 
+  geom_bar() +
+  labs(title = "Nombre des absences des élèves en couple (df_mat)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_mat, romantic == "yes"), aes(x = absences)) + 
+  geom_bar() +
+  labs(title = "Nombre des absences des élèves en couple (df_por)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_mat, romantic == "no"), aes(x = absences)) + 
+  geom_bar() +
+  labs(title = "Nombre des absences des élèves célibataires (df_mat)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_mat, romantic == "no"), aes(x = absences)) + 
+  geom_bar() +
+  labs(title = "Nombre des absences des élèves célibataires (df_por)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+```
+
+## Health
+```{r health_romantic}
+ggplot(
+  filter(df_mat, romantic == "yes"), aes(x = health)) + 
+  geom_bar() +
+  labs(title = "Santé des élèves en couple (df_mat)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_mat, romantic == "yes"), aes(x = health)) + 
+  geom_bar() +
+  labs(title = "Santé des élèves en couple (df_por)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_mat, romantic == "no"), aes(x = health)) + 
+  geom_bar() +
+  labs(title = "Santé des élèves célibataires (df_mat)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_mat, romantic == "no"), aes(x = health)) + 
+  geom_bar() +
+  labs(title = "Santé des élèves célibataires (df_por)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+```
+## Studytime
+```{r studytime_romantic}
+ggplot(
+  filter(df_mat, romantic == "yes"), aes(x = studytime)) + 
+  geom_bar() +
+  labs(title = "Temps de travail des élèves en couple (df_mat)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_mat, romantic == "yes"), aes(x = studytime)) + 
+  geom_bar() +
+  labs(title = "Temps de travail des élèves en couple (df_por)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_mat, romantic == "no"), aes(x = studytime)) + 
+  geom_bar() +
+  labs(title = "Temps de travail des élèves célibataires (df_mat)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_mat, romantic == "no"), aes(x = studytime)) + 
+  geom_bar() +
+  labs(title = "Temps de travail des élèves célibataires (df_por)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+```
+## Age
+```{r health_romantic}
+ggplot(
+  filter(df_mat, romantic == "yes"), aes(x = age)) + 
+  geom_bar() +
+  labs(title = "Age des élèves en couple (df_mat)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_mat, romantic == "yes"), aes(x = age)) + 
+  geom_bar() +
+  labs(title = "Age des élèves en couple (df_por)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_mat, romantic == "no"), aes(x = age)) + 
+  geom_bar() +
+  labs(title = "Age des élèves célibataires (df_mat)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+
+ggplot(
+  filter(df_mat, romantic == "no"), aes(x = age)) + 
+  geom_bar() +
+  labs(title = "Age des élèves célibataires (df_por)") + 
+  theme(panel.grid = element_blank(), panel.border = element_blank()
+)
+```
