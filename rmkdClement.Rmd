@@ -290,33 +290,33 @@ ggplot(
 
 <br> **Conclusion** : pas très concluant</br> 
 
-## Distribution des absences selon le lieu de vie
+## Absences selon le lieu de vie
 
 ```{r absences_address}
 ggplot(
   filter(df_mat, address == "R"), aes(x = absences)) + 
-  geom_density() +
+  geom_bar() +
   labs(title = "Nombre d'absences des étudiants de la campagne (df_mat)") + 
   theme(panel.grid = element_blank(), panel.border = element_blank()
 )
 
 ggplot(
   filter(df_por, address == "R"), aes(x = absences)) + 
-  geom_density() +
+  geom_bar() +
   labs(title = "Nombre d'absences des étudiants de la campagne (df_por)") + 
   theme(panel.grid = element_blank(), panel.border = element_blank()
 )
 
 ggplot(
   filter(df_mat, address == "U"), aes(x = absences)) + 
-  geom_density() +
+  geom_bar() +
   labs(title = "Nombre d'absences des étudiants de la ville (df_mat)") + 
   theme(panel.grid = element_blank(), panel.border = element_blank()
 )
 
 ggplot(
   filter(df_por, address == "U"), aes(x = absences)) + 
-  geom_density() +
+  geom_bar() +
   labs(title = "Nombre d'absences des étudiants de la ville (df_por)") + 
   theme(panel.grid = element_blank(), panel.border = element_blank()
 )
@@ -422,28 +422,28 @@ ggplot(
 ```{r absences_higher}
 ggplot(
   filter(df_mat, higher == "yes"), aes(x = absences)) + 
-  geom_density() +
+  geom_bar() +
   labs(title = "Nombre d'absences des étudiants voulant aller en sup (df_mat)") + 
   theme(panel.grid = element_blank(), panel.border = element_blank()
 )
 
 ggplot(
   filter(df_por, higher == "yes"), aes(x = absences)) + 
-  geom_density() +
+  geom_bar() +
   labs(title = "Nombre d'absences des étudiants voulant aller en sup (df_por)") + 
   theme(panel.grid = element_blank(), panel.border = element_blank()
 )
 
 ggplot(
   filter(df_mat, higher == "no"), aes(x = absences)) + 
-  geom_density() +
+  geom_bar() +
   labs(title = "Nombre d'absences des étudiants ne voulant pas aller en sup (df_mat)") + 
   theme(panel.grid = element_blank(), panel.border = element_blank()
 )
 
 ggplot(
   filter(df_por, higher == "no"), aes(x = absences)) + 
-  geom_density() +
+  geom_bar() +
   labs(title = "Nombre d'absences des étudiants ne voulant pas aller en sup (df_por)") + 
   theme(panel.grid = element_blank(), panel.border = element_blank()
 )
@@ -1032,6 +1032,7 @@ ggplot(
 ```
 
 ## Absences
+
 ```{r absences_romantic}
 ggplot(
   filter(df_mat, romantic == "yes"), aes(x = absences)) + 
@@ -1041,7 +1042,7 @@ ggplot(
 )
 
 ggplot(
-  filter(df_mat, romantic == "yes"), aes(x = absences)) + 
+  filter(df_por, romantic == "yes"), aes(x = absences)) + 
   geom_bar() +
   labs(title = "Nombre des absences des élèves en couple (df_por)") + 
   theme(panel.grid = element_blank(), panel.border = element_blank()
@@ -1055,7 +1056,7 @@ ggplot(
 )
 
 ggplot(
-  filter(df_mat, romantic == "no"), aes(x = absences)) + 
+  filter(df_por, romantic == "no"), aes(x = absences)) + 
   geom_bar() +
   labs(title = "Nombre des absences des élèves célibataires (df_por)") + 
   theme(panel.grid = element_blank(), panel.border = element_blank()
@@ -1063,6 +1064,7 @@ ggplot(
 ```
 
 ## Health
+
 ```{r health_romantic}
 ggplot(
   filter(df_mat, romantic == "yes"), aes(x = health)) + 
@@ -1072,7 +1074,7 @@ ggplot(
 )
 
 ggplot(
-  filter(df_mat, romantic == "yes"), aes(x = health)) + 
+  filter(df_por, romantic == "yes"), aes(x = health)) + 
   geom_bar() +
   labs(title = "Santé des élèves en couple (df_por)") + 
   theme(panel.grid = element_blank(), panel.border = element_blank()
@@ -1086,13 +1088,17 @@ ggplot(
 )
 
 ggplot(
-  filter(df_mat, romantic == "no"), aes(x = health)) + 
+  filter(df_por, romantic == "no"), aes(x = health)) + 
   geom_bar() +
   labs(title = "Santé des élèves célibataires (df_por)") + 
   theme(panel.grid = element_blank(), panel.border = element_blank()
 )
 ```
+
+
 ## Studytime
+
+
 ```{r studytime_romantic}
 ggplot(
   filter(df_mat, romantic == "yes"), aes(x = studytime)) + 
@@ -1102,7 +1108,7 @@ ggplot(
 )
 
 ggplot(
-  filter(df_mat, romantic == "yes"), aes(x = studytime)) + 
+  filter(df_por, romantic == "yes"), aes(x = studytime)) + 
   geom_bar() +
   labs(title = "Temps de travail des élèves en couple (df_por)") + 
   theme(panel.grid = element_blank(), panel.border = element_blank()
@@ -1116,14 +1122,14 @@ ggplot(
 )
 
 ggplot(
-  filter(df_mat, romantic == "no"), aes(x = studytime)) + 
+  filter(df_por, romantic == "no"), aes(x = studytime)) + 
   geom_bar() +
   labs(title = "Temps de travail des élèves célibataires (df_por)") + 
   theme(panel.grid = element_blank(), panel.border = element_blank()
 )
 ```
 ## Age
-```{r health_romantic}
+```{r age_romantic}
 ggplot(
   filter(df_mat, romantic == "yes"), aes(x = age)) + 
   geom_bar() +
@@ -1132,7 +1138,7 @@ ggplot(
 )
 
 ggplot(
-  filter(df_mat, romantic == "yes"), aes(x = age)) + 
+  filter(df_por, romantic == "yes"), aes(x = age)) + 
   geom_bar() +
   labs(title = "Age des élèves en couple (df_por)") + 
   theme(panel.grid = element_blank(), panel.border = element_blank()
@@ -1146,7 +1152,7 @@ ggplot(
 )
 
 ggplot(
-  filter(df_mat, romantic == "no"), aes(x = age)) + 
+  filter(df_por, romantic == "no"), aes(x = age)) + 
   geom_bar() +
   labs(title = "Age des élèves célibataires (df_por)") + 
   theme(panel.grid = element_blank(), panel.border = element_blank()
