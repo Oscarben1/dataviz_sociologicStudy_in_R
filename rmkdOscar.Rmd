@@ -45,25 +45,57 @@ Regardons l'influence du sexe sur les résultats à l'école, en maths et en por
 Tout d'abord, regardons les effectifs dans les différentes écoles pour avoir une vue d'ensemble
 
 ```{r message = FALSE}
+#préparation des données
+df <- dfMaths %>% group_by(internet) %>% mutate(mean_Gmean = mean(Gmean)) %>% distinct(internet, mean_Gmean)
+
+#Barplot 
+ggplot(df, aes(x = internet, y = mean_Gmean)) + 
+    geom_bar(stat = "identity") +
+    scale_fill_brewer(palette = "Dark2") + 
+    labs(x = "Adress", y = "Gmean",title = "Part des effectifs Masculins et Féminins selon l'âge")
+```
+
+```{r message = FALSE}
+#préparation des données
+df <- dfMaths %>% group_by(address) %>% mutate(mean_Gmean = mean(Gmean)) %>% distinct(address, mean_Gmean)
+
+#Barplot 
+ggplot(df, aes(x = address, y = mean_Gmean)) + 
+    geom_bar(stat = "identity") +
+    scale_fill_brewer(palette = "Dark2") + 
+    labs(x = "Adress", y = "Gmean",title = "Part des effectifs Masculins et Féminins selon l'âge")
+```
+
+```{r message = FALSE}
+#préparation des données
+df <- dfMaths %>% group_by(Fjob) %>% mutate(mean_Gmean = mean(Gmean)) %>% distinct(Fjob, mean_Gmean)
+
+#Barplot 
+ggplot(df, aes(x = Fjob, y = mean_Gmean)) + 
+    geom_bar(stat = "identity") +
+    scale_fill_brewer(palette = "Dark2") + 
+    labs(x = "Adress", y = "Gmean",title = "Part des effectifs Masculins et Féminins selon l'âge")
+```
+
+```{r message = FALSE}
+#préparation des données
+df <- dfMaths %>% group_by(Mjob) %>% mutate(mean_Gmean = mean(Gmean)) %>% distinct(Mjob, mean_Gmean)
+
+#Barplot 
+ggplot(df, aes(x = Mjob, y = mean_Gmean)) + 
+    geom_bar(stat = "identity") +
+    scale_fill_brewer(palette = "Dark2") + 
+    labs(x = "Adress", y = "Gmean",title = "Part des effectifs Masculins et Féminins selon l'âge")
+```
+
+
+
+```{r message = FALSE}
 
 ggplot(dfMaths, aes(x = school, fill = sex)) + 
   geom_bar(position = position_dodge(0.9), alpha = 0.6) + 
   scale_fill_brewer(palette = "Dark2") + 
   labs(fill = "Sexe", x = "Ecole", y = "Effectifs", title = "Part des effectifs Masculins et Féminins dans chaque école")
-```
-
-Regardons maintenant les effectifs par sexe selon les ages (entre 14 et 19 ans uniquement, les effectifs etant trop bas au dessus de cet age) pour comprendre un peu mieux la répartition des genres dans ces écoles, et dans ce dataset.
-
-```{r message = FALSE}
-#préparation des données
-df <- dfMaths %>% filter(age < 20)
-
-#Barplot 
-ggplot(df, aes(x = age, fill = sex)) + 
-    geom_bar(position = position_dodge(.9), alpha = 0.6) +
-    scale_fill_brewer(palette = "Dark2") + 
-    scale_x_continuous(breaks = seq(14, 19, 1)) +
-    labs(fill = "Sexe", x = "Age", y = "Effectifs",title = "Part des effectifs Masculins et Féminins selon l'âge")
 ```
 
 Regardons le nombre d'heures travaillées selon le genre
@@ -96,7 +128,6 @@ ggplot(df, aes(x = sex, y = Gmean)) +
   scale_fill_brewer(palette = "Dark2") +
   ggtitle("Répartition des notes en fonction du genre")
   
-
 ```
 
 Le graph nous montre que la moyenne des notes des garcons en maths est plus élevée que celle des filles, ce qui est étonnant puisque ces derniers travaillent moins que les filles. On peut se dire qu'être un garcon est un avantage pour être l'élève modèle en maths.
@@ -213,9 +244,9 @@ ggplot(df, aes(x = age, y = mean_freetime)) +
 Le freetime est le même environ, quelque soit l'age. On peut se demander si avoir du temps libre signifie être moins impliqué dans ses études et donc avoir de moins bonnes notes, ou si, au contraire, se dégager du temps libre est synonyme d'organisation et donc de réussite scolaire : 
 
 ```{r message = FALSE}
-df <- dfPortugais %>% group_by(Walc) %>% mutate(mean_Gmean = mean(Gmean)) %>% distinct(Walc, mean_Gmean)
+df <- dfPortugais %>% group_by(freetime) %>% mutate(mean_Gmean = mean(Gmean)) %>% distinct(freetime, mean_Gmean)
 
-ggplot(df, aes(x = Walc, y = mean_Gmean)) +
+ggplot(df, aes(x = freetime, y = mean_Gmean)) +
      geom_bar(stat = "identity", fill = "lightblue", alpha = 0.8) +
      geom_line(color = "red") +
      labs(x = "Consommation d'alcool le weekend", y = "Moyenne des notes", title = "Notes en fonctions de la consommation d'alcool le weekend")
