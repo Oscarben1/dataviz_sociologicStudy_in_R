@@ -327,3 +327,17 @@ ggplot(df, aes(x = studytime, y = mean_Gmean)) +
 ```
 
 Meme constat pour le portugais. On peut se dire que pour optimiser son temps, ne travailler que 3h et profiter de l'heure restant pour se détendre ou faire du sport est surement la bonne solution.
+
+CORRELATION : 
+
+```{r}
+library(corrplot)
+df <- dfMaths %>% select(age, Medu, Fedu,traveltime, studytime, failures, famrel,freetime,Dalc,Walc,health,absences,Gmean)
+
+mcor <- cor(df)
+corrplot(mcor, type="upper", order="hclust", tl.col="black", tl.srt=45)
+
+```
+
+
+
