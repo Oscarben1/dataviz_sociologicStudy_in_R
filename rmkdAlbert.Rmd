@@ -178,4 +178,15 @@ ggplot(data_mean, aes(x = goout, y = studytime, fill = "red")) +
   ylab("Temps d'étude") +
   labs(title = "Temps d'étude en fonction de la Fréquence des sorties");
 ```
+## Le soutien scolaire
+
+### notes en fonction du type de soutien scolaire
+
+#### Mathématiques
+
+```{r}
+data <- as_tibble(mat %>% select(G3, schoolsup));
+ggplot(data, aes(x = factor(schoolsup), y= G3)) + geom_col()
+
+```
 
