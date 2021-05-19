@@ -1,0 +1,128 @@
+---
+title: "rmkdAlbertSante"
+author: "Albert ELOMBO"
+date: "19/05/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introduction
+
+Dans cette paertie du projet on va s'interesser à la santé des élèves. Dans un premier temps à la santé physique, puis à la santé mentale.
+Considérant que le dataset nous donne des informations sur contexte social, économique et culturel des famlles ainsi que sur le sexe, nous allons essayer de trouver des correlations entre l'état de santé des élèves ainsi que ces critères.
+
+#Exploration du dataset
+
+## Variables à priori signifiatives sur la santé
+
+* Pstatus, guardian, studytime, freetime, goout, Dalc, Walc romantic pour la santé mentale
+* Medu, Fedu, Mjob, Fjob, Famrel pour le contexte
+* Health comme indicateur de significativité
+
+## Santé exploration
+
+```{r}
+# On charge les libraries
+
+library(dplyr)
+library(ggplot2)
+
+#On charge les datasets
+dfMat <- as_tibble(read.csv("data/student-mat.csv"))
+dfPor <- as_tibble(read.csv("data/student-por.csv"))
+df <- merge(dfMat,dfPor ,by=c("school","sex","age","address","famsize","Pstatus","Medu","Fedu","Mjob","Fjob","reason","nursery","internet"))
+
+
+df <- df %>% select( -(guardian.y : absences.y))
+df <- df %>% rename_at(vars(ends_with(".x") & (! starts_with('G', ignore.case = FALSE))), funs(sub(".x","", .)))
+```
+
+### Etat de santé général
+Distribution de l'état de santé
+```{r}
+plotMat <- ggplot(dfMat, aes( x = health)) + 
+  geom_bar() + 
+  labs(title = "répartition de l'état de santé", x = "état de santé", y = "effectif")
+
+plotPor <- ggplot(dfPor, aes( x = health)) + 
+  geom_bar() +
+  labs(title = "répartition de l'état de santé", x = "état de santé", y = "effectif")
+        
+
+plotMat
+plotPor
+```
+
+Etat de santé en fonction de la relation familiale
+
+```{r}
+dataMat <- dfMat %>% select(health, famrel)
+
+dataMat <- dataMat %>% group_by(famrel) %>% summarise_all(mean)
+
+plotMat <- dataMat %>% ggplot( aes(x = famrel, y = health)) +
+  geom_col(aes( fill = famrel)) + 
+  labs( title = "État de santé en fonction de la relation familliale",
+        x = "Relation familiale", y = "État de santé / 5")
+
+dataPor <- dfMat %>% select(health, famrel)
+
+dataPor <- dataMat %>% group_by(famrel) %>% summarise_all(mean)
+
+plotPor <- dataMat %>% ggplot( aes(x = famrel, y = health)) +
+  geom_col(aes( fill = famrel)) +
+  labs( title = "État de santé en fonction de la relation familliale",
+        x = "Relation familiale", y = "État de santé / 5") 
+plotMat
+plotPor
+```
+
+Etat de santé en fonction de la consommation d'alcool
+
+* En week-end
+
+```{r}
+dataMat <- dfMat %>% select(health, Walc)
+
+dataMat <- dataMat %>% group_by(Walc) %>% summarise_all(mean)
+
+plotMat <- dataMat %>% ggplot( aes(x = Walc, y = health)) +
+  geom_col(aes( fill = Walc)) + 
+  labs( title = "État de santé en fonction de la consomation d'alcool le week-end",
+        x = "consomation d'alcool / 5", y = "État de santé / 5")
+
+plotMat
+```
+
+* En semaine
+```{r}
+dataMat <- dfMat %>% select(health, Dalc)
+
+dataMat <- dataMat %>% group_by(Dalc) %>% summarise_all(mean)
+
+plotMat <- dataMat %>% ggplot( aes(x = Dalc, y = health)) +
+  geom_col(aes( fill = Dalc)) + 
+  labs( title = "État de santé en fonction de la consomation d'alcool le week-end",
+        x = "consomation d'alcool / 5", y = "État de santé / 5")
+
+plotMat
+```
+
+Etat de santé en fonction de la vie amoureuse
+
+```{r}
+dataMat <- dfMat %>% select(health, romantic)
+
+dataMat <- dataMat %>% group_by(romantic) %>% summarise_all(mean)
+
+plotMat <- dataMat %>% ggplot( aes(x = factor(romantic), y = health)) +
+  geom_col(aes( fill = romantic)) + 
+  labs( title = "État de santé en fonction de la vie amoureuse",
+        x = "En couple", y = "État de santé / 5")
+
+plotMat
+```
+
