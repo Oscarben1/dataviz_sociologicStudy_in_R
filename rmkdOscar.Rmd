@@ -322,7 +322,6 @@ ggplot(df, aes(x = studytime, y = mean_Gmean)) +
     geom_line(color = "blue") +
     labs(title = "Notes en fonction du temps de travail en Portugais", x = "temps de travail", y = "moyenne des notes", fill = "Temps de travail") +
     scale_fill_continuous(labels = c("1 : très peu", "2 : modérément", "3 : suffisamment", "4 : beaucoup"), type = "viridis")
-    
 
 ```
 
@@ -339,5 +338,201 @@ corrplot(mcor, type="upper", order="hclust", tl.col="black", tl.srt=45)
 
 ```
 
+AJOUT DES PLOTS EN FONCTION DES NOTES
 
+ECOLE
+```{r message = FALSE}
+#preparation des données
+df <- dfMaths %>% group_by(school) %>% mutate(mean_Gmean = mean(Gmean)) %>% distinct(school, mean_Gmean)
 
+ggplot(df, aes(x = school, y = mean_Gmean)) +
+    geom_bar(stat = "identity", alpha = 0.7, aes(fill = school)) +
+    labs(title = "Notes en fonction de l'école en Maths", x = "école", y = "moyenne des notes", fill = "école")
+
+```
+
+FAMSIZE 
+
+```{r message = FALSE}
+#preparation des données
+df <- dfPortugais %>% group_by(famsize) %>% mutate(mean_Gmean = mean(Gmean)) %>% distinct(famsize, mean_Gmean)
+
+ggplot(df, aes(x = famsize, y = mean_Gmean)) +
+    geom_bar(stat = "identity", alpha = 0.7, aes(fill = famsize)) +
+    labs(title = "Notes en fonction de la taille de la famille en Portugais", x = "Taille de la famille", y = "moyenne des notes", fill = "Taille de la famille")
+
+```
+
+PSTATUS
+
+```{r message = FALSE}
+#preparation des données
+df <- dfPortugais %>% group_by(Pstatus) %>% mutate(mean_Gmean = mean(Gmean)) %>% distinct(Pstatus, mean_Gmean)
+
+ggplot(df, aes(x = Pstatus, y = mean_Gmean)) +
+    geom_bar(stat = "identity", alpha = 0.7, aes(fill = Pstatus)) +
+    labs(title = "Notes en fonction du statut des parents en Portugais", x = "statut des parents", y = "moyenne des notes", fill = "statut des parents")
+
+```
+
+REASON WHY HAVING CHOSEN THIS SCHOOL
+
+```{r message = FALSE}
+#preparation des données
+df <- dfPortugais %>% group_by(reason) %>% mutate(mean_Gmean = mean(Gmean)) %>% distinct(reason, mean_Gmean)
+
+ggplot(df, aes(x = reason, y = mean_Gmean)) +
+    geom_bar(stat = "identity", alpha = 0.7, aes(fill = reason)) +
+    labs(title = "Notes en fonction de la raison du choix de l'école en Portugais", x = "raison du choix", y = "moyenne des notes", fill = "raison du choix") +
+    scale_fill_discrete(labels = c("préférence de cours", "prox du domicile", "autre", "réputation de l'école"), type = "viridis")
+
+```
+
+TRAVEL TIME 
+
+```{r message = FALSE}
+#preparation des données
+df <- dfPortugais %>% group_by(traveltime) %>% mutate(mean_Gmean = mean(Gmean)) %>% distinct(traveltime, mean_Gmean)
+
+ggplot(df, aes(x = traveltime, y = mean_Gmean)) +
+    geom_bar(stat = "identity", alpha = 0.7, aes(fill = traveltime)) +
+    labs(title = "Notes en fonction du temps de trajet en Portugais", x = "traveltime", y = "moyenne des notes", fill = "traveltime") +
+    scale_fill_continuous(labels = c("1 : court", "2 : passable", "3 : long", "4 : très long"), type = "viridis")
+
+```
+
+FAILURES
+
+```{r message = FALSE}
+#preparation des données
+df <- dfPortugais %>% group_by(failures) %>% mutate(mean_Gmean = mean(Gmean)) %>% distinct(failures, mean_Gmean)
+
+ggplot(df, aes(x = failures, y = mean_Gmean)) +
+    geom_bar(stat = "identity", alpha = 0.7, aes(fill = failures)) +
+    labs(title = "Notes en fonction du temps de trajet en Portugais", x = "failures", y = "moyenne des notes", fill = "nb de failures")
+
+```
+
+SOUTIEN SCOLAIRE
+
+```{r message = FALSE}
+#preparation des données
+df <- dfMaths %>% group_by(schoolsup) %>% mutate(mean_Gmean = mean(Gmean)) %>% distinct(schoolsup, mean_Gmean)
+
+ggplot(df, aes(x = schoolsup, y = mean_Gmean)) +
+    geom_bar(stat = "identity", alpha = 0.7, aes(fill = schoolsup)) +
+    labs(title = "Notes en fonction du soutien scolaire en Maths", x = "soutien scolaire", y = "moyenne des notes", fill = "Soutien scolaire")
+
+```
+
+SOUTIEN SCOLAIRE FAMILIAL
+
+```{r message = FALSE}
+#preparation des données
+df <- dfMaths %>% group_by(famsup) %>% mutate(mean_Gmean = mean(Gmean)) %>% distinct(famsup, mean_Gmean)
+
+ggplot(df, aes(x = famsup, y = mean_Gmean)) +
+    geom_bar(stat = "identity", alpha = 0.7, aes(fill = famsup)) +
+    labs(title = "Notes en fonction du soutien scolaire de la famille en Maths", x = "soutien scolaire familial", y = "moyenne des notes", fill = "Soutien scolaire familial")
+
+```
+
+SOUTIEN SCOLAIRE PAYANT
+
+```{r message = FALSE}
+#preparation des données
+df <- dfMaths %>% group_by(paid) %>% mutate(mean_Gmean = mean(Gmean)) %>% distinct(paid, mean_Gmean)
+
+ggplot(df, aes(x = paid, y = mean_Gmean)) +
+    geom_bar(stat = "identity", alpha = 0.7, aes(fill = paid)) +
+    labs(title = "Notes en fonction du soutien scolaire payant en Maths", x = "soutien scolaire payant", y = "moyenne des notes", fill = "Soutien scolaire payant")
+
+```
+
+ACTIVITES
+
+```{r message = FALSE}
+#preparation des données
+df <- dfMaths %>% group_by(activities) %>% mutate(mean_Gmean = mean(Gmean)) %>% distinct(activities, mean_Gmean)
+
+ggplot(df, aes(x = activities, y = mean_Gmean)) +
+    geom_bar(stat = "identity", alpha = 0.7, aes(fill = activities)) +
+    labs(title = "Notes en fonction de l'exercice d'une activité en Maths", x = "activité extra-scolaire", y = "moyenne des notes", fill = "activité extra-scolaire")
+
+```
+
+A ETE A L'ECOLE MATERNELLE
+
+```{r message = FALSE}
+#preparation des données
+df <- dfMaths %>% group_by(nursery) %>% mutate(mean_Gmean = mean(Gmean)) %>% distinct(nursery, mean_Gmean)
+
+ggplot(df, aes(x = nursery, y = mean_Gmean)) +
+    geom_bar(stat = "identity", alpha = 0.7, aes(fill = nursery)) +
+    labs(title = "Notes en fonction du passage en maternelle en Maths", x = "passage en maternelle", y = "moyenne des notes", fill = "passage en maternelle")
+
+```
+
+SOUHAIT DE FAIRE DES ETUDES SUP
+
+```{r message = FALSE}
+#preparation des données
+df <- dfMaths %>% group_by(higher) %>% mutate(mean_Gmean = mean(Gmean)) %>% distinct(higher, mean_Gmean)
+
+ggplot(df, aes(x = higher, y = mean_Gmean)) +
+    geom_bar(stat = "identity", alpha = 0.7, aes(fill = higher)) +
+    labs(title = "Notes en fonction de la volonté de faire des études sup en Maths", x = "volonté de faire des études sup", y = "moyenne des notes", fill = "volonté de faire des études sup")
+
+```
+
+EST EN COUPLE OU PAS
+
+SOUHAIT DE FAIRE DES ETUDES SUP
+
+```{r message = FALSE}
+#preparation des données
+df <- dfMaths %>% group_by(romantic) %>% mutate(mean_Gmean = mean(Gmean)) %>% distinct(romantic, mean_Gmean)
+
+ggplot(df, aes(x = romantic, y = mean_Gmean)) +
+    geom_bar(stat = "identity", alpha = 0.7, aes(fill = romantic)) +
+    labs(title = "Notes en fonction de la situation personnelle en Maths", x = "En couple ?", y = "moyenne des notes", fill = "En couple ?")
+
+```
+
+RELATIONS FAMILIALES (1- mauvaises à 5- excellentes)
+
+```{r message = FALSE}
+#preparation des données
+df <- dfPortugais %>% group_by(famrel) %>% mutate(mean_Gmean = mean(Gmean)) %>% distinct(famrel, mean_Gmean)
+
+ggplot(df, aes(x = famrel, y = mean_Gmean)) +
+    geom_bar(stat = "identity", alpha = 0.7, aes(fill = famrel)) +
+    labs(title = "Notes en fonction des relations avec la famille en Portugais", x = "relations familiales", y = "moyenne des notes", fill = "relations familiale") +
+    scale_fill_continuous(labels = c("1 : mauvaises", "2 : très moyennes", "3 : moyenne", "4 : bonnes", "5 : excellentes"), type = "viridis")
+
+```
+
+SANTE (1- mauvaises à 5- excellentes)
+
+```{r message = FALSE}
+#preparation des données
+df <- dfPortugais %>% group_by(health) %>% mutate(mean_Gmean = mean(Gmean)) %>% distinct(health, mean_Gmean)
+
+ggplot(df, aes(x = health, y = mean_Gmean)) +
+    geom_bar(stat = "identity", alpha = 0.7, aes(fill = health)) +
+    labs(title = "Notes en fonction de la santé en Portugais", x = "santé", y = "moyenne des notes", fill = "santé") +
+    scale_fill_continuous(labels = c("1 : mauvaise", "2 : très moyenne", "3 : moyenne", "4 : bonne", "5 : excellente"), type = "viridis")
+
+```
+
+ABSENCES
+
+```{r message = FALSE}
+#preparation des données
+df <- dfMaths %>% group_by(absences) %>% mutate(mean_Gmean = mean(Gmean)) %>% distinct(absences, mean_Gmean)
+
+ggplot(df, aes(x = absences, y = mean_Gmean)) +
+    geom_point(alpha = 0.7, aes(fill = absences)) +
+    labs(title = "Notes en fonction du nb d'absences en maths", x = "absences", y = "moyenne des notes", fill = "absences")
+
+```
