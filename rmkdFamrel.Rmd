@@ -38,110 +38,138 @@ head(dfPortugais)
 ```
 
 # Qu'est ce qui fait varier les relations familiales
+```{r famrel}
+ggplot(dfPortugais, aes(x = famrel)) + 
+    geom_bar()+
+    scale_fill_brewer(palette = "Dark2") + 
+    labs(x = "Relations familiales" ,title = "Répartitions des relations familiales")
+
+```
+
 
 ## Regardons si le sexe fait varier les relations familiales
 ```{r sex_famrel}
-ggplot(
-  filter(dfPortugais, sex == "M"), aes(x = famrel)) + 
-  geom_bar() +
-  labs(title = "Relations familiales pour les garçons") + 
-  theme(panel.grid = element_blank(), panel.border = element_blank()
-)
+df <- dfMaths %>% select(sex, famrel)
 
-ggplot(
-  filter(dfPortugais, sex == "F"), aes(x = famrel)) + 
-  geom_bar() +
-  labs(title = "Relations familiales pour les filles") + 
-  theme(panel.grid = element_blank(), panel.border = element_blank()
-)
+ggplot(df, aes(x = sex, y = famrel)) + 
+  geom_boxplot(aes(fill = sex),alpha = 0.6,size = 1) + 
+  stat_summary(fun = "mean", geom = "point", shape= 21, size= 2, fill= "white") +
+  scale_fill_brewer(palette = "Dark2") +
+  ggtitle("Relations familiales en fonction du genre (mat)")
+
+df <- dfPortugais %>% select(sex, famrel)
+
+ggplot(df, aes(x = sex, y = famrel)) + 
+  geom_boxplot(aes(fill = sex),alpha = 0.6,size = 1) + 
+  stat_summary(fun = "mean", geom = "point", shape= 21, size= 2, fill= "white") +
+  scale_fill_brewer(palette = "Dark2") +
+  ggtitle("Relations familiales en fonction du genre (por)")
+
+
 ```
 
-**Conclusion : le sexe ne joue pas sur les relations familiales.**
-
+**A REVOIR LA CONCLUSION**
 
 ## Regardons si l'adresse fait varier les relations familiales
 ```{r address_famrel}
-ggplot(
-  filter(dfPortugais, address == "R"), aes(x = famrel)) + 
-  geom_bar() +
-  labs(title = "Relations familiales pour la ville") + 
-  theme(panel.grid = element_blank(), panel.border = element_blank()
-)
+df <- dfMaths %>% select(address, famrel)
 
-ggplot(
-  filter(dfPortugais, address == "U"), aes(x = famrel)) + 
-  geom_bar() +
-  labs(title = "Relations familiales pour la campagne") + 
-  theme(panel.grid = element_blank(), panel.border = element_blank()
-)
+ggplot(df, aes(x = address, y = famrel)) + 
+  geom_boxplot(aes(fill = address),alpha = 0.6,size = 1) + 
+  stat_summary(fun = "mean", geom = "point", shape= 21, size= 2, fill= "white") +
+  scale_fill_brewer(palette = "Dark2") +
+  ggtitle("Relations familiales en fonction de l'adresse (mat)")
 ```
 
 **Conclusion : l'adresse ne fait pas varier les relations familiales**
 
 ## Regardons si le tuteur légal fait varier les relations familiales
 ```{r guardian_famrel}
-ggplot(
-  filter(dfPortugais, guardian == "mother"), aes(x = famrel)) + 
-  geom_bar() +
-  labs(title = "Relations familiales pour une mère tutrice") + 
-  theme(panel.grid = element_blank(), panel.border = element_blank()
-)
+df <- dfMaths %>% select(guardian, famrel)
 
-ggplot(
-  filter(dfPortugais, guardian == "father"), aes(x = famrel)) + 
-  geom_bar() +
-  labs(title = "Relations familiales pour un père tuteur") + 
-  theme(panel.grid = element_blank(), panel.border = element_blank()
-)
+ggplot(df, aes(x = guardian, y = famrel)) + 
+  geom_boxplot(aes(fill = guardian),alpha = 0.6,size = 1) + 
+  stat_summary(fun = "mean", geom = "point", shape= 21, size= 2, fill= "white") +
+  scale_fill_brewer(palette = "Dark2") +
+  ggtitle("Relations familiales en fonction du tutueur légal (mat)")
 
-ggplot(
-  filter(dfPortugais, guardian == "other"), aes(x = famrel)) + 
-  geom_bar() +
-  labs(title = "Relations familiales pour un tuteur autre qu'un parent") + 
-  theme(panel.grid = element_blank(), panel.border = element_blank()
-)
+df <- dfPortugais %>% select(guardian, famrel)
+
+ggplot(df, aes(x = guardian, y = famrel)) + 
+  geom_boxplot(aes(fill = guardian),alpha = 0.6,size = 1) + 
+  stat_summary(fun = "mean", geom = "point", shape= 21, size= 2, fill= "white") +
+  scale_fill_brewer(palette = "Dark2") +
+  ggtitle("Relations familiales en fonction du tutueur légal (por)")
 ```
 
 **Conclusion : **
 
 ## Regardons si le soutient scolaire familial fait varier les relations familiales
 ```{r famsup_famrel}
-ggplot(
-  filter(dfPortugais, famsup == "yes"), aes(x = famrel)) + 
-  geom_bar() +
-  labs(title = "Relations familiales pour un élève disposant de soutient scolaire familial") + 
-  theme(panel.grid = element_blank(), panel.border = element_blank()
-)
+df <- dfMaths %>% select(famsup, famrel)
 
-ggplot(
-  filter(dfPortugais, famsup == "no"), aes(x = famrel)) + 
-  geom_bar() +
-  labs(title = "Relations familiales pour un élève ne disposant pas de soutient scolaire familial") + 
-  theme(panel.grid = element_blank(), panel.border = element_blank()
-)
+ggplot(df, aes(x = famsup, y = famrel)) + 
+  geom_boxplot(aes(fill = famsup),alpha = 0.6,size = 1) + 
+  stat_summary(fun = "mean", geom = "point", shape= 21, size= 2, fill= "white") +
+  scale_fill_brewer(palette = "Dark2") +
+  ggtitle("Relations familiales en fonction du soutient familial (mat)")
+
+df <- dfPortugais %>% select(famsup, famrel)
+
+ggplot(df, aes(x = famsup, y = famrel)) + 
+  geom_boxplot(aes(fill = famsup),alpha = 0.6,size = 1) + 
+  stat_summary(fun = "mean", geom = "point", shape= 21, size= 2, fill= "white") +
+  scale_fill_brewer(palette = "Dark2") +
+  ggtitle("Relations familiales en fonction du soutient familial (por)")
 ```
 
-## Regardons si le soutient scolaire familial fait varier les relations familiales
-```{r fjob_famrel}
-ggplot(dfPortugais, aes(x = Fjob, y = famrel)) + 
-    geom_jitter(aes (colours = famrel)) +
-    labs(x = "Travail mère", y = "Relation familliales",title = "Relations familiales pour selon le travail du père")
+## Regardons si le travail des parents fait varier les relations familiales
+```{r Pjob_famrel}
+df <- dfMaths %>% select(MJob, famrel)
 
+ggplot(df, aes(x = MJob, y = famrel)) + 
+  geom_boxplot(aes(fill = MJob),alpha = 0.6,size = 1) + 
+  stat_summary(fun = "mean", geom = "point", shape= 21, size= 2, fill= "white") +
+  scale_fill_brewer(palette = "Dark2") +
+  ggtitle("Relations familiales en fonction du soutient familial (mat)")
 
-#preparation des données
-df <- dfPortugais %>% group_by(Fjob) %>% mutate(mean_famrel = mean(famrel)) %>% distinct(Fjob, mean_famrel)
+df <- dfPortugais %>% select(MJob, famrel)
 
-ggplot(df, aes(x = Fjob, y = mean_famrel)) +
-    geom_bar(stat = "identity", alpha = 0.7, aes(fill = Fjob)) +
-    labs(title = "Relations familiales pour selon le travail du père", x = "Travail père", y = "moyenne des relations familiales", fill = "Travail du père") +
-    scale_fill_discrete(labels = c("1 : mauvaise", "2 : très moyenne", "3 : moyenne", "4 : bonne", "5 : excellente"), type = "viridis")
-
-df <- dfPortugais %>% group_by(Mjob) %>% mutate(mean_famrel = mean(famrel)) %>% distinct(Mjob, mean_famrel)
-
-ggplot(df, aes(x = Mjob, y = mean_famrel)) +
-    geom_bar(stat = "identity", alpha = 0.7, aes(fill = Mjob)) +
-    labs(title = "Relations familiales pour selon le travail de la mère", x = "Travail mère", y = "moyenne des relations familiales", fill = "Travail de la mère") +
-    scale_fill_discrete(labels = c("1 : mauvaise", "2 : très moyenne", "3 : moyenne", "4 : bonne", "5 : excellente"), type = "viridis")
+ggplot(df, aes(x = MJob, y = famrel)) + 
+  geom_boxplot(aes(fill = MJob),alpha = 0.6,size = 1) + 
+  stat_summary(fun = "mean", geom = "point", shape= 21, size= 2, fill= "white") +
+  scale_fill_brewer(palette = "Dark2") +
+  ggtitle("Relations familiales en fonction du soutient familial (por)")
 ```
 
 **Conclusion : **
+
+
+## Regardons si l'éducation des parents fait varier les relations familiales
+```{r Pedu_famrel}
+#preparation des données
+df <- dfMaths %>% group_by(Fedu) %>% mutate(mean_famrel = mean(famrel)) %>% distinct(Fedu, mean_famrel)
+
+ggplot(df, aes(x = Fedu, y = mean_famrel)) +
+    geom_bar(stat = "identity", alpha = 0.7, aes(fill = Fedu)) +
+    labs(title = "Relations familiales pour selon l'éducation du père", x = "Education père", y = "moyenne des relations familiales", fill = "Education du père") +
+    scale_fill_continuous(labels = c("0 : Aucune", "1 : Primaire", "2 : Collège", "3 : Lycée", "4 : Suppérieur"), type = "viridis")
+
+df <- dfPortugais %>% group_by(Medu) %>% mutate(mean_famrel = mean(famrel)) %>% distinct(Medu, mean_famrel)
+
+ggplot(df, aes(x = Medu, y = mean_famrel)) +
+    geom_bar(stat = "identity", alpha = 0.7, aes(fill = Medu)) +
+    labs(title = "Relations familiales pour selon l'éducation de la mère", x = "Education mère", y = "moyenne des relations familiales", fill = "Education de la mère") +
+    scale_fill_continuous(labels = c("0 : Aucune", "1 : Primaire", "2 : Collège", "3 : Lycée", "4 : Suppérieur"), type = "viridis")
+
+df <- dfMaths %>% group_by(Medu) %>% mutate(mean_famrel = mean(famrel)) %>% distinct(Medu, mean_famrel)
+
+ggplot(df, aes(x = Medu, y = mean_famrel)) +
+    geom_bar(stat = "identity", alpha = 0.7, aes(fill = Medu)) +
+    labs(title = "Relations familiales pour selon l'éducation de la mère", x = "Education mère", y = "moyenne des relations familiales", fill = "Education de la mère") +
+    scale_fill_continuous(labels = c("0 : Aucune", "1 : Primaire", "2 : Collège", "3 : Lycée", "4 : Suppérieur"), type = "viridis")
+```
+
+# VOIR POUR PASSER LES INT EN CHAR
+
+**Conclusion** : Avoir des parents étant allé au moins en primaire permet d'avoir des supers relations familiales.
