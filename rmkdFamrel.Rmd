@@ -11,6 +11,7 @@ library(readr)
 library(ggplot2)
 library(dplyr)
 library(scales)
+library("gridExtra")
 ```
 
 Importons dans un premier temps les datasets
@@ -38,6 +39,15 @@ head(dfPortugais)
 ```
 
 # Qu'est ce qui fait varier les relations familiales
+
+```{r cal_moyenne_famrel}
+total_famrel <- dfPortugais$famrel
+mean_famrel <- round(mean(total_famrel), digits=2)
+mean_famrel
+```
+
+La moyenne des relations familiales est de **`r mean_famrel`**.
+
 ```{r famrel}
 ggplot(dfPortugais, aes(x = famrel)) + 
     geom_bar()+
@@ -48,10 +58,30 @@ ggplot(dfPortugais, aes(x = famrel)) +
 
 
 ## Regardons si le sexe fait varier les relations familiales
+
+```{r cal_moyenne_famrel_sex}
+total_famrel_M <- dfPortugais %>%
+  select(famrel, sex) %>%
+  filter(sex == 'M')
+total_famrel_M <- total_famrel_M$famrel
+mean_famrel_M <- round(mean(total_famrel_M), digits=2)
+mean_famrel_M
+
+total_famrel_F <- dfPortugais %>%
+  select(famrel, sex) %>%
+  filter(sex == 'F')
+total_famrel_F <- total_famrel_F$famrel
+mean_famrel_F <- round(mean(total_famrel_F), digits=2)
+mean_famrel_F
+```
+
+La moyenne des relations familiales chez les garçons est de  **`r mean_famrel_M`** 
+tandis que chez les filles elle est de **`r mean_famrel_F`**.
+
 ```{r sex_famrel}
 df <- dfMaths %>% select(sex, famrel)
 
-ggplot(df, aes(x = sex, y = famrel)) + 
+dfP <- ggplot(df, aes(x = sex, y = famrel)) + 
   geom_boxplot(aes(fill = sex),alpha = 0.6,size = 1) + 
   stat_summary(fun = "mean", geom = "point", shape= 21, size= 2, fill= "white") +
   scale_fill_brewer(palette = "Dark2") +
@@ -59,13 +89,13 @@ ggplot(df, aes(x = sex, y = famrel)) +
 
 df <- dfPortugais %>% select(sex, famrel)
 
-ggplot(df, aes(x = sex, y = famrel)) + 
+dfM <- ggplot(df, aes(x = sex, y = famrel)) + 
   geom_boxplot(aes(fill = sex),alpha = 0.6,size = 1) + 
   stat_summary(fun = "mean", geom = "point", shape= 21, size= 2, fill= "white") +
   scale_fill_brewer(palette = "Dark2") +
   ggtitle("Relations familiales en fonction du genre (por)")
 
-
+grid.arrange(dfP, dfM, ncol=2, nrow = 1)
 ```
 
 **A REVOIR LA CONCLUSION**
@@ -75,7 +105,7 @@ ggplot(df, aes(x = sex, y = famrel)) +
 df <- dfMaths %>% select(address, famrel)
 
 ggplot(df, aes(x = address, y = famrel)) + 
-  geom_boxplot(aes(fill = address),alpha = 0.6,size = 1) + 
+  geom_violin(aes(fill = address),alpha = 0.6,size = 1) + 
   stat_summary(fun = "mean", geom = "point", shape= 21, size= 2, fill= "white") +
   scale_fill_brewer(palette = "Dark2") +
   ggtitle("Relations familiales en fonction de l'adresse (mat)")
@@ -125,18 +155,18 @@ ggplot(df, aes(x = famsup, y = famrel)) +
 
 ## Regardons si le travail des parents fait varier les relations familiales
 ```{r Pjob_famrel}
-df <- dfMaths %>% select(MJob, famrel)
+df <- dfMaths %>% select(Mjob, famrel)
 
-ggplot(df, aes(x = MJob, y = famrel)) + 
-  geom_boxplot(aes(fill = MJob),alpha = 0.6,size = 1) + 
+ggplot(df, aes(x = Mjob, y = famrel)) + 
+  geom_boxplot(aes(fill = Mjob),alpha = 0.6,size = 1) + 
   stat_summary(fun = "mean", geom = "point", shape= 21, size= 2, fill= "white") +
   scale_fill_brewer(palette = "Dark2") +
   ggtitle("Relations familiales en fonction du soutient familial (mat)")
 
-df <- dfPortugais %>% select(MJob, famrel)
+df <- dfPortugais %>% select(Mjob, famrel)
 
-ggplot(df, aes(x = MJob, y = famrel)) + 
-  geom_boxplot(aes(fill = MJob),alpha = 0.6,size = 1) + 
+ggplot(df, aes(x = Mjob, y = famrel)) + 
+  geom_boxplot(aes(fill = Mjob),alpha = 0.6,size = 1) + 
   stat_summary(fun = "mean", geom = "point", shape= 21, size= 2, fill= "white") +
   scale_fill_brewer(palette = "Dark2") +
   ggtitle("Relations familiales en fonction du soutient familial (por)")
