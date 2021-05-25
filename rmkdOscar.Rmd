@@ -529,10 +529,11 @@ ABSENCES
 
 ```{r message = FALSE}
 #preparation des données
-df <- dfMaths %>% group_by(absences) %>% mutate(mean_Gmean = mean(Gmean)) %>% distinct(absences, mean_Gmean)
+df <- dfMaths
 
-ggplot(df, aes(x = absences, y = mean_Gmean)) +
-    geom_point(alpha = 0.7, aes(fill = absences)) +
-    labs(title = "Notes en fonction du nb d'absences en maths", x = "absences", y = "moyenne des notes", fill = "absences")
+ggplot(df, aes(x = absences, y = Gmean)) +
+    geom_point() +
+    geom_smooth() +
+    labs(title = "Notes en fonction du nb d'absences en maths", x = "absences", y = "moyenne des notes")
 
 ```
