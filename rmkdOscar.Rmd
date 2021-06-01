@@ -14,6 +14,22 @@ library(scales)
 ```
 
 
+A METTRE OU PAS ?????
+
+REPARTITION HOMME - FEMME DANS LES ECOLES
+
+```{r repHommeFemme, message = FALSE}
+
+ggplot(dfMaths, aes(x = school, fill = sex)) + 
+  geom_bar(position = position_dodge(0.9), alpha = 0.6, fill = viridis(2)) + 
+  labs(fill = "Sexe", x = "Ecole", y = "Effectifs", title = "Part des effectifs Masculins et Féminins dans chaque école")
+```
+
+
+
+
+
+
 Importons dans un premier temps les datasets
 
 ```{r message = FALSE}
