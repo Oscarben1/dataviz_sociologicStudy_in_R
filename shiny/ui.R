@@ -15,9 +15,9 @@ dashboardPage(
 
         sliderInput("moyenne_générale" ,"Moyenne générale", min = 0, max = 20, value = c(5, 16)),
         
-        radioButtons("sexe", label = h3("Sexe"), 
-                     choices = list("Garçon" = 1, "Fille" = 2, "Les 2" = 3),
-                     selected = 3),
+        radioButtons("sex", label = h3("Sexe"), 
+                     choices = list("Garçon" = "M", "Fille" = "F"),
+                     selected = "M"),
         
         radioButtons("adresse", label = h3("Lieu de vie"), 
                      choices = list("Ville" = 1, "Campagne" = 2, "Les 2" = 3),
@@ -45,7 +45,9 @@ dashboardPage(
         tabItems(
             tabItem(
                 tabName = "notes",
-
+                fluidRow(
+                    valueBoxOutput("meanStudytimeM"),
+                ),
             ),
             tabItem(tabName = "santé",
                 
