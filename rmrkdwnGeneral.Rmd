@@ -193,7 +193,7 @@ ggplot(df, aes(x = freetime, y = mean_Gmean)) +
 
 On peut voir que le fait de se libérer du temps libre est important pour réussir. En effet, ce sont les élèves qui se libérent un peu de temps libre (mais pas trop, niveau 2), qui obtiennent les meilleurs résultats.
 
-###Pour réussir, il faut travailler
+### Pour réussir, il faut travailler
 
 Voyons maintenant si le temps de travail implique des meilleurs notes, en Portugais :
 
@@ -228,7 +228,7 @@ Walc <- ggplot(df, aes(x = Walc, y = mean_Gmean)) +
 
 On peut voir que la consommation d'alcool le weekend a clairement un impact sur les notes et que ce sont ceux qui en consomment peu (niveau 1 ou 2) qui ont les meilleures résultats. On peut donc considérer qu'il est préférable de ne pas consommer d'alcool le weekend, ou simplement un petit verre, pour avoir les meilleurs notes (s'amuser le weekend pour relacher les cours par exemple).
 
-Est-ce la même conxlusion pour l'alcool en semaine ? 
+Est-ce la même conclusion pour l'alcool en semaine ? 
 
 ```{r alcool la semaine, message = FALSE}
 dfPortugais$Dalc <- as.factor(dfPortugais$Dalc)
@@ -336,12 +336,305 @@ Enfin, on peut dire que nous avons pu déceler certains critères pour être l'�
 
 ---------------------------------------------------------------
 
-# PARTIE FAMREL
+# Comment être l'élève qui s'entend le mieux avec sa famille ?
 
+### Calcul des moyennes utiles à l'analyse des relations 
+
+```{r calcul_moyenne_famrel, echo=FALSE}
+#Moyenne générale des relations familales
+total_famrel <- dfPortugais$famrel
+mean_famrel <- round(mean(total_famrel), digits=2)
+
+#Moyenne générale des relations familales selon le sexe
+#Moyenne générale des relations familales pour les garçons
+total_famrel_M <- dfPortugais %>%
+  select(famrel, sex) %>%
+  filter(sex == 'M')
+total_famrel_M <- total_famrel_M$famrel
+mean_famrel_M <- round(mean(total_famrel_M), digits=2)
+#Moyenne générale des relations familales pour les filles
+total_famrel_F <- dfPortugais %>%
+  select(famrel, sex) %>%
+  filter(sex == 'F')
+total_famrel_F <- total_famrel_F$famrel
+mean_famrel_F <- round(mean(total_famrel_F), digits=2)
+
+#Moyenne générale des relations familales selon le lieu d'habitation
+#Moyenne générale des relations familales pour les étudiants de la campagne
+total_famrel_R <- dfPortugais %>%
+  select(famrel, address) %>%
+  filter(address == 'R')
+total_famrel_R <- total_famrel_R$famrel
+mean_famrel_R <- round(mean(total_famrel_R), digits=2)
+#Moyenne générale des relations familales pour les étudiants de la ville
+total_famrel_U <- dfPortugais %>%
+  select(famrel, address) %>%
+  filter(address == 'U')
+total_famrel_U <- total_famrel_U$famrel
+mean_famrel_U <- round(mean(total_famrel_U), digits=2)
+
+#Moyenne générale des relations familales selon le statut marital des parents
+#Moyenne générale des relations familales pour les étudiants ayant des parents séparés
+total_famrel_PSA <- dfPortugais %>%
+  select(famrel, Pstatus) %>%
+  filter(Pstatus == 'A')
+total_famrel_PSA <- total_famrel_PSA$famrel
+mean_famrel_PSA <- round(mean(total_famrel_PSA), digits=2)
+#Moyenne générale des relations familales pour les étudiants ayant des parents ensembles
+total_famrel_PST <- dfPortugais %>%
+  select(famrel, Pstatus) %>%
+  filter(Pstatus == 'T')
+total_famrel_PST <- total_famrel_PST$famrel
+mean_famrel_PST <- round(mean(total_famrel_PST), digits=2)
+
+#Moyenne générale des relations familales selon l'âge
+#Moyenne générale des relations familales pour les étudiants ayant 15 ans
+total_famrel_15 <- dfPortugais %>%
+  select(famrel, age) %>%
+  filter(age == 15)
+total_famrel_15 <- total_famrel_15$famrel
+mean_famrel_15 <- round(mean(total_famrel_15), digits=2)
+#Moyenne générale des relations familales pour les étudiants ayant 16 ans
+total_famrel_16 <- dfPortugais %>%
+  select(famrel, age) %>%
+  filter(age == 16)
+total_famrel_16 <- total_famrel_16$famrel
+mean_famrel_16 <- round(mean(total_famrel_16), digits=2)
+#Moyenne générale des relations familales pour les étudiants ayant 17 ans
+total_famrel_17 <- dfPortugais %>%
+  select(famrel, age) %>%
+  filter(age == 17)
+total_famrel_17 <- total_famrel_17$famrel
+mean_famrel_17 <- round(mean(total_famrel_17), digits=2)
+#Moyenne générale des relations familales pour les étudiants ayant 20 ans
+total_famrel_20 <- dfPortugais %>%
+  select(famrel, age) %>%
+  filter(age == 20)
+total_famrel_20 <- total_famrel_20$famrel
+mean_famrel_20 <- round(mean(total_famrel_20), digits=2)
+
+#Moyenne générale des relations familales selon la taille de la famille
+#Moyenne générale des relations familales pour les étudiants ayant une famille < ou = à 3 personnes
+total_famrel_FSLE3 <- dfPortugais %>%
+  select(famrel, famsize) %>%
+  filter(famsize == 'LE3')
+total_famrel_FSLE3 <- total_famrel_FSLE3$famrel
+mean_famrel_FSLE3 <- round(mean(total_famrel_FSLE3), digits=2)
+#Moyenne générale des relations familales pour les étudiants ayant une famille > à 3 personnes
+total_famrel_FSGT3 <- dfPortugais %>%
+  select(famrel, famsize) %>%
+  filter(famsize == 'GT3')
+total_famrel_FSGT3 <- total_famrel_FSGT3$famrel
+mean_famrel_FSGT3 <- round(mean(total_famrel_FSGT3), digits=2)
+```
 
 
 FIN PARTIE FAMREL
 ---------------------------------------------------------------
+
+### Comment varient les relations familiales ?
+
+La moyenne des relations familiales est de **`r mean_famrel`**.
+
+```{r famrel, echo=FALSE}
+ggplot(dfPortugais, aes(x = famrel)) + 
+    geom_bar(alpha = 0.7, fill = viridis(5))+
+    labs(x = "Relations familiales" , y = "Nombre d'étudiants" ,title = "Répartitions des relations familiales")
+```
+
+
+
+
+
+### Relations familiales selon le sexe et le lieu de vie
+
+```{r sex_adress_famrel, echo=FALSE}
+df <- dfPortugais %>% select(sex, famrel)
+
+dfS <- ggplot(df, aes(x = sex, y = famrel)) + 
+  geom_violin(aes(fill = sex),alpha = 0.6,size = 1) + 
+  stat_summary(fun = "mean", geom = "point", shape= 21, size= 2, fill= "white") +
+  scale_fill_brewer(palette = "Dark2") +
+  ggtitle("Relations familiales selon sexe")
+
+df <- dfPortugais %>% select(address, famrel)
+
+dfA <- ggplot(df, aes(x = address, y = famrel)) + 
+  geom_violin(aes(fill = address),alpha = 0.6,size = 1) + 
+  stat_summary(fun = "mean", geom = "point", shape= 21, size= 2, fill= "white") +
+  scale_fill_brewer(palette = "Dark2") +
+  ggtitle("Relations familiales selon l'adresse")
+
+grid.arrange(dfS, dfA, ncol=2, nrow = 1)
+```
+
+La moyenne des relations familiales chez les garçons est de  **`r mean_famrel_M`** 
+tandis que chez les filles elle est de **`r mean_famrel_F`**.
+Par rapport au lieu de vie, la moyenne des relations familiales des élèves habitant à la campagne est de  **`r mean_famrel_R`** tandis que chez les élèves habitant en ville, elle est de **`r mean_famrel_U`**.
+
+**Le sexe et le lieu de vie n'influe donc pas ou peu les relations familiales.**
+
+### Relations familiales selon l'âge
+
+```{r age_famrel, echo=FALSE}
+dfPortugais <- dfPortugais %>% filter (age != 21, age != 22)
+dfPortugais$age <- as.factor(dfPortugais$age)
+df <- dfPortugais %>% group_by(age) %>% mutate(mean_famrel = mean(famrel)) %>% distinct(age, mean_famrel)
+
+ggplot(df, aes(x = age, y = mean_famrel)) +
+    geom_bar(stat = "identity", alpha = 0.7, aes(fill = age)) +
+    labs(title = "Relation familiales selon l'âge", x = "Âge", y = "Relations familiales", fill = "Âge") +
+    scale_fill_discrete(type = "viridis")
+```
+
+Vu le faible nombre d'étudiants ayant 21 et 22 ans, on ne se concentre que la fourchette d'âge 15-20 ans. 
+On peut voir que plus les étudiants viellissent, plus leur relations familiales se détériorent. De 17 à 20 ans, la moyenne des relations familiales passe de `r mean_famrel_17` à `r mean_famrel_20`.
+Néanmoins, cette observation se retrouve un peu faussée par les étudiants de 16 ans, qui ont une moyenne de relations familiales à `r mean_famrel_16`, alors que pour ceux de 15 et 17 ans, elles sont respectivement de `r mean_famrel_15` et `r mean_famrel_17`.
+
+### Relations familiales selon le statut marital des parents
+En tant que tel, le statut marital des parents ne fais pas tant vairer les relations familailes. En effet, les étudiants avec des parents ensembles ont une moyenne de relation familiale qui est de `r mean_famrel_PST` tandis qu'elle est de `r mean_famrel_PSA` pour ceux qui ont leurs parents séparés.
+
+Néanmoins, conjugué à d'autres paramètres, le statut marital des parents fait varier les relations familiales des étudiants.
+
+### Relations familiales selon la taille de la famille en prenant en compte le statut marital des parents
+```{r famsize_famrel, echo=FALSE}
+df <- dfPortugais %>% filter(Pstatus == "T") %>% group_by(famsize) %>% mutate(mean_famrel = mean(famrel)) %>% distinct(famsize, mean_famrel)
+
+dfFSPT <- ggplot(df, aes(x = famsize, y = mean_famrel)) +
+    geom_bar(stat = "identity", alpha = 0.7, aes(fill = famsize)) +
+    labs(title = "Famrel selon famsize parents ensembles", x = "Taille de la famille", y = "Relations familiales", fill = "Taille de la famille") +
+    scale_fill_discrete(type = "viridis")
+
+df <- dfPortugais %>% filter(Pstatus == "A") %>% group_by(famsize) %>% mutate(mean_famrel = mean(famrel)) %>% distinct(famsize, mean_famrel)
+
+dfFSPA <- ggplot(df, aes(x = famsize, y = mean_famrel)) +
+    geom_bar(stat = "identity", alpha = 0.7, aes(fill = famsize)) +
+    labs(title = "Famrel selon famsize parents séparés", x = "Taille de la famille", y = "Relations familiales", fill = "Taille de la famille") +
+    scale_fill_discrete(type = "viridis")
+
+grid.arrange(dfFSPT, dfFSPA, ncol=2, nrow = 1)
+
+```
+
+Si on s'interesse seulement à la taille de la famille, les relations varient peu entre les familles de composées de 3 personnes ou moins **(`r mean_famrel_FSLE3`)**, et celle comptant plus de 3 personnes **(`r mean_famrel_FSGT3`)**. Néanmoins en regardant les relations familiales par rapport à la taille de famille, selon que les parents soient ensembles ou non, **les chiffres deviennent plus interessants**.
+
+Même si pour les étudiants qui ont des **parents ensembles**, **les relations familiales varient peu**, les étudiants ayant des **parents séparés** ont de **meilleures relations familiales** lorsque la **taille de la famille est égale ou inférieure à 3**.
+
+
+### Relations familiales selon le tuteur légal en prenant en compte le statut marital des parents
+
+```{r guardian_famrel, echo=FALSE}
+df <- dfPortugais %>% filter(Pstatus == "T") %>% group_by(guardian) %>% mutate(mean_famrel = mean(famrel)) %>% distinct(guardian, mean_famrel)
+
+dfGPT <- ggplot(df, aes(x = guardian, y = mean_famrel)) + 
+  geom_bar(stat = "identity", alpha = 0.7, aes(fill = guardian)) +
+  labs(title = "Relations familiales en fonction du tuteur légal pour parents ensemble", x = "Tuteur légal", y = "Relation familiale", fill = "Tuteur légal") +
+    scale_fill_discrete(type = "viridis")
+
+df <- dfPortugais %>% filter(Pstatus == "A") %>% group_by(guardian) %>% mutate(mean_famrel = mean(famrel)) %>% distinct(guardian, mean_famrel)
+dfGPA <- ggplot(df, aes(x = guardian, y = mean_famrel)) + 
+  geom_bar(stat = "identity", alpha = 0.7, aes(fill = guardian)) +
+  labs(title = "Relations familiales en fonction du tuteur légal pour parents séparés", x = "Tuteur légal", y = "Relation familiale", fill = "Tuteur légal") +
+    scale_fill_discrete(type = "viridis")
+
+df <- dfPortugais %>% filter(Pstatus == "T") %>% group_by(guardian) %>% mutate(mean_famrel = mean(famrel)) %>% distinct(guardian, mean_famrel)
+
+
+grid.arrange(dfGPT, dfGPA, ncol=2, nrow = 1)
+
+```
+
+Quand on s'interesse seulement aux relations familiales suivant le tuteur légal de l'élève, la moyenne varie peu (), sauf pour "autre" ou la moyenne est un poil plus bas.
+
+En revanche, la donne est différentes lorsque l'on associe à cela le statut marital des parents. 
+Pour des **parents ensembles**, les **relations familiales sont semblables** lorsque que le **père** ou la **mère** sont tuteurs. Cette même **moyenne est plus basse** quand c'est **quelqu'un d'autre** qui a le rôle de tuteur.
+
+En revanche, pour des parents séparés, le résultat est bien différent. Les **relations familiales sont au plus bas** quand c'est **le père le tuteur**, est **au plus haut** quand c'est **quelqu'un d'autre**.  
+
+### Relations familiales selon le travail
+```{r Pjob_famrel, echo=FALSE}
+df <- dfPortugais %>% group_by(Mjob) %>% mutate(mean_famrel = mean(famrel)) %>% distinct(Mjob, mean_famrel)
+
+dfMJ <- ggplot(df, aes(x = Mjob, y = mean_famrel)) + 
+  geom_bar(stat = "identity", alpha = 0.7, aes(fill = Mjob)) +
+  labs(title = "Relations familiales selon de maman", x = "Travail", y = "Relation familiale", fill = "Travail") +
+    scale_fill_discrete(type = "viridis")
+
+df <- dfMaths%>% group_by(Fjob) %>% mutate(mean_famrel = mean(famrel)) %>% distinct(Fjob, mean_famrel)
+
+dfFJ <- ggplot(df, aes(x = Fjob, y = mean_famrel)) + 
+  geom_bar(stat = "identity", alpha = 0.7, aes(fill = Fjob)) +
+  labs(title = "Relations familiales selon travail de papa", x = "Travail", y = "Relation familiale", fill = "Travail") +
+    scale_fill_discrete(type = "viridis")
+
+grid.arrange(dfMJ, dfFJ, ncol=2, nrow = 1)
+```
+
+Pour le père et la mère, on voit que les relations familiales sont mieux quand **l'un et l'autre** travaillent dans **le service public**.
+
+Pour approfondir cette analyse, nous allons regarder : 
+- quand le père travaille dans le service public, quel est le travail préférentiel pour la mère
+- quand la mère travaille dans le service public, quel est le travail préférentiel pour le père
+
+```{r Pjob2_famrel, echo=FALSE}
+df <- dfMaths %>% filter(Mjob == 'services') %>% group_by(Fjob) %>% mutate(mean_famrel = mean(famrel)) %>% distinct(Fjob, mean_famrel)
+
+ggplot(df, aes(x = Fjob, y = mean_famrel)) + 
+  geom_bar(stat = "identity", alpha = 0.7, aes(fill = Fjob)) +
+  labs(title = "Relations familiales selon travail de papa", x = "Travail", y = "Relation familiale", fill = "Travail") +
+    scale_fill_discrete(type = "viridis")
+
+df <- dfPortugais %>% filter(Fjob == 'services') %>% group_by(Mjob) %>% mutate(mean_famrel = mean(famrel)) %>% distinct(Mjob, mean_famrel)
+
+ggplot(df, aes(x = Mjob, y = mean_famrel)) + 
+  geom_bar(stat = "identity", alpha = 0.7, aes(fill = Mjob)) +
+  labs(title = "Relations familiales selon de maman", x = "Travail", y = "Relation familiale", fill = "Travail") +
+    scale_fill_discrete(type = "viridis")
+```
+
+Les résulatats sont sans appels !
+Quand **le père** travaille dans **le service public**, il vaut que **la mère soit au foyer** pour avoir des meilleures relations familiales. 
+En revanche, quand c'est **la mère** qui travaille dans **le service public**, les relations familiales se portent mieux si **le père est professeur**.
+
+### Relations familiales selon l'éducation des parents
+```{r Pedu_famrel, echo=FALSE}
+#preparation des données
+dfPortugais$Medu <- as.factor(dfPortugais$Medu)
+df <- dfPortugais %>% group_by(Medu) %>% mutate(mean_famrel = mean(famrel)) %>% distinct(Medu, mean_famrel)
+
+dfME <- ggplot(df, aes(x = Medu, y = mean_famrel)) +
+    geom_bar(stat = "identity", alpha = 0.7, aes(fill = Medu)) +
+    labs(title = "Relation familiales selon éducation de maman", x = "Education maman", y = "Relations familiales", fill = "Education maman") +
+    scale_fill_discrete(labels = c("0 : Aucune", "1 : primaire", "2 : collège", "3 : lycée", "4 : sup"), type = "viridis")
+
+dfPortugais$Fedu <- as.factor(dfPortugais$Fedu)
+df <- dfPortugais %>% group_by(Fedu) %>% mutate(mean_famrel = mean(famrel)) %>% distinct(Fedu, mean_famrel)
+
+dfFE <- ggplot(df, aes(x = Fedu, y = mean_famrel)) +
+    geom_bar(stat = "identity", alpha = 0.7, aes(fill = Fedu)) +
+    labs(title = "Relation familiales selon éducation de papa", x = "Education papa", y = "Relations familiales", fill = "Education papa") +
+    scale_fill_discrete(labels = c("0 : Aucune", "1 : primaire", "2 : collège", "3 : lycée", "4 : sup"), type = "viridis")
+
+grid.arrange(dfME, dfFE, ncol=2, nrow = 1)
+```
+
+Le niveau d'éducation du père importe peu pour les relations familiales. En revanche, pour la mère, il faut au moins qu'elle ait été en primaire. 
+
+### Relations familiales selon la consomation d'alcool lors du week-end.
+```{r Walc_famrel, echo=FALSE}
+dfPortugais$Walc <- as.factor(dfPortugais$Walc)
+df <- dfPortugais %>% group_by(Walc) %>% mutate(mean_famrel = mean(famrel)) %>% distinct(Walc, mean_famrel)
+
+ggplot(df, aes(x = Walc, y = mean_famrel)) + 
+  geom_bar(stat = "identity", alpha = 0.7, aes(fill = Walc)) +
+  labs(title = "Relations familiales Walc", x = "Walc", y = "Relation familiale", fill = "Walc") +
+  scale_fill_discrete(type = "viridis")
+```
+
+On remarque que plus la consommation d'alcool est importante, moins les relations familiales sont bonnes.
+
+# Conclusion sur l'élève qui a les meilleures relations familiales
+
 # PARTIE SANTE
 
 
