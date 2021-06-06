@@ -145,7 +145,7 @@ On peut déceler que le métier du père et de la mère ont une influence sur le
 
 ### Qui travaille le plus ? Et à quel prix ?
 
-```{r studytime garcons filles}
+```{r studytime garcons}
 tempsMoyenGarcons <- dfMaths %>% filter(sex == "M") %>% select(studytime) %>% mutate(mean_studytime = mean(studytime)) %>% distinct(mean_studytime)
 
 tempsMoyenGarcons <- tempsMoyenGarcons[1,1]
@@ -162,7 +162,7 @@ En comparaison au temps moyen des filles en Maths, qui est plus élevé : `r tem
 
 Regardons les notes en mathématiques selon le genre à l'aide d'un boxplot afin d'avoir plus de précision sur les différents quartiles. En y ajoutant un point blanc dans les boxplot qui symbolise la moyenne des notes.
 
-```{r notes selon sexe, message = FALSE}
+```{r notes selon sexe}
 #preparation des données
 df <- dfMaths %>% select(sex, Gmean)
 
@@ -340,7 +340,7 @@ Enfin, on peut dire que nous avons pu déceler certains critères pour être l'�
 
 ### Calcul des moyennes utiles à l'analyse des relations 
 
-```{r calcul_moyenne_famrel, echo=FALSE}
+```{r calcul_moyenne_famrel }
 #Moyenne générale des relations familales
 total_famrel <- dfPortugais$famrel
 mean_famrel <- round(mean(total_famrel), digits=2)
@@ -436,7 +436,7 @@ FIN PARTIE FAMREL
 
 La moyenne des relations familiales est de **`r mean_famrel`**.
 
-```{r famrel, echo=FALSE}
+```{r famrel }
 ggplot(dfPortugais, aes(x = famrel)) + 
     geom_bar(alpha = 0.7, fill = viridis(5))+
     labs(x = "Relations familiales" , y = "Nombre d'étudiants" ,title = "Répartitions des relations familiales")
@@ -448,7 +448,7 @@ ggplot(dfPortugais, aes(x = famrel)) +
 
 ### Relations familiales selon le sexe et le lieu de vie
 
-```{r sex_adress_famrel, echo=FALSE}
+```{r sex_adress_famrel}
 df <- dfPortugais %>% select(sex, famrel)
 
 dfS <- ggplot(df, aes(x = sex, y = famrel)) + 
@@ -476,7 +476,7 @@ Par rapport au lieu de vie, la moyenne des relations familiales des élèves hab
 
 ### Relations familiales selon l'âge
 
-```{r age_famrel, echo=FALSE}
+```{r age_famrel}
 dfPortugais <- dfPortugais %>% filter (age != 21, age != 22)
 dfPortugais$age <- as.factor(dfPortugais$age)
 df <- dfPortugais %>% group_by(age) %>% mutate(mean_famrel = mean(famrel)) %>% distinct(age, mean_famrel)
@@ -497,7 +497,7 @@ En tant que tel, le statut marital des parents ne fais pas tant vairer les relat
 Néanmoins, conjugué à d'autres paramètres, le statut marital des parents fait varier les relations familiales des étudiants.
 
 ### Relations familiales selon la taille de la famille en prenant en compte le statut marital des parents
-```{r famsize_famrel, echo=FALSE}
+```{r famsize_famrel }
 df <- dfPortugais %>% filter(Pstatus == "T") %>% group_by(famsize) %>% mutate(mean_famrel = mean(famrel)) %>% distinct(famsize, mean_famrel)
 
 dfFSPT <- ggplot(df, aes(x = famsize, y = mean_famrel)) +
@@ -523,7 +523,7 @@ Même si pour les étudiants qui ont des **parents ensembles**, **les relations 
 
 ### Relations familiales selon le tuteur légal en prenant en compte le statut marital des parents
 
-```{r guardian_famrel, echo=FALSE}
+```{r guardian_famrel }
 df <- dfPortugais %>% filter(Pstatus == "T") %>% group_by(guardian) %>% mutate(mean_famrel = mean(famrel)) %>% distinct(guardian, mean_famrel)
 
 dfGPT <- ggplot(df, aes(x = guardian, y = mean_famrel)) + 
@@ -552,7 +552,7 @@ Pour des **parents ensembles**, les **relations familiales sont semblables** lor
 En revanche, pour des parents séparés, le résultat est bien différent. Les **relations familiales sont au plus bas** quand c'est **le père le tuteur**, est **au plus haut** quand c'est **quelqu'un d'autre**.  
 
 ### Relations familiales selon le travail
-```{r Pjob_famrel, echo=FALSE}
+```{r Pjob_famrel }
 df <- dfPortugais %>% group_by(Mjob) %>% mutate(mean_famrel = mean(famrel)) %>% distinct(Mjob, mean_famrel)
 
 dfMJ <- ggplot(df, aes(x = Mjob, y = mean_famrel)) + 
@@ -576,7 +576,7 @@ Pour approfondir cette analyse, nous allons regarder :
 - quand le père travaille dans le service public, quel est le travail préférentiel pour la mère
 - quand la mère travaille dans le service public, quel est le travail préférentiel pour le père
 
-```{r Pjob2_famrel, echo=FALSE}
+```{r Pjob2_famrel }
 df <- dfMaths %>% filter(Mjob == 'services') %>% group_by(Fjob) %>% mutate(mean_famrel = mean(famrel)) %>% distinct(Fjob, mean_famrel)
 
 ggplot(df, aes(x = Fjob, y = mean_famrel)) + 
@@ -597,7 +597,7 @@ Quand **le père** travaille dans **le service public**, il vaut que **la mère 
 En revanche, quand c'est **la mère** qui travaille dans **le service public**, les relations familiales se portent mieux si **le père est professeur**.
 
 ### Relations familiales selon l'éducation des parents
-```{r Pedu_famrel, echo=FALSE}
+```{r Pedu_famrel }
 #preparation des données
 dfPortugais$Medu <- as.factor(dfPortugais$Medu)
 df <- dfPortugais %>% group_by(Medu) %>% mutate(mean_famrel = mean(famrel)) %>% distinct(Medu, mean_famrel)
@@ -621,7 +621,7 @@ grid.arrange(dfME, dfFE, ncol=2, nrow = 1)
 Le niveau d'éducation du père importe peu pour les relations familiales. En revanche, pour la mère, il faut au moins qu'elle ait été en primaire. 
 
 ### Relations familiales selon la consomation d'alcool lors du week-end.
-```{r Walc_famrel, echo=FALSE}
+```{r Walc_famrel }
 dfPortugais$Walc <- as.factor(dfPortugais$Walc)
 df <- dfPortugais %>% group_by(Walc) %>% mutate(mean_famrel = mean(famrel)) %>% distinct(Walc, mean_famrel)
 
