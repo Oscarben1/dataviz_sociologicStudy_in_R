@@ -1,0 +1,272 @@
+---
+title: "Tri de diagrammes"
+author: "Albert ELOMBO"
+date: "31/05/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+Importons les datasets
+```{r import packages, message = FALSE}
+library(readr)
+library(ggplot2)
+library(dplyr)
+library(scales)
+library(gridExtra)
+library(tidyverse)
+library("viridis")
+library(treemapify)
+```
+
+Importons dans un premier temps les datasets
+
+```{r import datasets et traitements, message = FALSE}
+dfMathsComplet <- read_csv("data/student-mat.csv")
+dfMaths <- dfMathsComplet %>% filter(age < 20)
+
+#ajout d'une colonne de moyenne des 3 notes :
+temp <- dfMaths %>% select(G1,G2,G3)
+temp <- as.data.frame(rowSums(temp)/3)
+dfMaths <- cbind(dfMaths, temp) %>% rename('Gmean' = `rowSums(temp)/3`)
+
+#Visualisation du dataset
+head(dfMaths)
+
+dfPortugaisComplet <- read_csv("data/student-por.csv")
+dfPortugais <- dfPortugaisComplet %>% filter(age < 20)
+
+#ajout d'une colonne de moyenne des 3 notes :
+temp <- dfPortugais %>% select(G1,G2,G3)
+temp <- as.data.frame(rowSums(temp)/3)
+dfPortugais <- cbind(dfPortugais, temp) %>% rename('Gmean' = `rowSums(temp)/3`)
+head(dfPortugais)
+```
+
+# Etude générale de la santé des élèves.
+Nous avons des données sur l'environnement familial des élèves ainsi que sur quelques de leurs habitudes de vie. Nous retiendrons pour les abitudes de vie la consommation d'alcool et pour l'environnemment familial le travail et l'éducation des parents, ainsi que la nature des Familles.
+
+## Répartition générale de l'état de santé des élèves
+
+```{r distribution etat santé}
+data <- dfMaths %>% select(health) %>% 
+  add_column(all = "yes")
+statistics <- list("min" =  min(data$health),
+                   "max" =  max(data$health),
+                   "mean" =  mean(data$health),
+                   "sd" =  sd(data$health)
+                   )
+
+mean =  statistics$mean
+sd = statistics$sd
+
+plot <- ggplot(data, aes(y = health)) +
+  geom_violin(aes(x = "santé", fill = "purple"),width = 0.5, alpha = 0.5, size = 1) + 
+  geom_boxplot(aes( x = "santé"), width = 0.1, colour = "grey", alpha = 0.2) +
+  geom_hline(aes(yintercept =  statistics$mean, colour = "blue")) +
+  annotate("text",x = "santé", y = statistics$mean + 0.1, label = "mean" ) +
+  geom_hline(aes(yintercept =  statistics$mean - statistics$sd, colour = "red")) +
+  annotate("text",x = "santé", y = statistics$mean - statistics$sd + 0.1, label = "mean - sd" ) +
+  geom_hline(aes(yintercept =  statistics$mean + statistics$sd, colour = "red")) +
+  annotate("text",x = "santé", y = statistics$mean + statistics$sd - 0.1, label = "mean + sd" ) +
+  scale_fill_viridis(discrete = TRUE)
+  
+plot
+```
+L'état de santé moyen est ` r statistics$mean` et l'écart type de ` r statistics$sd`. La population est majoritairement en bonne santé
+
+## Santé selon la nature de la famille
+
+L'hypothèse naturelle qu'on emmettrait est que le fait de vivre dans une famille où les parents sont séparés aurait un effet négatif sur la santé. Seulement, lorsqu'on s'intéresse à la moyenne de l'état de santé dans les deux cas, on obtient des résultats assez similaires.
+
+
+```{r}
+data1 <- dfMaths %>% select(Pstatus, health) %>%
+  group_by(Pstatus) %>%
+  summarise_all(funs(mean))
+
+plot1 <- ggplot(data1, aes(x = factor(Pstatus), y = health, fill = Pstatus )) + 
+  geom_col() +
+  labs( title = "Etat de santé moyen en fonction de la nature de la famille", x = "Type de famille", y =  "État moyen de santé") + 
+  scale_fill_discrete(name = "Type de famille", labels = c("A : Classique", " T : Monoparentale")) +
+  scale_x_discrete(labels  = c("Classique", "Monoparentale") ) + 
+  theme(legend.position = "none")
+
+data2 <- dfMaths %>% filter(Pstatus == 'A') %>%
+  select(guardian, health) %>%
+  group_by(guardian) %>%
+  summarise_all(funs(mean))
+
+plot2 <- ggplot(data2, aes(x = factor(guardian), y = health, fill = guardian )) + 
+  geom_col() +
+  labs( title = "Etat de santé en fonction du tuteur pour les familles monoparentales", 
+        subtitle = "Familles monoparentes",
+        x = "Tuteur", y = "Etat de santé moyen",
+        fill = "guardian") + 
+  scale_fill_discrete(name = "Tuteur", labels = c("Père", "Mère","Autre")) + 
+  scale_x_discrete(labels  = c("Père", "Mère","Autre") )
+
+grid.arrange(plot1, plot2, nrow = 1)
+```
+
+Cependant, lorsqu'on rentre dans le détail de chaque catégorie et qu'on s'intéresse aux tuteurs, on se rend compte que les élèves éduqués par une mère seule ont plus de soucis de santé, décrochant de près d'un point des autres cas.
+
+Pour essayer d'expliquer cela, nous avons essayé de faire une étude sur l'emploi et l'éducation de ces femmes seules à s'occuper de leurs enfants. On pourrait imaginer qu'elles n'occupent pas des métiers à haut revenu ou qu'elles n'ont pas faites de longues études.
+
+
+```{r medu et mjob des familles mono parentales}
+data1 <- dfMaths %>% filter(Pstatus == 'A', guardian == "mother") %>%
+  select(Mjob) %>% count(Mjob)
+
+data2 <- data <- dfMaths %>% filter(Pstatus == 'A', guardian == "mother") %>%
+  select(Mjob, health) %>% 
+  group_by(Mjob) %>% 
+  summarise_all(funs(mean))
+
+data3 <- dfMaths %>% filter(Pstatus == 'A', guardian == "mother") %>%
+  select(Medu) %>% count(Medu)
+
+data4 <- data <- dfMaths %>% filter(Pstatus == 'A', guardian == "mother") %>%
+  select(Medu, health) %>% 
+  group_by(Medu) %>% 
+  summarise_all(funs(mean))
+
+plot1 <- ggplot(data1, aes(area = n, fill = Mjob, label = Mjob)) + 
+  geom_treemap() +
+  geom_treemap_text(fontface = "italic", colour = "white", place = "centre") 
+
+
+plot2 <- ggplot(data2, aes(x = factor(Mjob) , y = health, fill = Mjob)) + 
+  geom_col() + 
+  labs(title = "État de santé selon le métier de la mère", 
+       subtitle = "Familles monoparentale",
+       x = "Travail de la mère",
+       y = "État de santé") + 
+  theme(legend.position = "none")
+
+plot3 <- ggplot(data3, aes(area = n, fill = Medu, label = Medu)) + 
+  geom_treemap() +
+  geom_treemap_text(fontface = "italic", colour = "white", place = "centre") +
+  theme(legend.position = "none")
+
+plot4 <- ggplot(data4, aes(x = factor(Medu) , y = health, fill = Medu)) + 
+  geom_col() + 
+  labs(title = "État de santé selon l'éducation de la mère", 
+       subtitle = "Familles monoparentale",
+       x = "Éducation de la mère",
+       y = "État de santé") + 
+  theme(legend.position = "none")
+
+grid.arrange(plot1, plot2, plot3, plot4, nrow = 2, ncol = 2)
+
+
+```
+
+In fine, on ne peut confirmer que la moitié de nos hypothèses. Pour ce qui est de l'emploi de la mère, celles exerçant des activités autres que dans les services publics, la santé et l'enseignement, qui sont aussi les plus nombreuses sont celles pour lesquelles on retrouve les moins bons états de santé chez les enfants. En ce qui concerne le niveau d'éducation, on agréablement surpris de voir que les mères ayant les plus bas niveaux d'éducation s'en sortent le mieux.
+
+## Etat de santé selon la relation famlliale
+
+Nous partons sur l'idée selon laquelle de mauvaises relations familiales ont des répercutions négatives sur la santé des élèves
+
+
+```{r health according to famrel }
+data <- dfMaths %>% select(health, famrel) %>%
+  group_by(famrel) %>% summarise_all(funs(mean))
+
+plot <- data %>% ggplot( aes(x = famrel, y = health)) +
+  geom_col(aes( fill = famrel)) + 
+  labs( title = "État de santé en fonction de la relation familliale",
+        x = "Relation familiale", y = "État de santé moyen / 5")
+plot
+
+```
+
+En effet, nous voyons clairement une évolution progressive de la santé suivant la qualité de la relation familiale
+
+## Etat de santé en fonction du travail des parents
+
+```{r}
+data1 <- dfMaths %>% select(Mjob, health) %>%
+  group_by(Mjob) %>%
+  summarise_all(funs(mean))
+
+plot1 <- ggplot(data1, aes( x = Mjob, y = health, fill = Mjob)) +
+  geom_col() + 
+  labs(title = "Etat de santé en fonction du travail de la mère")
+
+data2 <- dfMaths %>% select(Fjob, health) %>%
+  group_by(Fjob) %>%
+  summarise_all(funs(mean))
+
+plot2 <- ggplot(data2, aes( x = Fjob, y = health, fill = Fjob)) +
+  geom_col() + 
+  labs(title = "Etat de santé en fonction du travail du père")
+
+grid.arrange(plot1, plot2, nrow = 1)
+```
+
+
+## Etat de santé en fonction de l'éducation des parents
+
+```{r}
+data1 <- dfMaths %>% select(Medu, health) %>%
+  group_by(Medu) %>%
+  summarise_all(funs(mean))
+
+plot1 <- ggplot(data1, aes( x = Medu, y = health, fill = Medu)) +
+  geom_col() + 
+  labs(title = "Etat de santé en fonction de l'éducation de la mère")
+
+data2 <- dfMaths %>% select(Fedu, health) %>%
+  group_by(Fedu) %>%
+  summarise_all(funs(mean))
+
+plot2 <- ggplot(data2, aes( x = Fedu, y = health, fill = Fedu)) +
+  geom_col() + 
+  labs(title = "Etat de santé en fonction de l'éducation du père")
+
+grid.arrange(plot1, plot2, nrow = 1)
+```
+
+## Etat de santé en fonction de la consommation d'alcool
+
+```{r}
+data <- dfMaths %>% select(health, Walc, Dalc, sex)
+
+data1 <- data %>% filter(sex == "M") %>%
+  select(health, Walc)%>%
+  group_by(Walc) %>% summarise_at(vars(health), funs(mean)) %>%
+  add_column(sex = "M")
+
+data2 <- data %>% filter(sex == "F") %>%
+  select(health, Walc)%>%
+  group_by(Walc) %>% summarise_at(vars(health), funs(mean)) %>%
+  add_column(sex = "F")
+
+data3 <- data %>% filter(sex == "M") %>%
+  select(health, Dalc)%>%
+  group_by(Dalc) %>% summarise_at(vars(health), funs(mean)) %>%
+  add_column(sex = "M")
+
+data4 <- data %>% filter(sex == "F") %>%
+  select(health, Dalc)%>%
+  group_by(Dalc) %>% summarise_at(vars(health), funs(mean)) %>%
+  add_column(sex = "F")
+
+data5 <- bind_rows(data1, data2)
+data6 <- bind_rows(data3, data4)
+
+plot1 <- data5 %>% ggplot( aes(x = Walc, y = health)) +
+  geom_col(aes(fill = sex), position = "dodge") + 
+  labs( title = "État de santé en fonction de la consomation d'alcool le week-end",
+        x = "consomation d'alcool / 5", y = "État de santé / 5")
+
+plot2 <- data6 %>% ggplot( aes(x = Dalc, y = health)) +
+  geom_col(aes(fill = sex), position = "dodge") + 
+  labs( title = "État de santé en fonction de la consomation d'alcool en semaine",
+        x = "consomation d'alcool / 5", y = "État de santé / 5")
+
+grid.arrange(plot1, plot2, nrow = 1)
+```
+

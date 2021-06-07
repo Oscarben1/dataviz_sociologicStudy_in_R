@@ -59,8 +59,66 @@ dashboardPage(
                         plotlyOutput("G1andMean")
                 ))
             ),
-            tabItem(tabName = "santé",
-
+            tabItem(
+                tabName = "santé",
+                fluidRow(
+                    box(title = "État de santé filtré par les relations familiales",
+                        status = "primary",
+                        solidHeader = TRUE,
+                        plotlyOutput("healthFamrelRep")),
+                    
+                    box(title = "Filtre : Relation familiale",
+                        sliderInput("famrel", "Jauge", min = 1, max = 5, value = c(1,5) )
+                    )
+                ),
+                
+                fluidRow(
+                    title = "Santé en fonction du travail des parents",
+                    box(title = "État de santé filtré par le travail des parents",
+                        status = "primary",
+                        solidHeader = TRUE,
+                        plotlyOutput("healthJobRep")),
+                    
+                    box(title = "Filtre : Métiers des parents",
+                        radioButtons("metierM",
+                                     label = "Mère",
+                                     choices = list("Education" = 1, "Santé" = 2, "Service publique" = 3, "Au foyer" = 4, "Autre" = 5, "Tous" = 6),
+                                     selected = 6
+                        ),
+                        
+                        radioButtons("metierP",
+                                     label = "Père",
+                                     choices = list("Education" = 1, "Santé" = 2, "Service publique" = 3, "Au foyer" = 4, "Autre" = 5, "Tous" = 6),
+                                     selected = 6
+                        )
+                        
+                    ),
+                ),
+                
+                fluidRow(
+                    title = "Santé en fonction de l'éducation des parents",
+                    box(title = "État de santé filtré par l'éducation des parents",
+                        status = "primary",
+                        solidHeader = TRUE,
+                        plotlyOutput("healthEduRep")),
+                    
+                    box(title = "Filtre: Éducation des parents",
+                        radioButtons("eduM",
+                                     label = "Mère",
+                                     choices = list("0" = 0,"1" = 1, "2" = 2, "3" = 3, "4" = 4, "Tous" = 5),
+                                     selected = 5
+                        ),
+                        
+                        radioButtons("eduP",
+                                     label = "Père",
+                                     choices = list("0" = 0,"1" = 1, "2" = 2, "3" = 3, "4" = 4, "Tous" = 5),
+                                     selected = 5
+                        )
+                        
+                    )
+                    
+                )
+                
             ),
             tabItem(tabName = "relations_familiales",
 
