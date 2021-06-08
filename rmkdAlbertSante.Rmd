@@ -94,6 +94,23 @@ plotMat <- ggplot(dataMat, aes(x = sex, y = famrel)) +
 plotMat
 ```
 
+Etat de santé en fonction du sexe
+
+```{r}
+dataMat <- dfMat %>% select(sex, health) %>%
+  group_by(sex) %>%
+  summarise_all(mean)
+
+head(dataMat)
+
+plotMat <- ggplot(dataMat, aes(x = sex, y = health)) +
+  geom_col(aes(fill = health)) + 
+  labs( title = "Relation familiale moyenne selon le sexe", x = "sexe", y = "relation familiale")
+
+plotMat
+```
+
+
 
 
 Etat de santé en fonction de la consommation d'alcool
@@ -101,12 +118,24 @@ Etat de santé en fonction de la consommation d'alcool
 * En week-end
 
 ```{r}
-dataMat <- dfMat %>% select(health, Walc)
+library(tidyverse)
+dataMat <- dfMat %>% select(health, Walc, sex)
 
-dataMat <- dataMat %>% group_by(Walc) %>% summarise_all(mean)
+dataMat1 <- dataMat %>% filter(sex == "M") %>%
+  select(health, Walc)%>%
+  group_by(Walc) %>% summarise_at(vars(health), funs(mean)) %>%
+  add_column(sex = "M")
+
+dataMat2 <- dataMat %>% filter(sex == "F") %>%
+  select(health, Walc)%>%
+  group_by(Walc) %>% summarise_at(vars(health), funs(mean)) %>%
+  add_column(sex = "F")
+
+
+dataMat <- bind_rows(dataMat1, dataMat2)
 
 plotMat <- dataMat %>% ggplot( aes(x = Walc, y = health)) +
-  geom_col(aes( fill = Walc)) + 
+  geom_col(aes(fill = sex), position = "dodge") + 
   labs( title = "État de santé en fonction de la consomation d'alcool le week-end",
         x = "consomation d'alcool / 5", y = "État de santé / 5")
 
@@ -120,7 +149,7 @@ dataMat <- dfMat %>% select(health, Dalc)
 dataMat <- dataMat %>% group_by(Dalc) %>% summarise_all(mean)
 
 plotMat <- dataMat %>% ggplot( aes(x = Dalc, y = health)) +
-  geom_col(aes( fill = Dalc)) + 
+  geom_col(aes()) + 
   labs( title = "État de santé en fonction de la consomation d'alcool le week-end",
         x = "consomation d'alcool / 5", y = "État de santé / 5")
 
@@ -225,6 +254,23 @@ plotMat <- ggplot(dataMat, aes(x = factor(guardian), y = health, fill = guardian
 
 plotMat
 ```
+Etat de santé en fonction de la nature de la famille.
+
+```{r}
+dataMat <- dfMat %>% select(Pstatus, health) %>%
+  group_by(Pstatus) %>%
+  summarise_all(mean)
+
+plotMat <- ggplot(dataMat, aes(x = factor(Pstatus), y = health, fill = Pstatus )) + 
+  geom_col() +
+  labs( title = "Etat de santé en fonction du tuteur")
+
+plotMat
+```
+
+
+
+
 
 Etat de santé en fonction du tuteur pour les familles séparées
 
