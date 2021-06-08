@@ -662,7 +662,9 @@ plot <- ggplot(data, aes(y = health)) +
   annotate("text",x = "santé", y = statistics$mean - statistics$sd + 0.1, label = "mean - sd" ) +
   geom_hline(aes(yintercept =  statistics$mean + statistics$sd, colour = "red")) +
   annotate("text",x = "santé", y = statistics$mean + statistics$sd - 0.1, label = "mean + sd" ) +
-  scale_fill_viridis(discrete = TRUE)
+  scale_fill_viridis(discrete = TRUE) +
+  labs(title = "Répartition de l'état de Santé", x = "", y = "État de santé") + 
+  theme(legend.position = "none")
   
 plot
 ```
@@ -772,8 +774,11 @@ data <- dfMaths %>% select(health, famrel) %>%
 
 plot <- data %>% ggplot( aes(x = famrel, y = health)) +
   geom_col(aes( fill = famrel)) + 
+  geom_point(aes( colour = famrel)) +
+  geom_smooth() +
   labs( title = "Santé selon la relation familiale",
-        x = "Relation familiale", y = "État de santé")
+        x = "Relation familiale", y = "État de santé") + 
+  theme(legend.position = "none")
 plot
 
 ```
