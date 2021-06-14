@@ -7,22 +7,28 @@ output:
     toc: true
     toc_float: true
 ---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
 # Introduction
 
 Ce document Rmarkdown fait office de rapport final au projet d'IF36. En effet, le but étant de choisir un jeu de données existant afin de réaliser une analyse sur ce dernier à l'aide de data visualisation.
 
 ### Notre DataSet
 
-Nous avons choisi d’utiliser deux datasets portant sur la prédiction des résultats finaux de lycéens de deux établissements portugais : Paolo Cortez et Minho. Les résultats visibles dans les datasets concernent les mathématiques et le portugais et ce dernier a été conçu de telle sorte qu’on puisse connaître le niveau (la note) de chaque élève dans les deux matières.
-Notre dataset contient 33 variables et 395 observations. Parmi les variables, on dénote 13 de type numériques, 12 catégorielles et 8 booléennes. Nous disposons donc à priori d’assez de données pour avoir un résultat significatif.
-De façon générale, les variables nous donnent des informations sur l’environnement socio-culturel de l’élève à travers le milieu dans lequel il réside, les activités auxquelles il a accès et le background académique dont dispose ses parents. Nous retrouvons aussi des données relatives à la charge de travail de ces derniers ainsi que de leur état de santé.
+Nous avons choisi d’utiliser **deux datasets** portant sur **la prédiction des résultats finaux de lycéens** de **deux établissements portugais** : **Gabriel Perreira** et **Mousinho da Silveira**. Les résultats visibles dans les datasets concernent les **mathématiques** et le **portugais** et ce dernier a été conçu de telle sorte qu’on puisse connaître le niveau (la note) de chaque élève dans les deux matières.<br>
+Notre dataset contient **33 variables** avec **395 observations** pour les dataset avec les notes en mathématiques et **649 observations** pour les dataset avec les notes en portugais. Parmi les variables, on dénote **16 entiers**, **9 chaînes** et **8 booléennes**. Les entiers permettent parfois de donner des échelles chiffrés pour évaluer des situations (consommation alcool, éducation des parents, relations familiales, niveau de santé…).<br>
+Nous disposons donc à priori d’assez de données pour avoir un résultat significatif. <br>
+De façon générale, les variables nous donnent des informations sur **l’environnement socio-culturel** de l’élève à travers le milieu dans lequel il réside, **les activités** auxquelles il a accès et **le background académique** dont dispose ses parents. Nous retrouvons aussi des données relatives à **la charge de travail** de ces derniers ainsi que de **leur état de santé**.
 
 ### Nos graphs
-Notre analyse portera sur 3 différents axes. Dans un premier temps, l'axe principal de notre reflexion sera l'analyse des notes en fonction de différents critères, de différentes variables, qui nous semblaient es plus intéressantes à l'analys. Le but étant de trouver le profil "type" de l'élève modèle (avec les meilleurs résultats). Puis, un deuxième axe de reflexion portera sur les relations familiales des élèves, en analysant quels sont les variables qui expliquent le mieux les bonnes relations familiales d'un élève. Enfin, nous avons choisi de travailler sur le plan santé, que doit faire un élève pour avoir la meilleure santé possible. Notre analyse comporte 30 graphs, ce qui est assez long mais nous avons jugé chaque graph présent comme indispensable à la bonne compréhension des axes de développement, afin que l'analyse soit la plus claire et précise possible.
 
-# Importations des libraries
+Notre analyse portera sur **3 différents axes**. Dans un premier temps, l'axe principal de notre reflexion sera **l'analyse des notes** en fonction de différents critères, de différentes variables, qui nous semblaient es plus intéressantes à l'analys. Le but étant de trouver le profil "type" de **l'élève modèle** (avec les meilleurs résultats).<br>
+Puis, un deuxième axe de reflexion portera sur **les relations familiales** des élèves, en analysant quels sont les variables qui expliquent le mieux **les bonnes relations familiales** d'un élève.<br>
+Enfin, nous avons choisi de travailler sur **le plan santé**, que doit faire un élève pour avoir **la meilleure santé possible**. Notre analyse comporte 30 graphs, ce qui est assez long mais nous avons jugé chaque graph présent comme **indispensable à la bonne compréhension** des axes de développement, afin que l'analyse soit la plus **claire** et **précise** possible.
 
-Importons ici toutes les libraries utiles à notre projet.
+<!--  Importations des libraries -->
 
 ```{r import packages, message = FALSE}
 library(readr)
@@ -36,11 +42,20 @@ library(treemapify)
 ```
 
 # Exploration des données
-La première partie de notre projet a consisté en l'exploration de nos jeux de données. En effet, les individus n'étant pas les mêmes sur le dataset mathématiques et le dataset portugais, il nous était impossible de les regrouper. Cependant, nous avons tout de même choisi de garder les deux en réalisant nos graph sur le dataset que nous avons jugé le plus approprié selon les variables analysées. En effet, le dataset portugais comporte plus d'individus que le dataset mathématiques, donc lorsque nous avons réalisé les graph avec ce dernier c'est que nous voulions une bonne représentativité des individus. Au contraire, nous avons jugé que le dataset mathématiques nous était utile lorsque le sérieux des élèves primait sur le nombre d'élèves, car nous considérons que les mathématiques sont une une matière plus importante que le portugais et donc que les élèves étaient plus sérieux dans cette matière.
+
+La première partie de notre projet a consisté en l'exploration de nos jeux de données. En effet, les individus n'étant **pas les mêmes** sur le dataset **mathématiques** et le dataset **portugais**, il nous était impossible de les regrouper. Cependant, nous avons tout de même choisi de garder les deux en réalisant nos graph sur le dataset que nous avons jugé le plus approprié selon les variables analysées. <br>
+En effet, le dataset portugais comporte **plus d'individus** que le dataset mathématiques, donc lorsque nous avons réalisé les graph avec ce dernier c'est que nous voulions **une bonne représentativité des individus**. Au contraire, nous avons jugé que le dataset mathématiques nous était utile lorsque **le sérieux des élèves** primait sur le nombre d'élèves, car nous considérons que **les mathématiques sont une matière plus importante que le portugais** et donc que les élèves étaient plus sérieux dans cette matière.
+
+### Explications des échelles numériques + données
+
+EXPLIQUER LES ECHELLES ALLANT DE 0-4 ET 1-5 !!!!
+(quantifier l173 ?)
+
+donner répartitions filles/garçons + campagne/ville... quelques données importantes + DIAGRAMME CORELATIONS ???
 
 # Importation des dataset et datacleaning
 
-Importons dans un premier temps les datasets. Lors de notre exploration de données, nous avons pu déceler deux problèmes qu'il fallait résoudre : le premier, le fait que la population de 20 ans et + était clairement négligeable dans les datasets et nous avons donc décidé de l'enlever pour pouvoir avoir une vision plus claire sur les 15 - 19 ans (âges lycéens). 
+Importons dans un premier temps les datasets. Lors de notre exploration de données, nous avons pu déceler **deux problèmes** qu'il fallait résoudre : le premier, le fait que **la population de 20 ans et + était clairement négligeable** dans les datasets et nous avons donc décidé de l'enlever pour pouvoir avoir une vision plus claire sur les 15 - 19 ans (âges lycéens). 
 
 ```{r repartition des ages, message = FALSE}
 dfMathsComplet <- read_csv("data/student-mat.csv")
@@ -53,7 +68,7 @@ ggplot(df, aes(x = age)) +
 
 ```
 
-Le deuxième problème était l'absence d'une moyenne générale sur l'année des élèves, en effet, la régularité des notes étant un critère à prendre en compte dans nos analyses, nous avons décidé de créer cette nouvelle variable "Gmean" qui est la moyenne des notes des élèves sur les toris trimestres. Ce sera cette variable sur laquelle nous nous baserons pour réalilser nos analyses des notes.  
+Le deuxième problème était **l'absence d'une moyenne générale** sur l'année des élèves. En effet, la régularité des notes étant un critère à prendre en compte dans nos analyses. Nous avons donc décidé de **créer cette nouvelle variable "Gmean"** qui est **la moyenne des notes des élèves sur les toris trimestres**. Ce sera cette variable sur laquelle nous nous baserons pour réaliser nos analyses des notes.  
 
 ```{r import datasets et traitements, message = FALSE}
 dfMaths <- dfMathsComplet %>% filter(age < 20)
@@ -63,24 +78,25 @@ temp <- dfMaths %>% select(G1,G2,G3)
 temp <- as.data.frame(rowSums(temp)/3)
 dfMaths <- cbind(dfMaths, temp) %>% rename('Gmean' = `rowSums(temp)/3`)
 
-#Visualisation du dataset
-head(dfMaths)
-
 dfPortugais <- read_csv("data/student-por.csv") %>% filter(age < 20)
 
 #ajout d'une colonne de moyenne des 3 notes :
 temp <- dfPortugais %>% select(G1,G2,G3)
 temp <- as.data.frame(rowSums(temp)/3)
 dfPortugais <- cbind(dfPortugais, temp) %>% rename('Gmean' = `rowSums(temp)/3`)
-head(dfPortugais)
+
+dfPortugais %>%
+  select(G1, G2, G3, Gmean) %>%
+  head()
 ```
 
 # Comment être l'élève avec les meilleurs résultats ?
 
+Dans cette première partie, nous allons essayer de trouver **quels sont les critères qui permettent de définir le profil type de "l'élève modèle"**.
+
 ### L'importance d'internet 
 
-
-```{r internet, message = FALSE}
+```{r internet_grade, message = FALSE}
 
 notesSiInternet <- dfMaths %>% filter(internet == "yes") %>% select(Gmean) %>% mutate(mean_Gmean = mean(Gmean)) %>% distinct(mean_Gmean)
 notesSiInternet <- notesSiInternet[1,1]
@@ -89,11 +105,11 @@ notesSiPasInternet <- dfMaths %>% filter(internet == "no") %>% select(Gmean) %>%
 notesSiPasInternet <- notesSiPasInternet[1,1]
 ```
 
-Voici la moyenne des notes des élèves ayant internet : `r notesSiInternet` qui est bien plus élevé que la moyenne des notes des élèves n'ayant pas internet : `r notesSiPasInternet`. L'importance d'avoir internet pour les études est bien visible ici.
+Voici la moyenne des notes des élèves ayant internet : **`r notesSiInternet`** qui est bien plus élevé que la moyenne des notes des élèves n'ayant pas internet : **`r notesSiPasInternet`**. **L'importance d'avoir internet** pour les études est bien visible ici.
 
 ### Habiter en ville, un avantage ?
 
-```{r address, message = FALSE}
+```{r address_grade, message = FALSE}
 notesSiVille <- dfPortugais %>% filter(address == "U") %>% select(Gmean) %>% mutate(mean_Gmean = mean(Gmean)) %>% distinct(mean_Gmean)
 notesSiVille <- notesSiVille[1,1]
 
@@ -101,11 +117,11 @@ notesSiCampagne <- dfPortugais %>% filter(address == "R") %>% select(Gmean) %>% 
 notesSiCampagne <- notesSiCampagne[1,1]
 ```
 
-On peut avoir accès également à la moyenne des notes des élèves venant de la ville : `r notesSiVille` et celle de ceux venant de la campagne : `r notesSiCampagne`. On peut voir qu'en général, les personnes venant de la ville réussissent mieux que celles venant de la campagne. On peut se dire que le temps de trajet joue un grand rôle dans la réussite des élèves, et nous allons le vérifier.
+On peut avoir accès également à la moyenne des notes des élèves venant de la ville : **`r notesSiVille`** et celle de ceux venant de la campagne : **`r notesSiCampagne`**. On peut voir qu'en général, **les personnes venant de la ville réussissent mieux que celles venant de la campagne**. On peut se dire que le temps de trajet joue un grand rôle dans la réussite des élèves, et nous allons le vérifier.
 
 ### La nécessité de la proximité avec l'établissement 
 
-```{r traveltime, message = FALSE}
+```{r traveltime_grade, message = FALSE}
 dfPortugais$traveltime <- as.factor(dfPortugais$traveltime)
 #preparation des données
 df <- dfPortugais %>% group_by(traveltime) %>% mutate(mean_Gmean = mean(Gmean)) %>% distinct(traveltime, mean_Gmean)
@@ -117,11 +133,11 @@ ggplot(df, aes(x = traveltime, y = mean_Gmean)) +
 
 ```
 
-En effet, les notes baissent plus le temps de trajet est long. Cela concore bien avec les résultats trouvés précédemment.
+En effet, **les notes baissent plus le temps de trajet est long**. Cela concore bien avec les résultats trouvés précédemment.
 
 ### Le métier des parents influe sur les notes
 
-```{r fjob, message = FALSE}
+```{r fjob_grade, message = FALSE}
 #préparation des données
 df <- dfMaths %>% group_by(Fjob) %>% mutate(mean_Gmean = mean(Gmean)) %>% distinct(Fjob, mean_Gmean)
 
@@ -131,7 +147,7 @@ fJob <- ggplot(df, aes(x = Fjob, y = mean_Gmean)) +
     labs(x = "Job du père", y = "Gmean",title = "Moyenne selon le Job du père")
 ```
 
-```{r mjob, message = FALSE}
+```{r mjob_grade, message = FALSE}
 #préparation des données
 df <- dfMaths %>% group_by(Mjob) %>% mutate(mean_Gmean = mean(Gmean)) %>% distinct(Mjob, mean_Gmean)
 
@@ -143,11 +159,11 @@ mJob <- ggplot(df, aes(x = Mjob, y = mean_Gmean)) +
 grid.arrange(fJob, mJob, ncol=2, nrow = 1)
 ```
 
-On peut déceler que le métier du père et de la mère ont une influence sur les notes de l'étudiant. En effet, un père professeur amène généralement à de bien meilleurs résultats. Tandis que du côté de la mère, c'est le travail dans la santé qui permet d'avoir des meilleurs notes. On pourra voir par la suite si avoir une mère dans la santé implique être en bonne santé et donc conclure sur le fait qu'être en bonne santé a un impact direct sur les notes.
+On peut déceler que **le métier du père et de la mère ont une influence sur les notes de l'étudiant**. En effet, un **père professeur** amène généralement à de bien meilleurs résultats. Tandis que du côté de **la mère**, c'est **le travail dans la santé** qui permet d'avoir des meilleurs notes. On pourra voir par la suite si avoir une mère dans la santé implique être en bonne santé et donc conclure sur le fait qu'être en bonne santé a un impact direct sur les notes.
 
 ### Qui travaille le plus ? Et à quel prix ?
 
-```{r studytime garcons}
+```{r studytime_sex_grade, message = FALSE}
 tempsMoyenGarcons <- dfMaths %>% filter(sex == "M") %>% select(studytime) %>% mutate(mean_studytime = mean(studytime)) %>% distinct(mean_studytime)
 
 tempsMoyenGarcons <- tempsMoyenGarcons[1,1]
@@ -157,14 +173,13 @@ tempsMoyenFilles <- dfMaths %>% filter(sex == "F") %>% select(studytime) %>% mut
 tempsMoyenFilles <- tempsMoyenFilles[1,1]
 ```
 
-Voici le temps de travail en moyenne des garcons : `r tempsMoyenGarcons`
+Voici le temps de travail en moyenne des garcons : **`r tempsMoyenGarcons`**. <br>
 
-En comparaison au temps moyen des filles en Maths, qui est plus élevé : `r tempsMoyenFilles`
-
+En comparaison au temps moyen des filles en Maths, qui est plus élevé : **`r tempsMoyenFilles`**.<br>
 
 Regardons les notes en mathématiques selon le genre à l'aide d'un boxplot afin d'avoir plus de précision sur les différents quartiles. En y ajoutant un point blanc dans les boxplot qui symbolise la moyenne des notes.
 
-```{r notes selon sexe}
+```{r sex_grade, message = FALSE}
 #preparation des données
 df <- dfMaths %>% select(sex, Gmean)
 
@@ -177,11 +192,11 @@ ggplot(df, aes(x = sex, y = Gmean)) +
   
 ```
 
-On peut voir que les garcons ont des meilleures notes que les filles, alors qu'ils travaillent moins en moyenne. On conclue qu'en théorie, il vaut mieux être un garcon pour réussir.
+On peut donc voir que **les garcons ont des meilleures notes que les filles**, alors qu'ils travaillent moins en moyenne. On conclue qu'en théorie, **il vaut mieux être un garcon pour réussir**.
 
 ### Le temps, important pour s'aérer l'esprit
 
-```{r freetime, message = FALSE}
+```{r freetime_grade, message = FALSE}
 dfPortugais$freetime <- as.factor(dfPortugais$freetime)
 df <- dfPortugais %>% group_by(freetime) %>% mutate(mean_Gmean = mean(Gmean)) %>% distinct(freetime, mean_Gmean)
 
@@ -193,13 +208,13 @@ ggplot(df, aes(x = freetime, y = mean_Gmean)) +
   
 ```
 
-On peut voir que le fait de se libérer du temps libre est important pour réussir. En effet, ce sont les élèves qui se libérent un peu de temps libre (mais pas trop, niveau 2), qui obtiennent les meilleurs résultats.
+On peut voir que **le fait de se libérer du temps libre est important pour réussir**. En effet, ce sont les élèves qui se libérent un peu de temps libre (mais pas trop, niveau 2), qui obtiennent les meilleurs résultats.
 
 ### Pour réussir, il faut travailler
 
 Voyons maintenant si le temps de travail implique des meilleurs notes, en Portugais :
 
-```{r studytime, message = FALSE}
+```{r studytime_grade, message = FALSE}
 dfPortugais$studytime <- as.factor(dfPortugais$studytime)
 #preparation des données
 df <- dfPortugais %>% group_by(studytime) %>% mutate(mean_Gmean = mean(Gmean)) %>% distinct(studytime, mean_Gmean)
@@ -212,11 +227,11 @@ ggplot(df, aes(x = studytime, y = mean_Gmean)) +
     
 ```
 
-On voit que plus les élèves travaillent, meileures sont leurs notes, cependant, on voit que la différence n'est pas énorme, même négligeable, entre 3h et 4h. On pense alors que travailler plus de 3h n'est pas utile pour avoir de bonnes notes.
+On voit que **plus les élèves travaillent, meileures sont leurs notes**, cependant, on voit que la différence n'est pas énorme, même négligeable, entre 3h et 4h. On pense alors que **travailler plus de 3h n'est pas utile pour avoir de bonnes notes**.
 
 ### Boire de l'alcool, c'est mal, mais un petit peu, ca ne fait pas de mal
 
-```{r alcool le wknd, message = FALSE}
+```{r walc_grade, message = FALSE}
 dfPortugais$Walc <- as.factor(dfPortugais$Walc)
 df <- dfPortugais %>% group_by(Walc) %>% mutate(mean_Gmean = mean(Gmean)) %>% distinct(Walc, mean_Gmean)
 
@@ -228,11 +243,11 @@ Walc <- ggplot(df, aes(x = Walc, y = mean_Gmean)) +
   
 ```
 
-On peut voir que la consommation d'alcool le weekend a clairement un impact sur les notes et que ce sont ceux qui en consomment peu (niveau 1 ou 2) qui ont les meilleures résultats. On peut donc considérer qu'il est préférable de ne pas consommer d'alcool le weekend, ou simplement un petit verre, pour avoir les meilleurs notes (s'amuser le weekend pour relacher les cours par exemple).
+On peut voir que **la consommation d'alcool le weekend a clairement un impact sur les notes** et que ce sont **ceux qui en consomment peu** (niveau 1 ou 2) qui **ont les meilleures résultats**. On peut donc considérer qu'**il est préférable de ne pas consommer d'alcool le weekend, ou simplement un petit verre, pour avoir les meilleurs notes** (s'amuser le weekend pour relacher les cours par exemple).
 
 Est-ce la même conclusion pour l'alcool en semaine ? 
 
-```{r alcool la semaine, message = FALSE}
+```{r dalc_grade, message = FALSE}
 dfPortugais$Dalc <- as.factor(dfPortugais$Dalc)
 df <- dfPortugais %>% group_by(Dalc) %>% mutate(mean_Gmean = mean(Gmean)) %>% distinct(Dalc, mean_Gmean)
 
@@ -245,11 +260,11 @@ grid.arrange(Walc, Dalc, ncol=2, nrow = 1)
 
 ```
 
-L'impact de la consommation d'alcool en semaine semble encore plus lourd, cette fois si, le niveau 1 de consommation (pas de consommation) est celui qui obtient les meilleures notes, et de loin. Cependant, quitte à boire beaucoup de l'alcool en semaine, autant en boire énormément car le niveau 5 obtient des meilleures notes que le niveau 4. (les résultats du niveau 5 sont sûrement tronquées par le fait que peu d'élèves sont au niveay 5, la représentativité est donc faible)
+L'impact de la **consommation d'alcool en semaine** semble encore **plus lourd**. Cette fois si, **le niveau 1 de consommation** (pas de consommation) est celui qui **obtient les meilleures notes**, et de loin. Cependant, **quitte à boire beaucoup de l'alcool en semaine, autant en boire énormément** car le niveau 5 obtient des meilleures notes que le niveau 4. (les résultats du niveau 5 sont sûrement tronquées par le fait que peu d'élèves soient au niveau 5, la représentativité est donc faible).
 
 ### Pour réussir, faut-il nécessairement aller en cours ?
 
-```{r absences, message = FALSE}
+```{r absences_grade, message = FALSE}
 #preparation des données
 df <- dfMaths
 
@@ -260,11 +275,11 @@ ggplot(df, aes(x = absences, y = Gmean)) +
 
 ```
 
-Le nombre d'individus ayant plus de 15 absences est trop faible et le graph ne nous permet pas de conclure sur cela. Cependant, on voit qu'en dessous de 15 absences, les résultats ne varient que très peu.
+Le nombre d'individus ayant plus de 15 absences est trop faible et le graphique ne nous permet pas de conclure sur cela. Cependant, on voit **qu'en dessous de 15 absences, les résultats ne varient que très peu**.
 
 ### La volonté de faire des études supérieurs influe-t-elle ?
 
-```{r etudes sup, message = FALSE}
+```{r higher_grade, message = FALSE}
 #preparation des données
 df <- dfMaths %>% group_by(higher) %>% mutate(mean_Gmean = mean(Gmean)) %>% distinct(higher, mean_Gmean)
 
@@ -275,11 +290,11 @@ ggplot(df, aes(x = higher, y = mean_Gmean)) +
 
 ```
 
-En effet, on peut voir que la volonté de faire des études supérieures est très corrélées aux résultats.
+En effet, on peut voir que la volonté de faire des études supérieures est **très corrélées** aux résultats.
 
 ### Le soutien scolaire, un vrai plus ?
 
-```{r paid soutien scolaire, message = FALSE}
+```{r paid_grade, message = FALSE}
 #preparation des données
 df <- dfMaths %>% group_by(paid) %>% mutate(mean_Gmean = mean(Gmean)) %>% distinct(paid, mean_Gmean)
 
@@ -290,7 +305,7 @@ paid <- ggplot(df, aes(x = paid, y = mean_Gmean)) +
 
 ```
 
-```{r soutien scolaire gratuit, message = FALSE}
+```{r schoolsup_grade, message = FALSE}
 #preparation des données
 df <- dfMaths %>% group_by(schoolsup) %>% mutate(mean_Gmean = mean(Gmean)) %>% distinct(schoolsup, mean_Gmean)
 
@@ -303,11 +318,11 @@ grid.arrange(schoolsup, paid, ncol=2, nrow = 1)
 
 ```
 
-Les élèves ayant un soutien scolaire gratuit, donné par l'établissement semblent obtenir de bien moins bons résultats que les élèves ayant un soutien scolaire payant. En effet, on peut donc conclure sur le fait que le soutien scolaire gratuit est mis en place pour les élèves en difficulté, et que le soutien scolaire payant est clairement bénéfique pour les personnes qui le prenne.
+Les élèves ayant un **soutien scolaire gratuit**, donné par l'établissement semblent obtenir de **bien moins bons résultats** que les élèves ayant un **soutien scolaire payant**. En effet, on peut donc conclure sur le fait que **le soutien scolaire gratuit est mis en place pour les élèves en difficulté**, et que le **soutien scolaire payant** est clairement **bénéfique** pour les personnes qui le prenne.
 
-### Les échecs ont un impact sur les notes
+### Les échecs ont-ils un impact sur les notes ?
 
-```{r echecs, message = FALSE}
+```{r failures_grade, message = FALSE}
 dfPortugais$failures <- as.factor(dfPortugais$failures)
 #preparation des données
 df <- dfPortugais %>% group_by(failures) %>% mutate(mean_Gmean = mean(Gmean)) %>% distinct(failures, mean_Gmean)
@@ -319,30 +334,32 @@ ggplot(df, aes(x = failures, y = mean_Gmean)) +
 
 ```
 
-Enfin, on peut voir que les échecs dun élève influe directement sur ses notes. En effet, ce sont les élèves n'ayant jamais échoués qui s'en sortent le mieux, cela semble logique.
+Enfin, on peut voir que les échecs d'un élève **influe directement** sur ses notes. En effet, ce sont **les élèves n'ayant jamais échoués qui s'en sortent le mieux**, cela semble logique.
 
-# Conclusion sur l'élève modèle
+### Conclusion sur l'élève modèle
 
 Enfin, on peut dire que nous avons pu déceler certains critères pour être l'élève modèle, ayant les meilleurs résultats. Il doit : 
+<ul>
+  <li>Avoir un **père** travaillant en tant que **professeur** et/ou une **mère** dans la **santé**</li>
+  <li>Être un **garçon** (conclusion très théorique, basé uniquement sur les données)</li>
+  <li>Se dégager **un peu de temps libre** pour s'aérer l'esprit</li>
+  <li>Travailler de manière conséquente, mais **ne pas abuser du temps passé à étudier**</li>
+  <li>Ne surtout **pas consommer d'alcool en semaine** et **ne pas en consommer avec excès le weekend**</li>
+  <li>On **imagine qu'un taux d'absentéisme élevé engendre des moins bonnes notes** mais le dataset ne nous a pas permi de conclure là-dessus</li>
+  <li>Avoir comme souhait de **faire des études supérieurs**</li>
+  <li>Obtenir un **soutien scolaire payant**</li>
+  <li>Ne **jamais avoir eu d'échec**</li>
+</ul>
 
-- Habiter en ville afin d'avoir le plus petit temps de trajet possible
-- Avoir un père travaillant en tant que professeur et/ou une mère dans la santé
-- Être un garçon (conclusion très théorique, basé uniquement sur les données)
-- Se dégager un peu de temps libre pour s'aérer l'esprit
-- Travailler de manière conséquente, mais ne pas abuser du temps passé à étudier
-- Ne surtout pas consommer d'alcool en semaine et ne pas en consommer le weekend, ou bien très peu.
-- On imagine qu'un taux d'absentéisme élevé engendre des moins bonnes notes mais le dataset ne nous a pas permi de conclure là-dessus
-- Avoir comme souhait de faire des études supérieurs
-- Obtenir un soutien scolaire payant
-- Ne jamais avoir eu d'échec
-
----------------------------------------------------------------
+<hr>
 
 # Comment être l'élève qui s'entend le mieux avec sa famille ?
 
-### Calcul des moyennes utiles à l'analyse des relations 
+Après avoir vu quels critères permettaient à un élève d'avoir les meilleures notes, nous allons nous interessés dans ce second axe de recherche aux critères qui permettent d'avoir de bonne relations familiales.
 
-```{r calcul_moyenne_famrel }
+<!-- Calcul des moyennes utiles à l'analyse des relations -->
+
+```{r calcul_moyenne_famrel, message = FALSE}
 #Moyenne générale des relations familales
 total_famrel <- dfPortugais$famrel
 mean_famrel <- round(mean(total_famrel), digits=2)
@@ -408,12 +425,12 @@ total_famrel_17 <- dfPortugais %>%
   filter(age == 17)
 total_famrel_17 <- total_famrel_17$famrel
 mean_famrel_17 <- round(mean(total_famrel_17), digits=2)
-#Moyenne générale des relations familales pour les étudiants ayant 20 ans
-total_famrel_20 <- dfPortugais %>%
+#Moyenne générale des relations familales pour les étudiants ayant 19 ans
+total_famrel_19 <- dfPortugais %>%
   select(famrel, age) %>%
-  filter(age == 20)
-total_famrel_20 <- total_famrel_20$famrel
-mean_famrel_20 <- round(mean(total_famrel_20), digits=2)
+  filter(age == 19)
+total_famrel_19 <- total_famrel_19$famrel
+mean_famrel_19 <- round(mean(total_famrel_19), digits=2)
 
 #Moyenne générale des relations familales selon la taille de la famille
 #Moyenne générale des relations familales pour les étudiants ayant une famille < ou = à 3 personnes
@@ -428,29 +445,42 @@ total_famrel_FSGT3 <- dfPortugais %>%
   filter(famsize == 'GT3')
 total_famrel_FSGT3 <- total_famrel_FSGT3$famrel
 mean_famrel_FSGT3 <- round(mean(total_famrel_FSGT3), digits=2)
+
+#Moyenne générale des relations familales selon le tuteur légal
+#Moyenne générale des relations familales quand le père est tuteur
+total_famrel_GF <- dfPortugais %>%
+  select(famrel, guardian) %>%
+  filter(guardian == 'father')
+total_famrel_GF <- total_famrel_GF$famrel
+mean_famrel_GF <- round(mean(total_famrel_GF), digits=2)
+#Moyenne générale des relations familales quand la mère est tuteur
+total_famrel_GM <- dfPortugais %>%
+  select(famrel, guardian) %>%
+  filter(guardian == 'mother')
+total_famrel_GM <- total_famrel_GM$famrel
+mean_famrel_GM <- round(mean(total_famrel_GM), digits=2)
+#Moyenne générale des relations familales quand la mère "other" est tuteur
+total_famrel_GO <- dfPortugais %>%
+  select(famrel, guardian) %>%
+  filter(guardian == 'other')
+total_famrel_GO <- total_famrel_GO$famrel
+mean_famrel_GO <- round(mean(total_famrel_GO), digits=2)
 ```
-
-
-FIN PARTIE FAMREL
----------------------------------------------------------------
 
 ### Comment varient les relations familiales ?
 
-La moyenne des relations familiales est de **`r mean_famrel`**.
+Dans les datasets, les relations familailes sont évaluées de 1 à 5. 1 signifiant que les relations familiales sont très mauvaises, tandis que 5 signifie qu'elles sont excellentes. <br>
+Pour les élèves que nous étudions, la moyenne des relations familiales est de **`r mean_famrel`**. Le graphique ci-dessous permet de bien visualiser la réparition des relations familiales.
 
-```{r famrel }
+```{r famrel, message = FALSE}
 ggplot(dfPortugais, aes(x = famrel)) + 
     geom_bar(alpha = 0.7, fill = viridis(5))+
     labs(x = "Relations familiales" , y = "Nombre d'étudiants" ,title = "Répartitions des relations familiales")
 ```
 
+### Le sexe et le lieu de vie ont-ils un impact sur les relations familiales ?
 
-
-
-
-### Relations familiales selon le sexe et le lieu de vie
-
-```{r sex_adress_famrel}
+```{r sex_adress_famrel, message = FALSE}
 df <- dfPortugais %>% select(sex, famrel)
 
 dfS <- ggplot(df, aes(x = sex, y = famrel)) + 
@@ -474,11 +504,11 @@ La moyenne des relations familiales chez les garçons est de  **`r mean_famrel_M
 tandis que chez les filles elle est de **`r mean_famrel_F`**.
 Par rapport au lieu de vie, la moyenne des relations familiales des élèves habitant à la campagne est de  **`r mean_famrel_R`** tandis que chez les élèves habitant en ville, elle est de **`r mean_famrel_U`**.
 
-**Le sexe et le lieu de vie n'influe donc pas ou peu les relations familiales.**
+Le sexe et le lieu de vie font peu varier les relations familiales. Néanmoins, on peut remarquer qu'en moyenne **les garçons ont de meilleures relations familiales** et que c'est la même pour **les étudiants ruraux**.
 
-### Relations familiales selon l'âge
+### Être plus âge permet-il de mieux s'entendre avec sa famille ?
 
-```{r age_famrel}
+```{r age_famrel, message = FALSE}
 dfPortugais <- dfPortugais %>% filter (age != 21, age != 22)
 dfPortugais$age <- as.factor(dfPortugais$age)
 df <- dfPortugais %>% group_by(age) %>% mutate(mean_famrel = mean(famrel)) %>% distinct(age, mean_famrel)
@@ -489,54 +519,54 @@ ggplot(df, aes(x = age, y = mean_famrel)) +
     scale_fill_discrete(type = "viridis")
 ```
 
-Vu le faible nombre d'étudiants ayant 21 et 22 ans, on ne se concentre que la fourchette d'âge 15-20 ans. 
-On peut voir que plus les étudiants viellissent, plus leur relations familiales se détériorent. De 17 à 20 ans, la moyenne des relations familiales passe de `r mean_famrel_17` à `r mean_famrel_20`.
-Néanmoins, cette observation se retrouve un peu faussée par les étudiants de 16 ans, qui ont une moyenne de relations familiales à `r mean_famrel_16`, alors que pour ceux de 15 et 17 ans, elles sont respectivement de `r mean_famrel_15` et `r mean_famrel_17`.
+Vu le faible nombre d'étudiants ayant entre 20 et 22 ans, on ne se concentre que la fourchette d'âge 15-19 ans.<br> 
+On peut voir que **plus les étudiants viellissent, plus leur relations familiales se détériorent**. De 17 à 20 ans, la moyenne des relations familiales passe de **`r mean_famrel_17`** à **`r mean_famrel_19`**.
+Néanmoins, cette observation se retrouve un peu faussée par les étudiants de 16 ans, qui ont une moyenne de relations familiales à **`r mean_famrel_16`**, alors que pour ceux de 15 et 17 ans, elles sont respectivement de **`r mean_famrel_15`** et **`r mean_famrel_17`**.
 
-### Relations familiales selon le statut marital des parents
-En tant que tel, le statut marital des parents ne fais pas tant vairer les relations familailes. En effet, les étudiants avec des parents ensembles ont une moyenne de relation familiale qui est de `r mean_famrel_PST` tandis qu'elle est de `r mean_famrel_PSA` pour ceux qui ont leurs parents séparés.
+### Les étudiants avec des parents divorcés ont-ils de moins bonnes relations familiales ?
+Le statut marital des parents fait peu vairer les relations familailes. En effet, les étudiants avec des parents ensembles ont une moyenne de relation familiale qui est de **`r mean_famrel_PST`** tandis qu'elle est de **`r mean_famrel_PSA`** pour ceux qui ont leurs parents séparés. <br>
+Avoir des **parents ensembles** permet donc quand même d'avoir de meilleures relations familiales.
 
-Néanmoins, conjugué à d'autres paramètres, le statut marital des parents fait varier les relations familiales des étudiants.
+Néanmoins, conjugué à d'autres paramètres, le statut marital des parents fait varier de façon plus concluantes les relations familiales des étudiants.
 
 ### Relations familiales selon la taille de la famille en prenant en compte le statut marital des parents
-```{r famsize_famrel }
+```{r famsize_famrel, message = FALSE}
 df <- dfPortugais %>% filter(Pstatus == "T") %>% group_by(famsize) %>% mutate(mean_famrel = mean(famrel)) %>% distinct(famsize, mean_famrel)
 
 dfFSPT <- ggplot(df, aes(x = famsize, y = mean_famrel)) +
     geom_bar(stat = "identity", alpha = 0.7, aes(fill = famsize)) +
-    labs(title = "Famrel selon famsize parents ensembles", x = "Taille de la famille", y = "Relations familiales", fill = "Taille de la famille") +
+    labs(title = "Parents ensembles", x = "Taille de la famille", y = "Relations familiales", fill = "Taille de la famille") +
     scale_fill_discrete(type = "viridis")
 
 df <- dfPortugais %>% filter(Pstatus == "A") %>% group_by(famsize) %>% mutate(mean_famrel = mean(famrel)) %>% distinct(famsize, mean_famrel)
 
 dfFSPA <- ggplot(df, aes(x = famsize, y = mean_famrel)) +
     geom_bar(stat = "identity", alpha = 0.7, aes(fill = famsize)) +
-    labs(title = "Famrel selon famsize parents séparés", x = "Taille de la famille", y = "Relations familiales", fill = "Taille de la famille") +
+    labs(title = "Parents séparés", x = "Taille de la famille", y = "Relations familiales", fill = "Taille de la famille") +
     scale_fill_discrete(type = "viridis")
 
 grid.arrange(dfFSPT, dfFSPA, ncol=2, nrow = 1)
 
 ```
 
-Si on s'interesse seulement à la taille de la famille, les relations varient peu entre les familles de composées de 3 personnes ou moins **(`r mean_famrel_FSLE3`)**, et celle comptant plus de 3 personnes **(`r mean_famrel_FSGT3`)**. Néanmoins en regardant les relations familiales par rapport à la taille de famille, selon que les parents soient ensembles ou non, **les chiffres deviennent plus interessants**.
+Si on s'interesse seulement à la taille de la famille, les relations varient peu entre les familles de composées de 3 personnes ou moins **(`r mean_famrel_FSLE3`)**, et celle comptant plus de 3 personnes **(`r mean_famrel_FSGT3`)**. <br>
+Néanmoins en regardant les relations familiales par rapport à la taille de famille, suivant que les parents soient ensembles ou non, **les chiffres deviennent plus interessants** pour les étudiants avec des parents séparés.<br>
+Ces derniers ont de **meilleures relations familiales** lorsque la **taille de la famille est égale ou inférieure à 3**.
 
-Même si pour les étudiants qui ont des **parents ensembles**, **les relations familiales varient peu**, les étudiants ayant des **parents séparés** ont de **meilleures relations familiales** lorsque la **taille de la famille est égale ou inférieure à 3**.
+### L'impact de la taille de la famille sur les relations familiales suivant que les parents soient ensemble ou non
 
-
-### Relations familiales selon le tuteur légal en prenant en compte le statut marital des parents
-
-```{r guardian_famrel }
+```{r guardian_famrel, message = FALSE}
 df <- dfPortugais %>% filter(Pstatus == "T") %>% group_by(guardian) %>% mutate(mean_famrel = mean(famrel)) %>% distinct(guardian, mean_famrel)
 
 dfGPT <- ggplot(df, aes(x = guardian, y = mean_famrel)) + 
   geom_bar(stat = "identity", alpha = 0.7, aes(fill = guardian)) +
-  labs(title = "Relations familiales en fonction du tuteur légal pour parents ensemble", x = "Tuteur légal", y = "Relation familiale", fill = "Tuteur légal") +
+  labs(title = "Parents ensembles", x = "Tuteur légal", y = "Relation familiale", fill = "Tuteur légal") +
     scale_fill_discrete(type = "viridis")
 
 df <- dfPortugais %>% filter(Pstatus == "A") %>% group_by(guardian) %>% mutate(mean_famrel = mean(famrel)) %>% distinct(guardian, mean_famrel)
 dfGPA <- ggplot(df, aes(x = guardian, y = mean_famrel)) + 
   geom_bar(stat = "identity", alpha = 0.7, aes(fill = guardian)) +
-  labs(title = "Relations familiales en fonction du tuteur légal pour parents séparés", x = "Tuteur légal", y = "Relation familiale", fill = "Tuteur légal") +
+  labs(title = "Parents séparés", x = "Tuteur légal", y = "Relation familiale", fill = "Tuteur légal") +
     scale_fill_discrete(type = "viridis")
 
 df <- dfPortugais %>% filter(Pstatus == "T") %>% group_by(guardian) %>% mutate(mean_famrel = mean(famrel)) %>% distinct(guardian, mean_famrel)
@@ -546,84 +576,83 @@ grid.arrange(dfGPT, dfGPA, ncol=2, nrow = 1)
 
 ```
 
-Quand on s'interesse seulement aux relations familiales suivant le tuteur légal de l'élève, la moyenne varie peu (), sauf pour "autre" ou la moyenne est un poil plus bas.
-
+Quand on s'interesse seulement aux relations familiales suivant le tuteur légal de l'élève, la moyenne varie peu (père : `r mean_famrel_GF`, mère : `r mean_famrel_GM`), sauf pour "autre" ou la moyenne est un poil plus bas (`r mean_famrel_GO`). <br>
 En revanche, la donne est différentes lorsque l'on associe à cela le statut marital des parents. 
-Pour des **parents ensembles**, les **relations familiales sont semblables** lorsque que le **père** ou la **mère** sont tuteurs. Cette même **moyenne est plus basse** quand c'est **quelqu'un d'autre** qui a le rôle de tuteur.
-
+Pour des **parents ensembles**, les **relations familiales sont semblables** lorsque que le **père** ou la **mère** sont tuteurs. Cette même **moyenne est plus basse** quand c'est **quelqu'un d'autre** qui a le rôle de tuteur. <br>
 En revanche, pour des parents séparés, le résultat est bien différent. Les **relations familiales sont au plus bas** quand c'est **le père le tuteur**, est **au plus haut** quand c'est **quelqu'un d'autre**.  
 
-### Relations familiales selon le travail
-```{r Pjob_famrel }
+### Le travail des parents joue-t-il sur les relations familiales ?
+```{r Pjob_famrel, message = FALSE}
 df <- dfPortugais %>% group_by(Mjob) %>% mutate(mean_famrel = mean(famrel)) %>% distinct(Mjob, mean_famrel)
 
 dfMJ <- ggplot(df, aes(x = Mjob, y = mean_famrel)) + 
   geom_bar(stat = "identity", alpha = 0.7, aes(fill = Mjob)) +
-  labs(title = "Relations familiales selon de maman", x = "Travail", y = "Relation familiale", fill = "Travail") +
+  labs(title = "Famrel suivant le travail de maman", x = "Travail", y = "Relation familiale", fill = "Travail") +
     scale_fill_discrete(type = "viridis")
 
 df <- dfMaths%>% group_by(Fjob) %>% mutate(mean_famrel = mean(famrel)) %>% distinct(Fjob, mean_famrel)
 
 dfFJ <- ggplot(df, aes(x = Fjob, y = mean_famrel)) + 
   geom_bar(stat = "identity", alpha = 0.7, aes(fill = Fjob)) +
-  labs(title = "Relations familiales selon travail de papa", x = "Travail", y = "Relation familiale", fill = "Travail") +
+  labs(title = "Famrel suivant le travail de papa", x = "Travail", y = "Relation familiale", fill = "Travail") +
     scale_fill_discrete(type = "viridis")
 
-grid.arrange(dfMJ, dfFJ, ncol=2, nrow = 1)
+grid.arrange(dfFJ, dfMJ, ncol=2, nrow = 1)
 ```
 
-Pour le père et la mère, on voit que les relations familiales sont mieux quand **l'un et l'autre** travaillent dans **le service public**.
-
-Pour approfondir cette analyse, nous allons regarder : 
-- quand le père travaille dans le service public, quel est le travail préférentiel pour la mère
-- quand la mère travaille dans le service public, quel est le travail préférentiel pour le père
+Pour le père et la mère, on voit que les relations familiales sont mieux quand **l'un et l'autre** travaillent dans **le service public**.<br>
+Pour **approfondir cette analyse**, nous allons regarder :
+<ul>
+  <li>quand le père travaille dans le service public, **quel est le travail préférentiel pour la mère**</li>
+<li>quand la mère travaille dans le service public, **quel est le travail préférentiel pour le père**</li>
+</ul>
 
 ```{r Pjob2_famrel }
 df <- dfMaths %>% filter(Mjob == 'services') %>% group_by(Fjob) %>% mutate(mean_famrel = mean(famrel)) %>% distinct(Fjob, mean_famrel)
 
 ggplot(df, aes(x = Fjob, y = mean_famrel)) + 
   geom_bar(stat = "identity", alpha = 0.7, aes(fill = Fjob)) +
-  labs(title = "Relations familiales selon travail de papa", x = "Travail", y = "Relation familiale", fill = "Travail") +
+  labs(title = "Relations familiales suivant le travail de papa (maman dans le service public)", x = "Travail", y = "Relation familiale", fill = "Travail") +
     scale_fill_discrete(type = "viridis")
 
 df <- dfPortugais %>% filter(Fjob == 'services') %>% group_by(Mjob) %>% mutate(mean_famrel = mean(famrel)) %>% distinct(Mjob, mean_famrel)
 
 ggplot(df, aes(x = Mjob, y = mean_famrel)) + 
   geom_bar(stat = "identity", alpha = 0.7, aes(fill = Mjob)) +
-  labs(title = "Relations familiales selon de maman", x = "Travail", y = "Relation familiale", fill = "Travail") +
+  labs(title = "Relations familiales suivant le travail de maman (papa dans le service public)", x = "Travail", y = "Relation familiale", fill = "Travail") +
     scale_fill_discrete(type = "viridis")
 ```
 
-Les résulatats sont sans appels !
+Les résulatats sont sans appels !<br>
 Quand **le père** travaille dans **le service public**, il vaut que **la mère soit au foyer** pour avoir des meilleures relations familiales. 
 En revanche, quand c'est **la mère** qui travaille dans **le service public**, les relations familiales se portent mieux si **le père est professeur**.
 
-### Relations familiales selon l'éducation des parents
-```{r Pedu_famrel }
+### Les relations familiales sont-elles meilleures quand les parents ont fait de grandes études ?
+```{r Pedu_famrel, message = FALSE}
 #preparation des données
 dfPortugais$Medu <- as.factor(dfPortugais$Medu)
 df <- dfPortugais %>% group_by(Medu) %>% mutate(mean_famrel = mean(famrel)) %>% distinct(Medu, mean_famrel)
 
 dfME <- ggplot(df, aes(x = Medu, y = mean_famrel)) +
     geom_bar(stat = "identity", alpha = 0.7, aes(fill = Medu)) +
-    labs(title = "Relation familiales selon éducation de maman", x = "Education maman", y = "Relations familiales", fill = "Education maman") +
-    scale_fill_discrete(labels = c("0 : Aucune", "1 : primaire", "2 : collège", "3 : lycée", "4 : sup"), type = "viridis")
+    labs(title = "Famrel selon l'éducation de maman", x = "Education", y = "Relations familiales", fill = "Education") +
+    scale_fill_discrete(labels = c("0 : Aucune", "1 : primaire", "2 : collège", "3 : lycée", "4 : Supérieur"), type = "viridis")
 
 dfPortugais$Fedu <- as.factor(dfPortugais$Fedu)
 df <- dfPortugais %>% group_by(Fedu) %>% mutate(mean_famrel = mean(famrel)) %>% distinct(Fedu, mean_famrel)
 
 dfFE <- ggplot(df, aes(x = Fedu, y = mean_famrel)) +
     geom_bar(stat = "identity", alpha = 0.7, aes(fill = Fedu)) +
-    labs(title = "Relation familiales selon éducation de papa", x = "Education papa", y = "Relations familiales", fill = "Education papa") +
+    labs(title = "Famrel selon l'éducation de papa", x = "Education", y = "Relations familiales", fill = "Education") +
     scale_fill_discrete(labels = c("0 : Aucune", "1 : primaire", "2 : collège", "3 : lycée", "4 : sup"), type = "viridis")
 
 grid.arrange(dfME, dfFE, ncol=2, nrow = 1)
 ```
 
-Le niveau d'éducation du père importe peu pour les relations familiales. En revanche, pour la mère, il faut au moins qu'elle ait été en primaire. 
+Le niveau d'éducation du **père importe peu pour les relations familiales**. En revanche, pour **la mère**, il faut **au moins qu'elle ait été en primaire**. 
 
-### Relations familiales selon la consomation d'alcool lors du week-end.
-```{r Walc_famrel }
+### La consomation d'alcool le week-end, un facteur de mauvaises relations familiales ?
+```{r Walc_famrel, message = FALSE}
 dfPortugais$Walc <- as.factor(dfPortugais$Walc)
 df <- dfPortugais %>% group_by(Walc) %>% mutate(mean_famrel = mean(famrel)) %>% distinct(Walc, mean_famrel)
 
@@ -633,15 +662,29 @@ ggplot(df, aes(x = Walc, y = mean_famrel)) +
   scale_fill_discrete(type = "viridis")
 ```
 
-On remarque que plus la consommation d'alcool est importante, moins les relations familiales sont bonnes.
+On remarque que **plus la consommation d'alcool est importante**, **moins** les relations familiales sont bonnes.
 
-# Conclusion sur l'élève qui a les meilleures relations familiales
+### Conclusion sur l'élève qui a les meilleures relations familiales
 
-# PARTIE SANTE
+De nos analyses, nous avons pu déceler plusieurs critères qui permettent d'avoir de meilleures relations familiales :
+<ul>
+  <li>Être un **garçon**</li>
+  <li>Habiter à la **campagne**</li>
+  <li>L'âge n'est pas très concluant car cela varie d'une année à l'autre mais si **on aurait tendance à dire que les relations familiales se dégradent avec l'âge**.</li>
+  <li>Avoir des parents **ensembles**</li>
+  <li>Quand ils sont **divorcés**, ils vaut mieux être **moins de 4** dans la famille, et **ne pas avoir son père comme tuteur légal**</li>
+  <li>Avoir **une mère travaillant dans le service public** et **un père au foyer** OU **un père travaillant dans le service public** et **une mère travaillant dans l'éducation**.</li>
+  <li>Avoir une mère qui est **au moins allée en primaire**</li>
+  <li>**Ne pas consommer d'alcool** (du moins le week-end)</li>
+</ul>
 
-Nous avons des données sur l'environnement familial des élèves ainsi que sur quelques de leurs habitudes de vie. Nous retiendrons pour les abitudes de vie la consommation d'alcool et pour l'environnemment familial le travail et l'éducation des parents, ainsi que la nature des Familles.la distribution générale de la santé est la suivante : 
+<hr>
 
-```{r distribution etat santé}
+# Comment être l'élève en meilleure santé ?
+
+Après nous être interessés aux notes et aux relations familiales des élèves, nous allons dans cette dernière partie s'interroger sur les facteurs qui font qu'un élève est en bonne santé.
+
+```{r distribution etat santé, message = FALSE}
 data <- dfMaths %>% select(health) %>% 
   add_column(all = "yes")
 statistics <- list("min" =  min(data$health),
@@ -668,7 +711,7 @@ plot <- ggplot(data, aes(y = health)) +
   
 plot
 ```
-L'état de santé moyen est ` r statistics$mean` et l'écart type de ` r statistics$sd`. La population est majoritairement en bonne santé. Par la suite nous allons présenter l'influence de certains facteurs sur l'état de santé des élèves 
+L'état de santé moyen est `r statistics$mean` et l'écart type de `r statistics$sd`. La population est majoritairement en bonne santé. Par la suite nous allons présenter l'influence de certains facteurs sur l'état de santé des élèves 
 
 ### Exploration de l'effet de la nature de la famille (monoparentale, biparentale) sur la santé des élèves.
 
