@@ -824,34 +824,24 @@ Pour essayer d'expliquer cela, nous avons essayé de faire une étude sur l'empl
 data1 <- dfMaths %>% filter(Pstatus == 'A', guardian == "mother") %>%
   select(Mjob) %>% count(Mjob)
 
-<<<<<<< HEAD
 data2 <- data <- dfMaths %>% filter(Pstatus == 'A', guardian == "mother") %>%
   select(Mjob, health) %>% 
   group_by(Mjob) %>%
   summarise_all(funs(mean))
-=======
-data2 <- dfPortugais %>% filter(Pstatus == 'A') %>% group_by(Mjob) %>% mutate(mean_health = mean(health)) %>% distinct(Mjob, mean_health)
->>>>>>> 706f2d142862fec6a4272da36b21f29c42711d64
+
 
 data3 <- dfMaths %>% filter(Pstatus == 'A', guardian == "mother") %>%
   select(Medu) %>% count(Medu)
 
-<<<<<<< HEAD
 data4 <- data <- dfMaths %>% filter(Pstatus == 'A', guardian == "mother") %>%
   select(Medu, health) %>% 
   group_by(Medu) %>%
   summarise_all(funs(mean))
-=======
-data4 <- dfPortugais %>% filter(Pstatus == 'A') %>% group_by(Medu) %>% mutate(mean_health = mean(health)) %>% distinct(Medu, mean_health)
->>>>>>> 706f2d142862fec6a4272da36b21f29c42711d64
 
 plot1 <- ggplot(data1, aes(area = n, fill = factor(Mjob), label = factor(Mjob))) + 
   geom_treemap() +
   geom_treemap_text(fontface = "italic", colour = "white", place = "centre") +
  scale_fill_discrete(name = "Secteur d'emploi", labels = c("Au foyer", "Santé","Autre","Services publics", "Enseignement"))  
-  
-<<<<<<< HEAD
-
 
 plot2 <- ggplot(data2, aes(x = factor(Mjob) , y = health, fill = factor(Mjob))) + 
   geom_col() + 
@@ -875,26 +865,9 @@ plot4 <- ggplot(data4, aes(x = factor(Medu), y = health, fill = factor(Medu))) +
        y = "État de santé") + 
   scale_x_discrete(name = "Niveau d'études", labels = c("Primaire", "Collège","Lycée","Supérieur")) +
   theme(legend.position = "none")
-=======
+
 plot2 <- ggplot(data2, aes(x = Mjob, y = mean_health)) + 
-  geom_bar(stat = "identity", alpha = 0.7, aes(fill = Mjob)) +
-  labs(title = "Santé selon le métier de la mère", x = "Travail de la mère", y = "Santé") +
-  scale_fill_discrete(type = "viridis") +
-  theme(legend.position = "none") +
-  scale_x_discrete(labels = c("Au foyer", "Santé","Autre","Services publics", "Enseignement"))
 
-plot3 <- ggplot(data3, aes(area = n, fill = factor(Medu), label = Medu)) + 
-  geom_treemap() +
-  geom_treemap_text(fontface = "italic", colour = "white", place = "centre") +
-  scale_fill_discrete(name = "Niveau d'études", labels = c("Aucune", "Primaire", "Collège","Lycée","Supérieur"))
-
-plot4 <- ggplot(data4, aes(x = Medu, y = mean_health)) + 
-  geom_bar(stat = "identity", alpha = 0.7, aes(fill = Medu)) +
-  labs(title = "Santé selon l'éducation de la mère", x = "Études de la mère", y = "Santé") +
-  scale_fill_discrete(type = "viridis") +
-  theme(legend.position = "none") +
-  scale_x_discrete(labels = c("Aucune", "Primaire", "Collège","Lycée","Supérieur"))
->>>>>>> 706f2d142862fec6a4272da36b21f29c42711d64
 
 grid.arrange(plot1, plot2, plot3, plot4, nrow = 2, ncol = 2)
 
@@ -909,15 +882,15 @@ Nous partons sur l'idée selon laquelle de mauvaises relations familiales ont de
 
 
 ```{r health_famrel, message = FALSE}
-<<<<<<< HEAD
+
 data <- dfMaths %>% select(health, famrel) %>%
   group_by(famrel) %>%
   summarise_all(funs(mean))
-=======
+
 dfPortugais$famrel <- as.factor(dfPortugais$famrel)
 #preparation des données
 df <- dfPortugais %>% group_by(famrel) %>% mutate(mean_health = mean(health)) %>% distinct(famrel, mean_health)
->>>>>>> 706f2d142862fec6a4272da36b21f29c42711d64
+
 
 ggplot(df, aes(x = famrel, y = mean_health)) +
   geom_bar(stat = "identity", alpha = 0.7, aes(fill = famrel)) +
