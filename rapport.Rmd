@@ -617,13 +617,13 @@ df <- dfPortugais %>% filter(Pstatus == "T") %>% group_by(guardian) %>% mutate(m
 dfGPT <- ggplot(df, aes(x = guardian, y = mean_famrel)) + 
   geom_bar(stat = "identity", alpha = 0.7, aes(fill = guardian)) +
   labs(title = "Parents ensembles", x = "Tuteur légal", y = "Relation familiale", fill = "Tuteur légal") +
-    scale_fill_discrete(type = "viridis")
+  scale_fill_discrete(type = "viridis")
 
 df <- dfPortugais %>% filter(Pstatus == "A") %>% group_by(guardian) %>% mutate(mean_famrel = mean(famrel)) %>% distinct(guardian, mean_famrel)
 dfGPA <- ggplot(df, aes(x = guardian, y = mean_famrel)) + 
   geom_bar(stat = "identity", alpha = 0.7, aes(fill = guardian)) +
   labs(title = "Parents séparés", x = "Tuteur légal", y = "Relation familiale", fill = "Tuteur légal") +
-    scale_fill_discrete(type = "viridis")
+  scale_fill_discrete(type = "viridis")
 
 df <- dfPortugais %>% filter(Pstatus == "T") %>% group_by(guardian) %>% mutate(mean_famrel = mean(famrel)) %>% distinct(guardian, mean_famrel)
 
@@ -776,28 +776,23 @@ L'état de santé moyen est **`r mean`** et l'écart type de **`r sd`**. La popu
 ### Quel est l'impact de la famille sur la santé des étudiants ?
 
 ```{r health_pstatus_guardian, message = FALSE}
-data1 <- dfMaths %>% select(Pstatus, health) %>%
-  group_by(Pstatus)
+data1 <- dfPortugais %>% group_by(Pstatus) %>% mutate(mean_health = mean(health)) %>% distinct(Pstatus, mean_health)
 
-plot1 <- ggplot(data1, aes(x = factor(Pstatus), y = health, fill = Pstatus )) + 
-  geom_col() +
-  labs( title = "Santé selon la nature de la famille", x = "Type de famille", y =  "État moyen de santé") + 
-  scale_fill_discrete(name = "Type de famille", labels = c("A : Classique", " T : Monoparentale")) +
-  scale_x_discrete(labels  = c("Classique", "Monoparentale") ) + 
-  theme(legend.position = "none")
+plot1 <- ggplot(data1, aes(x = Pstatus, y = mean_health)) + 
+  geom_bar(stat = "identity", alpha = 0.7, aes(fill = Pstatus)) +
+  labs(title = "Santé selon la nature de la famille", x = "Type de famille", y = "Santé") +
+  scale_fill_discrete(type = "viridis") +
+  theme(legend.position = "none") +
+  scale_x_discrete(labels = c("Classique", "Monoparentale"))
 
-data2 <- dfMaths %>% filter(Pstatus == 'A') %>%
-  select(guardian, health) %>%
-  group_by(guardian)
+data2 <- dfPortugais %>% filter(Pstatus == 'A') %>% group_by(guardian) %>% mutate(mean_health = mean(health)) %>% distinct(guardian, mean_health)
 
-plot2 <- ggplot(data2, aes(x = factor(guardian), y = health, fill = guardian )) + 
-  geom_col() +
-  labs( title = "Santé selon le tuteur", 
-        subtitle = "Familles séparées",
-        x = "Tuteur", y = "Etat de santé moyen",
-        fill = "guardian") + 
-  scale_fill_discrete(name = "Tuteur", labels = c("Père", "Mère","Autre")) + 
-  scale_x_discrete(labels  = c("Père", "Mère","Autre") )
+plot2 <- ggplot(data2, aes(x = guardian, y = mean_health)) + 
+  geom_bar(stat = "identity", alpha = 0.7, aes(fill = guardian)) +
+  labs(title = "Santé selon le tuteur", subtitle = "Familles séparées", x = "Type de famille", y = "Santé") +
+  scale_fill_discrete(type = "viridis") +
+  theme(legend.position = "none") +
+  scale_x_discrete(labels = c("Père", "Mère","Autre"))
 
 grid.arrange(plot1, plot2, nrow = 1)
 ```
@@ -811,46 +806,36 @@ Pour essayer d'expliquer cela, nous avons essayé de faire une étude sur l'empl
 data1 <- dfMaths %>% filter(Pstatus == 'A', guardian == "mother") %>%
   select(Mjob) %>% count(Mjob)
 
-data2 <- data <- dfMaths %>% filter(Pstatus == 'A', guardian == "mother") %>%
-  select(Mjob, health) %>% 
-  group_by(Mjob)
+data2 <- dfPortugais %>% filter(Pstatus == 'A') %>% group_by(Mjob) %>% mutate(mean_health = mean(health)) %>% distinct(Mjob, mean_health)
 
 data3 <- dfMaths %>% filter(Pstatus == 'A', guardian == "mother") %>%
   select(Medu) %>% count(Medu)
 
-data4 <- data <- dfMaths %>% filter(Pstatus == 'A', guardian == "mother") %>%
-  select(Medu, health) %>% 
-  group_by(Medu)
+data4 <- dfPortugais %>% filter(Pstatus == 'A') %>% group_by(Medu) %>% mutate(mean_health = mean(health)) %>% distinct(Medu, mean_health)
 
 plot1 <- ggplot(data1, aes(area = n, fill = Mjob, label = Mjob)) + 
   geom_treemap() +
   geom_treemap_text(fontface = "italic", colour = "white", place = "centre") +
   scale_fill_discrete(name = "Secteur d'emploi", labels = c("Au foyer", "Santé","Autre","Services publics", "Enseignement"))  
   
-
-
-plot2 <- ggplot(data2, aes(x = factor(Mjob) , y = health, fill = Mjob)) + 
-  geom_col() + 
-  labs(title = "Santé selon le métier de la mère", 
-       subtitle = "Familles séparées",
-       x = "Travail de la mère",
-       y = "État de santé") + 
-  theme(legend.position = "none") + 
-  scale_x_discrete(name = "Secteur d'emploi", labels = c("Au foyer", "Santé","Autre","Services publics", "Enseignement"))
+plot2 <- ggplot(data2, aes(x = Mjob, y = mean_health)) + 
+  geom_bar(stat = "identity", alpha = 0.7, aes(fill = Mjob)) +
+  labs(title = "Santé selon le métier de la mère", x = "Travail de la mère", y = "Santé") +
+  scale_fill_discrete(type = "viridis") +
+  theme(legend.position = "none") +
+  scale_x_discrete(labels = c("Au foyer", "Santé","Autre","Services publics", "Enseignement"))
 
 plot3 <- ggplot(data3, aes(area = n, fill = factor(Medu), label = Medu)) + 
   geom_treemap() +
   geom_treemap_text(fontface = "italic", colour = "white", place = "centre") +
-  scale_fill_discrete(name = "Niveau d'études", labels = c("Primaire", "Collège","Lycée","Supérieur"))
+  scale_fill_discrete(name = "Niveau d'études", labels = c("Aucune", "Primaire", "Collège","Lycée","Supérieur"))
 
-plot4 <- ggplot(data4, aes(x = factor(Medu) , y = health, fill = Medu)) + 
-  geom_col() + 
-  labs(title = "Santé selon l'éducation de la mère", 
-       subtitle = "Familles séparées",
-       x = "Éducation de la mère",
-       y = "État de santé") + 
-  scale_x_discrete(name = "Niveau d'études", labels = c("Primaire", "Collège","Lycée","Supérieur")) +
-  theme(legend.position = "none")
+plot4 <- ggplot(data4, aes(x = Medu, y = mean_health)) + 
+  geom_bar(stat = "identity", alpha = 0.7, aes(fill = Medu)) +
+  labs(title = "Santé selon l'éducation de la mère", x = "Études de la mère", y = "Santé") +
+  scale_fill_discrete(type = "viridis") +
+  theme(legend.position = "none") +
+  scale_x_discrete(labels = c("Aucune", "Primaire", "Collège","Lycée","Supérieur"))
 
 grid.arrange(plot1, plot2, plot3, plot4, nrow = 2, ncol = 2)
 
@@ -865,15 +850,15 @@ Nous partons sur l'idée selon laquelle de mauvaises relations familiales ont de
 
 
 ```{r health_famrel, message = FALSE}
-data <- dfMaths %>% select(health, famrel) %>%
-  group_by(famrel)
+dfPortugais$famrel <- as.factor(dfPortugais$famrel)
+#preparation des données
+df <- dfPortugais %>% group_by(famrel) %>% mutate(mean_health = mean(health)) %>% distinct(famrel, mean_health)
 
-plot <- data %>% ggplot( aes(x = famrel, y = health)) +
-  geom_col(aes( fill = famrel)) + 
-  labs( title = "Santé selon la relation familiale",
-        x = "Relation familiale", y = "État de santé") + 
+ggplot(df, aes(x = famrel, y = mean_health)) +
+  geom_bar(stat = "identity", alpha = 0.7, aes(fill = famrel)) +
+  labs(title = "Santé selon la relation familiale", x = "Relations familiales", y = "État de santé") +
+  scale_fill_discrete(type = "viridis") +
   theme(legend.position = "none")
-plot
 
 ```
 
@@ -914,24 +899,20 @@ Ici on peut faire l'hypothèse selon laquelle le fait d'avoir des parents de fai
 ```{r health_pedu, message = FALSE}
 df <- dfPortugais %>% group_by(Medu) %>% mutate(mean_health = mean(health)) %>% distinct(Medu, mean_health)
 
-plot1 <- ggplot(df, aes( x = Medu, y = mean_health, fill = Medu)) +
-  geom_col() + 
-  labs(title = "Santé selon l'éducation de maman",
-  x = "Niveau d'études",
-  y = "État de santé") + 
-  theme(legend.position = "none") +
+plot1 <- ggplot(df, aes(x = Medu, y = mean_health)) + 
+  geom_bar(stat = "identity", alpha = 0.7, aes(fill = Medu)) +
+  labs(title = "Santé selon l'éducation de maman", x = "Niveau d'études", y = "Santé") +
   scale_fill_discrete(type = "viridis") +
+  theme(legend.position = "none") +
   scale_x_discrete(labels = c("Aucune","Primaire","Collège","Lycée","Supérieur"))
 
 df2 <- dfPortugais %>% group_by(Fedu) %>% mutate(mean_health = mean(health)) %>% distinct(Fedu, mean_health)
 
-plot2 <- ggplot(df2, aes( x = Fedu, y = mean_health, fill = Fedu)) +
-  geom_col() + 
-  labs(title = "Santé selon l'éducation de papa",
-  x = "Niveau d'études",
-  y = "État de santé") + 
-  theme(legend.position = "none") +
+plot2 <- ggplot(df2, aes(x = Fedu, y = mean_health)) + 
+  geom_bar(stat = "identity", alpha = 0.7, aes(fill = Fedu)) +
+  labs(title = "Santé selon l'éducation de papa", x = "Niveau d'études", y = "Santé") +
   scale_fill_discrete(type = "viridis") +
+  theme(legend.position = "none") +
   scale_x_discrete(labels = c("Aucune","Primaire","Collège","Lycée","Supérieur"))
 
 grid.arrange(plot1, plot2, nrow = 1) 
@@ -943,6 +924,24 @@ CONCLURE
 <hr>
 
 # Conclusion
+
+Pour conclure sur cette analyse, on peut définir que pour être un élève "*parfait*" sur les plans scolaire, familial et social, les critères à réunir sont :
+<ul>
+  <li></li>
+</ul>
+
+--> critères pour être un élève "parfait" scolaire, familial, médical.
+
+--> point positif : anaylse qui semblait être interessante et qui l'a été. On a réussi à dégager 3 axes de recherche
+
+--> point négatif sur les variables
+
+Enfin, pour conclure plus généralement par rapport au projet
+
+--> Projet qui malgré le travail à distance s'est très bien déroulé
+
+--> 3 personnes, 3 axes de recherches
+
 
 ### Conclusion personnelle
 <ul>
