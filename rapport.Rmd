@@ -385,8 +385,8 @@ Dalc <- ggplot(df, aes(x = Dalc, y = mean_Gmean)) +
 grid.arrange(Walc, Dalc, ncol=2, nrow = 1)
 
 ```
-On peut voir que **la consommation d'alcool le weekend a clairement un impact sur les notes** et que ce sont **ceux qui en consomment peu** (niveau 1 ou 2) qui **ont les meilleures résultats**. On peut donc considérer qu'**il est préférable de ne pas consommer d'alcool le weekend, ou simplement un petit verre, pour avoir les meilleurs notes** (s'amuser le weekend pour relacher les cours par exemple).<br>
 
+On peut voir que **la consommation d'alcool le weekend a clairement un impact sur les notes** et que ce sont **ceux qui en consomment peu** (niveau 1 ou 2) qui **ont les meilleures résultats**. On peut donc considérer qu'**il est préférable de ne pas consommer d'alcool le weekend, ou simplement un petit verre, pour avoir les meilleurs notes** (s'amuser le weekend pour relacher les cours par exemple).<br>
 
 L'impact de la **consommation d'alcool en semaine** semble encore **plus lourde**. Ceux qui ne consomment pas du tout d'alcool la semaine **obtienent les meilleures notes**, et de loin. Cependant, **quitte à boire beaucoup de l'alcool en semaine, autant en boire énormément** car le niveau 5 (vraiment beaucoup) obtient des meilleures notes que le niveau 4 (beaucoup). Les résultats du niveau 5 sont sûrement tronquées par le fait que peu d'élèves soient à ce niveau, la représentativité est donc faible.
 
@@ -533,6 +533,8 @@ ggplot(dfPortugais, aes(x = famrel)) +
 ```
 
 ### Le sexe et le lieu de vie ont-ils un impact sur les relations familiales ?
+
+Arrivé à l'adolescence, les 
 
 ```{r sex_adress_famrel, message = FALSE}
 df <- dfPortugais %>% select(sex, famrel)
@@ -787,7 +789,7 @@ plot1 <- ggplot(data1, aes(x = factor(Pstatus), y = health, fill = Pstatus )) +
 data2 <- dfMaths %>% filter(Pstatus == 'A') %>%
   select(guardian, health) %>%
   group_by(guardian)
-4
+
 plot2 <- ggplot(data2, aes(x = factor(guardian), y = health, fill = guardian )) + 
   geom_col() +
   labs( title = "Santé selon le tuteur", 
