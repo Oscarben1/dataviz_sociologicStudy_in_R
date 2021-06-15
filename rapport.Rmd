@@ -777,7 +777,8 @@ L'état de santé moyen est **`r mean`** et l'écart type de **`r sd`**. La popu
 
 ```{r health_pstatus_guardian, message = FALSE}
 data1 <- dfMaths %>% select(Pstatus, health) %>%
-  group_by(Pstatus)
+  group_by(Pstatus) %>%
+  summarise_all(funs(mean))
 
 plot1 <- ggplot(data1, aes(x = factor(Pstatus), y = health, fill = Pstatus )) + 
   geom_col() +
@@ -788,7 +789,8 @@ plot1 <- ggplot(data1, aes(x = factor(Pstatus), y = health, fill = Pstatus )) +
 
 data2 <- dfMaths %>% filter(Pstatus == 'A') %>%
   select(guardian, health) %>%
-  group_by(guardian)
+  group_by(guardian) %>%
+  summarise_all(funs(mean))
 
 plot2 <- ggplot(data2, aes(x = factor(guardian), y = health, fill = guardian )) + 
   geom_col() +
@@ -813,37 +815,39 @@ data1 <- dfMaths %>% filter(Pstatus == 'A', guardian == "mother") %>%
 
 data2 <- data <- dfMaths %>% filter(Pstatus == 'A', guardian == "mother") %>%
   select(Mjob, health) %>% 
-  group_by(Mjob)
+  group_by(Mjob) %>%
+  summarise_all(funs(mean))
 
 data3 <- dfMaths %>% filter(Pstatus == 'A', guardian == "mother") %>%
   select(Medu) %>% count(Medu)
 
 data4 <- data <- dfMaths %>% filter(Pstatus == 'A', guardian == "mother") %>%
   select(Medu, health) %>% 
-  group_by(Medu)
+  group_by(Medu) %>%
+  summarise_all(funs(mean))
 
-plot1 <- ggplot(data1, aes(area = n, fill = Mjob, label = Mjob)) + 
+plot1 <- ggplot(data1, aes(area = n, fill = factor(Mjob), label = factor(Mjob))) + 
   geom_treemap() +
   geom_treemap_text(fontface = "italic", colour = "white", place = "centre") +
-  scale_fill_discrete(name = "Secteur d'emploi", labels = c("Au foyer", "Santé","Autre","Services publics", "Enseignement"))  
+ scale_fill_discrete(name = "Secteur d'emploi", labels = c("Au foyer", "Santé","Autre","Services publics", "Enseignement"))  
   
 
 
-plot2 <- ggplot(data2, aes(x = factor(Mjob) , y = health, fill = Mjob)) + 
+plot2 <- ggplot(data2, aes(x = factor(Mjob) , y = health, fill = factor(Mjob))) + 
   geom_col() + 
   labs(title = "Santé selon le métier de la mère", 
        subtitle = "Familles séparées",
        x = "Travail de la mère",
        y = "État de santé") + 
-  theme(legend.position = "none") + 
+  theme(legend.position = "none")  
   scale_x_discrete(name = "Secteur d'emploi", labels = c("Au foyer", "Santé","Autre","Services publics", "Enseignement"))
 
 plot3 <- ggplot(data3, aes(area = n, fill = factor(Medu), label = Medu)) + 
   geom_treemap() +
-  geom_treemap_text(fontface = "italic", colour = "white", place = "centre") +
+  geom_treemap_text(fontface = "italic", colour = "white", place = "centre") + 
   scale_fill_discrete(name = "Niveau d'études", labels = c("Primaire", "Collège","Lycée","Supérieur"))
 
-plot4 <- ggplot(data4, aes(x = factor(Medu) , y = health, fill = Medu)) + 
+plot4 <- ggplot(data4, aes(x = factor(Medu), y = health, fill = factor(Medu))) + 
   geom_col() + 
   labs(title = "Santé selon l'éducation de la mère", 
        subtitle = "Familles séparées",
@@ -866,7 +870,8 @@ Nous partons sur l'idée selon laquelle de mauvaises relations familiales ont de
 
 ```{r health_famrel, message = FALSE}
 data <- dfMaths %>% select(health, famrel) %>%
-  group_by(famrel)
+  group_by(famrel) %>%
+  summarise_all(funs(mean))
 
 plot <- data %>% ggplot( aes(x = famrel, y = health)) +
   geom_col(aes( fill = famrel)) + 
@@ -941,6 +946,10 @@ On se rend compte après étude que l'hypothèse n'est pas complètement vérifi
 
 CONCLURE
 <hr>
+Plusieurs critères permettent d'avoir une bonne santé. Il s'agit : 
+- La qualité de la relation familiale : Mieux elle est, meilleure est la santé.
+- Le travail des parents : On constate une meilleure santé lorsque lepère ou la mère travaille dans le secteur de la santé.
+- La nature de la famille : En prenant l'évènement contraire on voit que les familles monoparentales où la garde est à la mère rencontre des difficultés et que ca se passe relativement bien dans les autres cas
 
 # Conclusion
 
