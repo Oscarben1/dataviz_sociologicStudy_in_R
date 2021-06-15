@@ -14,30 +14,38 @@ dashboardPage(
         ),
 
         sliderInput("individusMean" ,"Moyenne de l'élève", 4, 19, 10),
-
-
-        radioButtons("meanStudyTime", label = h3("Sexe"),
+        
+        
+        radioButtons("sex", label = h3("Sexe"),
                      choices = list("Garçon" = "M", "Fille" = "F"),
                      selected = "M"),
-
-        radioButtons("adresse", label = h3("Lieu de vie"),
-                     choices = list("Ville" = 1, "Campagne" = 2, "Les 2" = 3),
-                     selected = 3),
-
-        checkboxGroupInput("age", label = h3("Age"),
-                     choices = list("15" = 1, "16" = 2, "17" = 3, "18" = 4, "19" = 5, "20" = 6, "21" = 7, "22" = 8, "Tous" = 9),
-                     selected = 9),
-
+        
+        radioButtons("address", label = h3("Lieu de vie"),
+                     choices = list("Ville" = "U", "Campagne" = "R"),
+                     selected = "U"),
+        
         selectInput("travail_mère", label = h3("Travail de la mère"),
-                           choices = list("Education" = 1, "Santé" = 2, "Service publique" = 3, "Au foyer" = 4, "Autre" = 5, "Tous" = 6),
-                    selected = 6),
-
+                    choices = list("Education" = "teacher", "Santé" = "health", "Service publique" = "services", "Au foyer" = "at_home", "Autre" = "other"),
+                    selected = "teacher"),
+        
         selectInput("travail_père", label = h3("Travail du père"),
                     choices = list("Education" = "teacher", "Santé" = "health", "Service publique" = "services", "Au foyer" = "at_home", "Autre" = "other"),
                     selected = "teacher"),
-
+        
+        selectInput("education_mère", label = h3("Éducation de la mère"),
+                    choices = list("Aucune" = 0, "Primaire" = 1, "Collège" = 2, "Lycée" = 3, "Sup" = 4),
+                    selected = 1),
+        
+        selectInput("education_père", label = h3("Éducation du père"),
+                    choices = list("Aucune" = 0, "Primaire" = 1, "Collège" = 2, "Lycée" = 3, "Sup" = 4),
+                    selected = 1),
+        
+        selectInput("age", label = h3("Age"),
+                    choices = list("15" = 15, "16" = 16, "17" = 17, "18" = 18, "19" = 19, "20" = 20, "21" = 21, "22" = 22),
+                    selected = 15),
+        
         sliderInput("temps_de_travail" ,"Temps de travail", min = 1, max = 4, value = c(1, 4)),
-
+        
         sliderInput("consommation_alcool_hebdo" ,"Consommation d'alcool hebdo", min = 1, max = 5, value = c(1, 5))
 
     ),
@@ -57,7 +65,7 @@ dashboardPage(
                         status = "primary",
                         solidHeader = TRUE,
                         plotlyOutput("G1andMean")
-                ))
+                    ))
             ),
             tabItem(
                 tabName = "santé",
@@ -121,7 +129,11 @@ dashboardPage(
                 
             ),
             tabItem(tabName = "relations_familiales",
-
+                fluidRow(
+                    infoBoxOutput("parentsJobFamrel"),
+                    infoBoxOutput("parentsEduFamrel"),
+                    infoBoxOutput("sexAdressAge")
+                )
             )
         ),
     ),

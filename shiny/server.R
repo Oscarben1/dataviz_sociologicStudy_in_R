@@ -7,35 +7,48 @@ library(readr)
 dataset <- read_csv("../data/student-por.csv")
 dataset2 <- read_csv("../data/student-por.csv")
 dataset3 <- read_csv("../data/student-por.csv")
+dataset4 <- read_csv("../data/student-por.csv")
+dataset5 <- read_csv("../data/student-por.csv")
+dataset6 <- read_csv("../data/student-por.csv")
 
 server <- function(input, output){
-
+    
     vals <- reactiveValues(keeprows = rep(TRUE, nrow(dataset)),
                            dataset = dataset)
-
-
-
+    
+    
+    
     output$nbIndMean <- renderValueBox({
-        valueBox(dim(vals$dataset)[1], "nb d'élèves au dessus de la mean", icon = icon("book"), color = "red")
+        valueBox(dim(vals$dataset)[1], "Nombre d'élèves au dessus de la moyenne", icon = icon("book"), color = "red")
     })
-
+    
     output$studytime <- renderValueBox({
         valueBox(signif(mean(vals$dataset$studytime), 4), "Temps de travail", icon = icon("clock"), color = "blue")
     })
-
+    
     output$failures <- renderValueBox({
-        valueBox(signif(mean(vals$dataset2$failures), 4), "Nb d'échecs en dessous de la mean", icon = icon("sad-tear"), color = "green")
+        valueBox(signif(mean(vals$dataset2$failures), 4), "Moyenne des échecs des élèves en dessous de la moyenne", icon = icon("sad-tear"), color = "green")
     })
-
+    
+    observeEvent(input$age,{
+        vals$dataset2 <- read_csv("../data/student-por.csv") %>% filter(age == input$age)
+    })
+    
     observeEvent(input$individusMean,{
         vals$dataset <- read_csv("../data/student-por.csv") %>% filter(G1 >= input$individusMean)
         vals$dataset2 <- read_csv("../data/student-por.csv") %>% filter(G1 <= input$individusMean)
     })
-
+    
     observeEvent(input$travail_père,{
         vals$dataset3 <- read_csv("../data/student-por.csv") %>% filter(Fjob == input$travail_père)
+        vals$dataset4 <- read_csv("../data/student-por.csv") %>% filter(Fjob == input$travail_père)
     })
-
+    
+    observeEvent(input$travail_mère,{
+        vals$dataset3 <- read_csv("../data/student-por.csv") %>% filter(Mjob == input$travail_mère)
+        vals$dataset4 <- read_csv("../data/student-por.csv") %>% filter(Mjob == input$travail_mère)
+    })
+    
     output$G1andMean <- renderPlotly({
         temp_plot <- ggplot(vals$dataset3 %>% filter(age <= 19) %>% group_by(age) %>% mutate(mean_G1 = mean(G1)) %>% distinct(age, mean_G1), aes(x = age, y = mean_G1)) + geom_bar(stat = "identity")
         ggplotly(temp_plot)
@@ -125,5 +138,35 @@ server <- function(input, output){
             ggplotly(healthPlotEdu)
         }
     )
-
+    
+    ########################################################## Outputs sur les relations familiales ##################################################
+    
+    observeEvent(input$sex,{
+        vals$dataset6 <- read_csv("../data/student-por.csv") %>% filter(sex == input$sex)
+    })
+    
+    observeEvent(input$address,{
+        vals$dataset6 <- read_csv("../data/student-por.csv") %>% filter(address == input$address)
+    })
+    
+    observeEvent(input$education_père,{
+        vals$dataset5 <- read_csv("../data/student-por.csv") %>% filter(Fedu == input$education_père)
+    })
+    
+    observeEvent(input$education_mère,{
+        vals$dataset5 <- read_csv("../data/student-por.csv") %>% filter(Medu == input$education_mère)
+    })
+    
+    output$parentsJobFamrel <- renderInfoBox({
+        infoBox("Moyenne famrel selon le travail des parents", signif(mean(vals$dataset4$famrel), 6), icon = icon("long-arrow-alt-up"), color = "purple" )
+    })
+    
+    output$parentsEduFamrel <- renderInfoBox({
+        infoBox("Moyenne famrel selon l'éducation des parents", signif(mean(vals$dataset5$famrel), 6), icon = icon("long-arrow-alt-up"), color = "yellow" )
+    })
+    
+    output$sexAdressAge <- renderInfoBox({
+        infoBox("Moyenne famrel selon le sexe, l'adresse et l'âge", signif(mean(vals$dataset6$famrel), 6), icon = icon("long-arrow-alt-up"), color = "red" )
+    })
+    
 }
