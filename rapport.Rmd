@@ -543,37 +543,38 @@ ggplot(dfPortugais, aes(x = famrel)) +
     labs(x = "Relations familiales" , y = "Nombre d'étudiants" ,title = "Répartitions des relations familiales")
 ```
 
-### Le sexe et le lieu de vie ont-ils un impact sur les relations familiales ?
+### Le lieu de vie a-t-il un impact sur les relations familiales ?
 
-Arrivé à l'adolescence, les 
+Nous allons tout d'abord voir le sexe ou le lieu de vie peut avoir un impact sur les relations familiales. Les gens habitants à la campagne ont plus souvent une grande partie de leur famille habitant près de chez eux (grands-parents, oncle & tante, cousins & cousines). On peut donc penser que les relations familiales sont plus fortes pour les ruraux.
 
 ```{r sex_adress_famrel, message = FALSE}
-df <- dfPortugais %>% select(sex, famrel)
-
-dfS <- ggplot(df, aes(x = sex, y = famrel)) + 
-  geom_violin(aes(fill = sex),alpha = 0.6,size = 1) + 
-  stat_summary(fun = "mean", geom = "point", shape= 21, size= 2, fill= "white") +
-  scale_fill_brewer(palette = "Dark2") +
-  ggtitle("Relations familiales selon sexe")
-
 df <- dfPortugais %>% select(address, famrel)
 
-dfA <- ggplot(df, aes(x = address, y = famrel)) + 
-  geom_violin(aes(fill = address),alpha = 0.6,size = 1) + 
-  stat_summary(fun = "mean", geom = "point", shape= 21, size= 2, fill= "white") +
-  scale_fill_brewer(palette = "Dark2") +
-  ggtitle("Relations familiales selon l'adresse")
+plot1 <- ggplot(df, aes(x = address, y = famrel)) + 
+          geom_violin(aes(fill = address),alpha = 0.6,size = 1) + 
+          stat_summary(fun = "mean", geom = "point", shape= 21, size= 2, fill= "white") +
+          scale_fill_brewer(palette = "Dark2") +
+          ggtitle("Relations familiales selon l'adresse")
 
-grid.arrange(dfS, dfA, ncol=2, nrow = 1)
+df <- dfPortugais %>% select(sex, famrel)
+
+plot2 <- ggplot(df, aes(x = sex, y = famrel)) + 
+          geom_violin(aes(fill = sex),alpha = 0.6,size = 1) + 
+          stat_summary(fun = "mean", geom = "point", shape= 21, size= 2, fill= "white") +
+          scale_fill_brewer(palette = "Dark2") +
+          ggtitle("Relations familiales selon sexe")
+
+grid.arrange(plot1, plot2, ncol=2, nrow = 1)
 ```
 
-La moyenne des relations familiales chez les garçons est de  **`r mean_famrel_M`** 
-tandis que chez les filles elle est de **`r mean_famrel_F`**.
+La moyenne des relations familiales chez les garçons est de  **`r mean_famrel_M`** tandis que chez les filles elle est de **`r mean_famrel_F`**.
 Par rapport au lieu de vie, la moyenne des relations familiales des élèves habitant à la campagne est de  **`r mean_famrel_R`** tandis que chez les élèves habitant en ville, elle est de **`r mean_famrel_U`**.
 
-Le sexe et le lieu de vie font peu varier les relations familiales. Néanmoins, on peut remarquer qu'en moyenne **les garçons ont de meilleures relations familiales** et que c'est la même pour **les étudiants ruraux**.
+Le sexe et le lieu de vie font peu varier les relations familiales. Néanmoins, on peut remarquer qu'en moyenne **les garçons ont de meilleures relations familiales** et faire la même remarque pour **les étudiants ruraux**.
 
 ### Être plus âge permet-il de mieux s'entendre avec sa famille ?
+
+Arrivé à l'adolescence, les relations familiales deviennent souvent plus tendues entre les enfants et les parents. Nous pouvons donc émettre qu'**avec l'âge les relations familiales se dégradent**. 
 
 ```{r age_famrel, message = FALSE}
 dfPortugais <- dfPortugais %>% filter (age != 21, age != 22)
@@ -587,7 +588,7 @@ ggplot(df, aes(x = age, y = mean_famrel)) +
 ```
 
 Vu le faible nombre d'étudiants ayant entre 20 et 22 ans, on ne se concentre que la fourchette d'âge 15-19 ans.<br> 
-On peut voir que **plus les étudiants viellissent, plus leur relations familiales se détériorent**. De 17 à 20 ans, la moyenne des relations familiales passe de **`r mean_famrel_17`** à **`r mean_famrel_19`**.
+On peut voir que **plus les étudiants viellissent, plus leur relations familiales se détériorent**, notre théorie de base est donc bonne. De 17 à 20 ans, la moyenne des relations familiales passe de **`r mean_famrel_17`** à **`r mean_famrel_19`**.
 Néanmoins, cette observation se retrouve un peu faussée par les étudiants de 16 ans, qui ont une moyenne de relations familiales à **`r mean_famrel_16`**, alors que pour ceux de 15 et 17 ans, elles sont respectivement de **`r mean_famrel_15`** et **`r mean_famrel_17`**.
 
 ### Les étudiants avec des parents divorcés ont-ils de moins bonnes relations familiales ?
@@ -597,6 +598,11 @@ Avoir des **parents ensembles** permet donc quand même d'avoir de meilleures re
 Néanmoins, conjugué à d'autres paramètres, le statut marital des parents fait varier de façon plus concluantes les relations familiales des étudiants.
 
 ### Relations familiales selon la taille de la famille en prenant en compte le statut marital des parents
+
+Nous allons voir dans un premier temps si la taille de la famille fait varier les relations familiales. Des familles avec peu d'enfant peut avoir des liens resserrés, tandis qu'une famille avec beaucoup d'enfants peut voir ses relations familiales varier selon l'entente entre les progénitures.<br>
+Si on s'interesse seulement à la taille de la famille, les relations varient peu entre les familles de composées de 3 personnes ou moins **(`r mean_famrel_FSLE3`)**, et celle comptant plus de 3 personnes **(`r mean_famrel_FSGT3`)**. <br>
+En revanche, regardons **si l'analyse devient plus intéressante en conjugant la taille de la famille et le statut marital des parents**.
+
 ```{r famsize_famrel, message = FALSE}
 df <- dfPortugais %>% filter(Pstatus == "T") %>% group_by(famsize) %>% mutate(mean_famrel = mean(famrel)) %>% distinct(famsize, mean_famrel)
 
@@ -613,14 +619,16 @@ dfFSPA <- ggplot(df, aes(x = famsize, y = mean_famrel)) +
     scale_fill_discrete(type = "viridis")
 
 grid.arrange(dfFSPT, dfFSPA, ncol=2, nrow = 1)
-
 ```
 
-Si on s'interesse seulement à la taille de la famille, les relations varient peu entre les familles de composées de 3 personnes ou moins **(`r mean_famrel_FSLE3`)**, et celle comptant plus de 3 personnes **(`r mean_famrel_FSGT3`)**. <br>
-Néanmoins en regardant les relations familiales par rapport à la taille de famille, suivant que les parents soient ensembles ou non, **les chiffres deviennent plus interessants** pour les étudiants avec des parents séparés.<br>
+
+Les relations familiales par rapport à la taille de famille, suivant que les parents soient ensembles ou non, **les chiffres deviennent plus interessants** quand les parents sont séparés.<br>
 Ces derniers ont de **meilleures relations familiales** lorsque la **taille de la famille est égale ou inférieure à 3**.
 
-### L'impact de la taille de la famille sur les relations familiales suivant que les parents soient ensemble ou non
+### L'impact du tuteur légal sur les relations familiales suivant que les parents soient ensemble ou non
+
+Quand on s'interesse seulement aux relations familiales suivant le tuteur légal de l'élève, la moyenne varie peu (père : `r mean_famrel_GF`, mère : `r mean_famrel_GM`), sauf pour "autre" ou la moyenne est un poil plus bas (`r mean_famrel_GO`). <br>
+Nous allons donc continuer l'analyse en conjugant  le statut marital des parents avec le tuteur légal. Dans **les familles séparés, le tuteur légal doit sûrement avoir un impact sur l'entente familiale**.
 
 ```{r guardian_famrel, message = FALSE}
 df <- dfPortugais %>% filter(Pstatus == "T") %>% group_by(guardian) %>% mutate(mean_famrel = mean(famrel)) %>% distinct(guardian, mean_famrel)
@@ -640,15 +648,15 @@ df <- dfPortugais %>% filter(Pstatus == "T") %>% group_by(guardian) %>% mutate(m
 
 
 grid.arrange(dfGPT, dfGPA, ncol=2, nrow = 1)
-
 ```
 
-Quand on s'interesse seulement aux relations familiales suivant le tuteur légal de l'élève, la moyenne varie peu (père : `r mean_famrel_GF`, mère : `r mean_famrel_GM`), sauf pour "autre" ou la moyenne est un poil plus bas (`r mean_famrel_GO`). <br>
-En revanche, la donne est différentes lorsque l'on associe à cela le statut marital des parents. 
 Pour des **parents ensembles**, les **relations familiales sont semblables** lorsque que le **père** ou la **mère** sont tuteurs. Cette même **moyenne est plus basse** quand c'est **quelqu'un d'autre** qui a le rôle de tuteur. <br>
 En revanche, pour des parents séparés, le résultat est bien différent. Les **relations familiales sont au plus bas** quand c'est **le père le tuteur**, est **au plus haut** quand c'est **quelqu'un d'autre**.  
 
 ### Le travail des parents joue-t-il sur les relations familiales ?
+
+Nous allons maintenant directement nous focus sur les parents. Premièrement, en s'interessant à leur travail. Est-ce que des parents sans métier ont une bonne relation dans leur famille ?<br>
+
 ```{r Pjob_famrel, message = FALSE}
 df <- dfPortugais %>% group_by(Mjob) %>% mutate(mean_famrel = mean(famrel)) %>% distinct(Mjob, mean_famrel)
 
@@ -695,6 +703,9 @@ Quand **le père** travaille dans **le service public**, il vaut que **la mère 
 En revanche, quand c'est **la mère** qui travaille dans **le service public**, les relations familiales se portent mieux si **le père est professeur**.
 
 ### Les relations familiales sont-elles meilleures quand les parents ont fait de grandes études ?
+
+Pour continuer sur l'étude des parents, nous allons nous interesser à leur niveau d'étude. **Est-ce que un haut niveau d'étude garantit de bonnes relations familiales ?**
+
 ```{r Pedu_famrel, message = FALSE}
 #preparation des données
 dfPortugais$Medu <- as.factor(dfPortugais$Medu)
@@ -716,9 +727,12 @@ dfFE <- ggplot(df, aes(x = Fedu, y = mean_famrel)) +
 grid.arrange(dfME, dfFE, ncol=2, nrow = 1)
 ```
 
-Le niveau d'éducation du **père importe peu pour les relations familiales**. En revanche, pour **la mère**, il faut **au moins qu'elle ait été en primaire**. 
+Pour le père, le niveau d'éducation **importe peu pour les relations familiales**. En revanche, pour **la mère**, il faut **au moins qu'elle soit allée en primaire** pour garantir de bonnes relations familiales. 
 
 ### La consomation d'alcool le week-end, un facteur de mauvaises relations familiales ?
+
+Pour finir, nous allons voir si comme pour les notes, la consommation d'alcool a un impact négatif sur les notes.
+
 ```{r Walc_famrel, message = FALSE}
 dfPortugais$Walc <- as.factor(dfPortugais$Walc)
 df <- dfPortugais %>% group_by(Walc) %>% mutate(mean_famrel = mean(famrel)) %>% distinct(Walc, mean_famrel)
@@ -730,11 +744,11 @@ ggplot(df, aes(x = Walc, y = mean_famrel)) +
   theme(legend.position = "none")
 ```
 
-On remarque que **plus la consommation d'alcool est importante**, **moins** les relations familiales sont bonnes.
+Comment attendu, on remarque que **plus la consommation d'alcool est importante**, **moins** les relations familiales sont bonnes.
 
 ### Conclusion sur l'élève qui a les meilleures relations familiales
 
-De nos analyses, nous avons pu déceler plusieurs critères qui permettent d'avoir de meilleures relations familiales :
+De ces analyses, nous avons pu déceler plusieurs critères qui permettent d'avoir de meilleures relations familiales :
 <ul>
   <li>Être un **garçon**</li>
   <li>Habiter à la **campagne**</li>
@@ -817,19 +831,19 @@ Pour essayer d'expliquer cela, nous avons essayé de faire une étude sur l'empl
 data1 <- dfMaths %>% filter(Pstatus == 'A', guardian == "mother") %>%
   select(Mjob) %>% count(Mjob)
 
-data2 <- dfPortugais %>% filter(Pstatus == 'A') %>% group_by(Mjob) %>% summarise_all(funs(mean))
+data2 <- dfPortugais %>% filter(Pstatus == 'A') %>% group_by(Mjob) %>% mutate(mean_health = mean(health)) %>% distinct(Mjob, mean_health)
 
 data3 <- dfMaths %>% filter(Pstatus == 'A', guardian == "mother") %>%
   select(Medu) %>% count(Medu)
 
-data4 <- dfPortugais %>% filter(Pstatus == 'A') %>% group_by(Medu) %>% summarise_all(funs(mean))
+data4 <- dfPortugais %>% filter(Pstatus == 'A') %>% group_by(Medu) %>% mutate(mean_health = mean(health)) %>% distinct(Medu, mean_health)
 
 plot1 <- ggplot(data1, aes(area = n, fill = Mjob, label = Mjob)) + 
   geom_treemap() +
   geom_treemap_text(fontface = "italic", colour = "white", place = "centre") +
   scale_fill_discrete(name = "Secteur d'emploi", labels = c("Au foyer", "Santé","Autre","Services publics", "Enseignement"))  
   
-plot2 <- ggplot(data2, aes(x = Mjob, y = health)) + 
+plot2 <- ggplot(data2, aes(x = Mjob, y = mean_health)) +
   geom_bar(stat = "identity", alpha = 0.7, aes(fill = Mjob)) +
   labs(title = "Santé selon le métier de la mère", x = "Travail de la mère", y = "Santé") +
   scale_fill_discrete(type = "viridis") +
@@ -841,7 +855,7 @@ plot3 <- ggplot(data3, aes(area = n, fill = factor(Medu), label = Medu)) +
   geom_treemap_text(fontface = "italic", colour = "white", place = "centre") +
   scale_fill_discrete(name = "Niveau d'études", labels = c("Aucune", "Primaire", "Collège","Lycée","Supérieur"))
 
-plot4 <- ggplot(data4, aes(x = Medu, y = health)) + 
+plot4 <- ggplot(data4, aes(x = Medu, y = mean_health)) + 
   geom_bar(stat = "identity", alpha = 0.7, aes(fill = Medu)) +
   labs(title = "Santé selon l'éducation de la mère", x = "Études de la mère", y = "Santé") +
   scale_fill_discrete(type = "viridis") +
@@ -949,22 +963,14 @@ Pour conclure sur cette analyse, on peut définir que pour être un élève "*pa
   <li></li>
 </ul>
 
---> critères pour être un élève "parfait" scolaire, familial, médical.
-
---> point positif : anaylse qui semblait être interessante et qui l'a été. On a réussi à dégager 3 axes de recherche
-
---> point négatif sur les variables
-
-Enfin, pour conclure plus généralement par rapport au projet
-
---> Projet qui malgré le travail à distance s'est très bien déroulé
-
---> 3 personnes, 3 axes de recherches
-
+Le point positif sur notre dataset est qu’il a été plaisant et intéressant à analyser. Des analyses ont validées nos théories, tandis que d’autres les ont réfutées.<br>
+En revanche, pour le point noir de ce dataset, nous pouvons notifier qu’il nous manquait des valeurs continue. En effet, la seule valeur continue que nous avions est la moyenne générale que nous avons du créer. Ce manque de diversité dans nos variables nous a obligé à faire presque que le même type de diagramme (diagramme en barre).<br>
+Avant de finir sur nos remarques personnelles, nous pouvons conclure quant au projet en lui même. Malgré l’aspect distanciel, le projet pour notre part s’est très bien déroulé. L’utilisation de GitHub a facilité cela, tout comme la mise en place d’un chanel Discord qui a permis de bien communiquer.
+Les 3 axes de recherche nous ont permis de bien nous répartir le travail, sans empiéter sur celui des autres.
 
 ### Conclusion personnelle
 <ul>
-  <li>**Oscar** :</li>
+  <li>**Oscar** : L’UE était plaisante et au goût du jour avec des outils très actuels utilisés dans la data visualisation, le projet est vraiment plaisant à réaliser et permet de bien prendre en main le langage R pour la datavizz. La chose qui pourrait je pense améliorer cette UE serait de passer un peu plus de temps sur un outil de BI (Tableau ou PowerBI), peut-être n’en choisir qu’un des deux et l’approfondir sur 3 semaines ou plus car ce sont des outils très utilisés en entreprise.</li>
   <li>**ALbert** :</li>
   <li>**Clément** :</li>
 </ul>
