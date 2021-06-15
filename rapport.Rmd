@@ -817,19 +817,19 @@ Pour essayer d'expliquer cela, nous avons essayé de faire une étude sur l'empl
 data1 <- dfMaths %>% filter(Pstatus == 'A', guardian == "mother") %>%
   select(Mjob) %>% count(Mjob)
 
-data2 <- dfPortugais %>% filter(Pstatus == 'A') %>% group_by(Mjob) %>% mutate(mean_health = mean(health)) %>% distinct(Mjob, mean_health)
+data2 <- dfPortugais %>% filter(Pstatus == 'A') %>% group_by(Mjob) %>% summarise_all(funs(mean))
 
 data3 <- dfMaths %>% filter(Pstatus == 'A', guardian == "mother") %>%
   select(Medu) %>% count(Medu)
 
-data4 <- dfPortugais %>% filter(Pstatus == 'A') %>% group_by(Medu) %>% mutate(mean_health = mean(health)) %>% distinct(Medu, mean_health)
+data4 <- dfPortugais %>% filter(Pstatus == 'A') %>% group_by(Medu) %>% summarise_all(funs(mean))
 
 plot1 <- ggplot(data1, aes(area = n, fill = Mjob, label = Mjob)) + 
   geom_treemap() +
   geom_treemap_text(fontface = "italic", colour = "white", place = "centre") +
   scale_fill_discrete(name = "Secteur d'emploi", labels = c("Au foyer", "Santé","Autre","Services publics", "Enseignement"))  
   
-plot2 <- ggplot(data2, aes(x = Mjob, y = mean_health)) + 
+plot2 <- ggplot(data2, aes(x = Mjob, y = health)) + 
   geom_bar(stat = "identity", alpha = 0.7, aes(fill = Mjob)) +
   labs(title = "Santé selon le métier de la mère", x = "Travail de la mère", y = "Santé") +
   scale_fill_discrete(type = "viridis") +
@@ -841,7 +841,7 @@ plot3 <- ggplot(data3, aes(area = n, fill = factor(Medu), label = Medu)) +
   geom_treemap_text(fontface = "italic", colour = "white", place = "centre") +
   scale_fill_discrete(name = "Niveau d'études", labels = c("Aucune", "Primaire", "Collège","Lycée","Supérieur"))
 
-plot4 <- ggplot(data4, aes(x = Medu, y = mean_health)) + 
+plot4 <- ggplot(data4, aes(x = Medu, y = health)) + 
   geom_bar(stat = "identity", alpha = 0.7, aes(fill = Medu)) +
   labs(title = "Santé selon l'éducation de la mère", x = "Études de la mère", y = "Santé") +
   scale_fill_discrete(type = "viridis") +
@@ -931,8 +931,16 @@ grid.arrange(plot1, plot2, nrow = 1)
 
 On se rend compte après étude que l'hypothèse n'est pas complètement vérifiée et on observe des comportements différents selon le sexe du parent. Alors que la santé des enfants de mères ayant le plus bas niveau d'études est la meilleur, celle des pères ayant le plus bas niveau d'études est de façon significative moins bonne que celle des autres.
 
-CONCLURE
+Conclusion sur l'état de santé
 <hr>
+
+Plusieurs critères permettent d'avoir une bonne santé. Il s'agit : 
+<ul>
+<li> La qualité de la relation familiale : Mieux elle est, meilleure est la santé.</li>
+<li> Le travail des parents : On constate une meilleure santé lorsque lepère ou la mère travaille dans le secteur de la santé.</li>
+<li> La nature de la famille : En prenant l'évènement contraire on voit que les familles monoparentales où la garde est à la mère rencontre des difficultés et que ca se passe relativement bien dans les autres cas. </li>
+
+</ul>
 
 # Conclusion
 
