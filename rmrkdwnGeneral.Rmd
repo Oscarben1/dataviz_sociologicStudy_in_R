@@ -41,19 +41,32 @@ library("viridis")
 library(treemapify)
 ```
 
-# Exploration des données
+### Exploration des données
 
 La première partie de notre projet a consisté en l'exploration de nos jeux de données. En effet, les individus n'étant **pas les mêmes** sur le dataset **mathématiques** et le dataset **portugais**, il nous était impossible de les regrouper. Cependant, nous avons tout de même choisi de garder les deux en réalisant nos graph sur le dataset que nous avons jugé le plus approprié selon les variables analysées. <br>
 En effet, le dataset portugais comporte **plus d'individus** que le dataset mathématiques, donc lorsque nous avons réalisé les graph avec ce dernier c'est que nous voulions **une bonne représentativité des individus**. Au contraire, nous avons jugé que le dataset mathématiques nous était utile lorsque **le sérieux des élèves** primait sur le nombre d'élèves, car nous considérons que **les mathématiques sont une matière plus importante que le portugais** et donc que les élèves étaient plus sérieux dans cette matière.
 
 ### Explications des échelles numériques + données
 
-EXPLIQUER LES ECHELLES ALLANT DE 0-4 ET 1-5 !!!!
-(quantifier l173 ?)
+En amont de l'analyse, nous allons commencer par expliquer certaines différentes variables, qui peuvent parraitre implicite pour certains. En effet, des varaibles sont des échelles quantifées, d'autres sont des initiales qui représentent des mots.<br>
+**Explication des échelles quantifiées :**
+<ul>
+  <li>Medu, Fedu (niveau d'étude de la mère et du père) : échelle allant de 0 à 4 -0 : **aucune**, 1 : **primaire**, 2 : **collège**, 3 : **lycée**, 4 : **supérieur**</li>
+  <li>traveltime (temps de trajet entre la maison et l'école) : échelle allant de 1 à 4 - 1 : **0 - 15 min**, 2 : **15 - 30 min**, 3 : **30 - 60 min**, 4 : **> 1 heure**</li>
+  <li>studytime (temps de travail) : échelle allant de 1 à 4 - 1 : **0 - 2 h**, 2 : **2 - 5 h**, 3 : **5 - 10 h**, 4 : **> 10 heure**</li>
+  <li>famrel (relations familiales), health (niveau de santé) : échelle allant de 1 à 5 - 1 : **vraiment mauvais**, 5 : **excellent**</li>
+  <li>freetime (temps libre), goout (temps de sortie avec les amis), Dalc et Walc (consommation d'alcool la semaine et le week-end): échelle allant de 1 à 5 - 1 : **vraiment peu**, 5 : **vraiment beaucoup**</li>
+</ul><br>
+**Explication des initiales et accronymes :**
+<ul>
+  <li>school (école) : GP : **Gabriel Perreira**, MS : **Mousinho da Silveira**</li>
+  <li>sex (sexe de l'élève) : M : **Garçon**, F : **Fille**</li>
+  <li>address (lieu de vie) : R : **Campagne**, U : **Ville**</li>
+  <li>famsize (taille de la famille) : LE3 : **3 personnes ou moins**, GT3 : **Plus de 3 personnes**</li>
+  <li>Pstatus (statut marital des parents) : A : **parents séparés**, T : **parents ensembles**</li>
+</ul><br>
 
-donner répartitions filles/garçons + campagne/ville... quelques données importantes + DIAGRAMME CORELATIONS ???
-
-# Importation des dataset et datacleaning
+### Importation des dataset et datacleaning
 
 Importons dans un premier temps les datasets. Lors de notre exploration de données, nous avons pu déceler **deux problèmes** qu'il fallait résoudre : le premier, le fait que **la population de 20 ans et + était clairement négligeable** dans les datasets et nous avons donc décidé de l'enlever pour pouvoir avoir une vision plus claire sur les 15 - 19 ans (âges lycéens). 
 
@@ -90,78 +103,17 @@ dfPortugais %>%
   head()
 ```
 
+### Quelques chiffres clés
+
+donner répartitions filles/garçons + campagne/ville... quelques données importantes + DIAGRAMME CORELATIONS ???
+
 # Comment être l'élève avec les meilleurs résultats ?
 
 Dans cette première partie, nous allons essayer de trouver **quels sont les critères qui permettent de définir le profil type de "l'élève modèle"**.
 
-### L'importance d'internet 
-
-```{r internet_grade, message = FALSE}
-
-notesSiInternet <- dfMaths %>% filter(internet == "yes") %>% select(Gmean) %>% mutate(mean_Gmean = mean(Gmean)) %>% distinct(mean_Gmean)
-notesSiInternet <- notesSiInternet[1,1]
-
-notesSiPasInternet <- dfMaths %>% filter(internet == "no") %>% select(Gmean) %>% mutate(mean_Gmean = mean(Gmean)) %>% distinct(mean_Gmean)
-notesSiPasInternet <- notesSiPasInternet[1,1]
-```
-
-Voici la moyenne des notes des élèves ayant internet : **`r notesSiInternet`** qui est bien plus élevé que la moyenne des notes des élèves n'ayant pas internet : **`r notesSiPasInternet`**. **L'importance d'avoir internet** pour les études est bien visible ici.
-
-### Habiter en ville, un avantage ?
-
-```{r address_grade, message = FALSE}
-notesSiVille <- dfPortugais %>% filter(address == "U") %>% select(Gmean) %>% mutate(mean_Gmean = mean(Gmean)) %>% distinct(mean_Gmean)
-notesSiVille <- notesSiVille[1,1]
-
-notesSiCampagne <- dfPortugais %>% filter(address == "R") %>% select(Gmean) %>% mutate(mean_Gmean = mean(Gmean)) %>% distinct(mean_Gmean)
-notesSiCampagne <- notesSiCampagne[1,1]
-```
-
-On peut avoir accès également à la moyenne des notes des élèves venant de la ville : **`r notesSiVille`** et celle de ceux venant de la campagne : **`r notesSiCampagne`**. On peut voir qu'en général, **les personnes venant de la ville réussissent mieux que celles venant de la campagne**. On peut se dire que le temps de trajet joue un grand rôle dans la réussite des élèves, et nous allons le vérifier.
-
-### La nécessité de la proximité avec l'établissement 
-
-```{r traveltime_grade, message = FALSE}
-dfPortugais$traveltime <- as.factor(dfPortugais$traveltime)
-#preparation des données
-df <- dfPortugais %>% group_by(traveltime) %>% mutate(mean_Gmean = mean(Gmean)) %>% distinct(traveltime, mean_Gmean)
-
-ggplot(df, aes(x = traveltime, y = mean_Gmean)) +
-    geom_bar(stat = "identity", alpha = 0.7, aes(fill = traveltime)) +
-    labs(title = "Notes en fonction du temps de trajet en Portugais", x = "traveltime", y = "moyenne des notes", fill = "traveltime") +
-    scale_fill_discrete(type = "viridis")
-
-```
-
-En effet, **les notes baissent plus le temps de trajet est long**. Cela concore bien avec les résultats trouvés précédemment.
-
-### Le métier des parents influe sur les notes
-
-```{r fjob_grade, message = FALSE}
-#préparation des données
-df <- dfMaths %>% group_by(Fjob) %>% mutate(mean_Gmean = mean(Gmean)) %>% distinct(Fjob, mean_Gmean)
-
-#Barplot 
-fJob <- ggplot(df, aes(x = Fjob, y = mean_Gmean)) + 
-    geom_bar(stat = "identity", fill = viridis(5), alpha = .7) +
-    labs(x = "Job du père", y = "Gmean",title = "Moyenne selon le Job du père")
-```
-
-```{r mjob_grade, message = FALSE}
-#préparation des données
-df <- dfMaths %>% group_by(Mjob) %>% mutate(mean_Gmean = mean(Gmean)) %>% distinct(Mjob, mean_Gmean)
-
-#Barplot 
-mJob <- ggplot(df, aes(x = Mjob, y = mean_Gmean)) + 
-    geom_bar(stat = "identity", fill = viridis(5), alpha = .7) +
-    labs(x = "Job de la mère", y = "Gmean",title = "Moyenne selon le Job de la mère")
-
-grid.arrange(fJob, mJob, ncol=2, nrow = 1)
-```
-
-On peut déceler que **le métier du père et de la mère ont une influence sur les notes de l'étudiant**. En effet, un **père professeur** amène généralement à de bien meilleurs résultats. Tandis que du côté de **la mère**, c'est **le travail dans la santé** qui permet d'avoir des meilleurs notes. On pourra voir par la suite si avoir une mère dans la santé implique être en bonne santé et donc conclure sur le fait qu'être en bonne santé a un impact direct sur les notes.
-
 ### Qui travaille le plus ? Et à quel prix ?
+
+Souvent il y a une compéition entre les filles et les garçons à l'école, et on entend souvent dire que **les filles sont meilleures que les garçons. Mais est-ce la vérité ?**
 
 ```{r studytime_sex_grade, message = FALSE}
 tempsMoyenGarcons <- dfMaths %>% filter(sex == "M") %>% select(studytime) %>% mutate(mean_studytime = mean(studytime)) %>% distinct(mean_studytime)
@@ -188,31 +140,99 @@ ggplot(df, aes(x = sex, y = Gmean)) +
   geom_boxplot(aes(fill = sex),alpha = .8,size = 1) + 
   stat_summary(fun = "mean", geom = "point", shape= 21, size= 2, fill= "white") +
   scale_fill_brewer(palette = "Pastel2") +
-  ggtitle("Répartition des notes en fonction du genre")
+  ggtitle("Répartition des notes en fonction du genre") + 
+  theme(legend.position = "none") +
+  scale_x_discrete(labels = c("Filles","Garçons"))
   
 ```
 
-On peut donc voir que **les garcons ont des meilleures notes que les filles**, alors qu'ils travaillent moins en moyenne. On conclue qu'en théorie, **il vaut mieux être un garcon pour réussir**.
+On peut donc voir que **les garcons ont des meilleures notes que les filles**, alors qu'ils travaillent moins en moyenne. On peut donc en conclure que les **filles sont plus studieuses que les garçons**, mais que cela ne se fait pas ressentir au niveau des notes et donc qu'**il vaut mieux être un garcon pour réussir**.
 
-### Le temps, important pour s'aérer l'esprit
+### L'importance d'internet 
 
-```{r freetime_grade, message = FALSE}
-dfPortugais$freetime <- as.factor(dfPortugais$freetime)
-df <- dfPortugais %>% group_by(freetime) %>% mutate(mean_Gmean = mean(Gmean)) %>% distinct(freetime, mean_Gmean)
+Internet est aujourd'hui un outil qui peut parraître indispensable aux élèves. **Nous allons voir si l'accès à internet permet réellement aux élèves d'avoir de meilleures notes.**
 
-ggplot(df, aes(x = freetime, y = mean_Gmean)) +
-    geom_bar(stat = "identity", alpha = 0.7, aes(fill = freetime)) +
-    geom_line(color = "blue") +
-    labs(title = "Temps libre en fonction des notes", x = "temps libre", y = "moyenne des notes", fill = "Temps libre") +
-    scale_fill_discrete(type = "viridis")
-  
+```{r internet_grade, message = FALSE}
+
+notesSiInternet <- dfMaths %>% filter(internet == "yes") %>% select(Gmean) %>% mutate(mean_Gmean = mean(Gmean)) %>% distinct(mean_Gmean)
+notesSiInternet <- notesSiInternet[1,1]
+
+notesSiPasInternet <- dfMaths %>% filter(internet == "no") %>% select(Gmean) %>% mutate(mean_Gmean = mean(Gmean)) %>% distinct(mean_Gmean)
+notesSiPasInternet <- notesSiPasInternet[1,1]
 ```
 
-On peut voir que **le fait de se libérer du temps libre est important pour réussir**. En effet, ce sont les élèves qui se libérent un peu de temps libre (mais pas trop, niveau 2), qui obtiennent les meilleurs résultats.
+On remarque que la moyenne des notes des élèves ayant internet : **`r round(notesSiInternet, digits=2)`** est bien plus élevé que la moyenne des notes des élèves n'ayant pas internet : **`r round(notesSiPasInternet, digits=2)`**. **L'accès à internet** est donc **important** dans la réussite scolaire des élèves.
 
-### Pour réussir, il faut travailler
+### Habiter en ville, un avantage ?
 
-Voyons maintenant si le temps de travail implique des meilleurs notes, en Portugais :
+On peut se dire qu'habiter en ville est un avantage pour avoir avoir de meilleures notes, qui passe notamment par **un accès plus facile à la culture : musée, bibliothèque, cinéma... Mais est-ce vrai ?**
+
+```{r address_grade, message = FALSE}
+notesSiVille <- dfPortugais %>% filter(address == "U") %>% select(Gmean) %>% mutate(mean_Gmean = mean(Gmean)) %>% distinct(mean_Gmean)
+notesSiVille <- notesSiVille[1,1]
+
+notesSiCampagne <- dfPortugais %>% filter(address == "R") %>% select(Gmean) %>% mutate(mean_Gmean = mean(Gmean)) %>% distinct(mean_Gmean)
+notesSiCampagne <- notesSiCampagne[1,1]
+```
+
+On peut avoir accès également à la moyenne des notes des élèves venant de la ville : **`r round(notesSiVille, digits=2)`** et celle de ceux venant de la campagne : **`r round(notesSiCampagne, digits=2)`**. On peut voir qu'en général, **les personnes venant de la ville réussissent mieux que celles venant de la campagne**. <br>
+
+### La nécessité de la proximité avec l'établissement 
+
+Pour compléter cette comparaison des lieux de vie, on peut se dire que le temps de trajet joue un grand rôle dans la réussite des élèves, et qu'un temps de trajet plus court est favorable pour avoir de meilleures notes. **Est-ce vraiment un avantage d'habiter proche de son établissement scolaire ?**
+
+```{r traveltime_grade, message = FALSE}
+dfPortugais$traveltime <- as.factor(dfPortugais$traveltime)
+#preparation des données
+df <- dfPortugais %>% group_by(traveltime) %>% mutate(mean_Gmean = mean(Gmean)) %>% distinct(traveltime, mean_Gmean)
+
+ggplot(df, aes(x = traveltime, y = mean_Gmean)) +
+    geom_bar(stat = "identity", alpha = 0.7, aes(fill = traveltime)) +
+    labs(title = "Notes en fonction du temps de trajet", x = "Temps de trajet", y = "Moyenne des notes", fill = "Temps de trajet") +
+    scale_fill_discrete(type = "viridis", name = "Temps de trajet", labels = c("1 : 0 - 15 mniutes", "2 : 15 - 30 mniutes","3 : 30 - 60 mniutes","4 : > 1 heure"))
+
+```
+
+Notre hypothèse est donc bien vérifiée ; **les notes baissent plus le temps de trajet est long**. 
+
+### Le métier des parents influe-t-il sur les notes ?
+
+Après nous être intéressés au sexe ainsi qu'au lieu de vie des étudiants, nous allons nous interessés au cadre familial et plus particulièrement au travail des parents. Nous pouvons penser que des parents travaillant dans l'éducation permet aux élèves d'avoir de meilleurs résultats. **Mais le travail des parents a-t-il un vrai impact sur les notes des élèves ?**
+
+```{r fjob_grade, message = FALSE}
+#préparation des données
+df <- dfMaths %>% group_by(Fjob) %>% mutate(mean_Gmean = mean(Gmean)) %>% distinct(Fjob, mean_Gmean)
+
+#Barplot 
+fJob <- ggplot(df, aes(x = Fjob, y = mean_Gmean)) + 
+    geom_bar(stat = "identity", fill = viridis(5), alpha = .7) +
+    labs(x = "Job du père", y = "Gmean", title = "Moyenne selon le travail du père") + 
+    theme(legend.position = "none") +
+    scale_x_discrete(labels = c("Au foyer","Santé", "Autre","Serv.Public","Education"))
+```
+
+```{r mjob_grade, message = FALSE}
+#préparation des données
+df <- dfMaths %>% group_by(Mjob) %>% mutate(mean_Gmean = mean(Gmean)) %>% distinct(Mjob, mean_Gmean)
+
+#Barplot 
+mJob <- ggplot(df, aes(x = Mjob, y = mean_Gmean)) + 
+    geom_bar(stat = "identity", fill = viridis(5), alpha = .7) +
+    labs(x = "Job de la mère", y = "Gmean", title = "Moyenne selon le travail de la mère") + 
+    theme(legend.position = "none") +
+    scale_x_discrete(labels = c("Au foyer","Santé", "Autre","Serv.Public","Education"))
+
+grid.arrange(fJob, mJob, ncol=2, nrow = 1)
+```
+
+On peut déceler que **le métier du père et de la mère ont bien une influence sur les notes de l'étudiant**.<br>
+En effet, un **père professeur** amène généralement à de bien meilleurs résultats. Tandis que du côté de **la mère**, c'est **le travail dans la santé** qui permet d'avoir des meilleurs notes. On pourra voir par la suite si avoir une mère dans la santé implique être en bonne santé et donc conclure sur le fait qu'être en bonne santé a un impact direct sur les notes.
+
+### Travailler plus pour gagner plus ?
+
+Nous allons maintenant nous axer sur l'implication scolaire des étudiants : leur taux d'absence, leur volonté de faire des grandes études, s'il font du soutient scolaire, leur temps de travail...
+
+**Est-ce que le fait de réviser plus est un vecteur pour avoir de meilleures notes ?**
 
 ```{r studytime_grade, message = FALSE}
 dfPortugais$studytime <- as.factor(dfPortugais$studytime)
@@ -222,47 +242,17 @@ df <- dfPortugais %>% group_by(studytime) %>% mutate(mean_Gmean = mean(Gmean)) %
 ggplot(df, aes(x = studytime, y = mean_Gmean)) +
     geom_bar(stat = "identity", alpha = 0.7, aes(fill = studytime)) +
     geom_line(color = "blue") +
-    labs(title = "Notes en fonction du temps de travail en Portugais", x = "temps de travail", y = "moyenne des notes", fill = "Temps de travail") +
-    scale_fill_discrete(type = "viridis")
+    labs(title = "Notes en fonction du temps de travail", x = "Temps de travail", y = "Moyenne des notes") +
+    scale_fill_discrete(type = "viridis", name = "Temps de travail", labels = c("1 : 0 - 2 heures", "2 : 2 - 5 heures","3 : 5 - 10 heures","4 : > 10 heures"))
     
 ```
 
-On voit que **plus les élèves travaillent, meileures sont leurs notes**, cependant, on voit que la différence n'est pas énorme, même négligeable, entre 3h et 4h. On pense alors que **travailler plus de 3h n'est pas utile pour avoir de bonnes notes**.
+On voit que **plus les élèves travaillent, meileures sont leurs notes**. Néanmoins, on voit que la différence n'est pas énorme, même négligeable, lorsque le temps de travail dépasse 10h. On pense alors que **travailler plus de 10h n'est pas utile pour avoir de bonnes notes**.
 
-### Boire de l'alcool, c'est mal, mais un petit peu, ca ne fait pas de mal
-
-```{r walc_grade, message = FALSE}
-dfPortugais$Walc <- as.factor(dfPortugais$Walc)
-df <- dfPortugais %>% group_by(Walc) %>% mutate(mean_Gmean = mean(Gmean)) %>% distinct(Walc, mean_Gmean)
-
-Walc <- ggplot(df, aes(x = Walc, y = mean_Gmean)) +
-    geom_bar(stat = "identity", alpha = 0.7, aes(fill = Walc)) +
-    geom_line(color = "blue") +
-    labs(title = "Conso d'alcool le wknd en fonction des notes", x = "conso d'alcool le wknd", y = "moyenne des notes", fill = "conso d'alcool") +
-    scale_fill_discrete(type = "viridis")
-  
-```
-
-On peut voir que **la consommation d'alcool le weekend a clairement un impact sur les notes** et que ce sont **ceux qui en consomment peu** (niveau 1 ou 2) qui **ont les meilleures résultats**. On peut donc considérer qu'**il est préférable de ne pas consommer d'alcool le weekend, ou simplement un petit verre, pour avoir les meilleurs notes** (s'amuser le weekend pour relacher les cours par exemple).
-
-Est-ce la même conclusion pour l'alcool en semaine ? 
-
-```{r dalc_grade, message = FALSE}
-dfPortugais$Dalc <- as.factor(dfPortugais$Dalc)
-df <- dfPortugais %>% group_by(Dalc) %>% mutate(mean_Gmean = mean(Gmean)) %>% distinct(Dalc, mean_Gmean)
-
-Dalc <- ggplot(df, aes(x = Dalc, y = mean_Gmean)) +
-    geom_bar(stat = "identity", alpha = 0.7, aes(fill = Dalc)) +
-    geom_line(color = "blue") +
-    labs(title = "Notes selon la conso d'alcool en semaine", x = "Conso d'alcool en semaine", y = "moyenne des notes", fill = "conso d'alcool") +
-    scale_fill_discrete(type = "viridis")
-grid.arrange(Walc, Dalc, ncol=2, nrow = 1)
-
-```
-
-L'impact de la **consommation d'alcool en semaine** semble encore **plus lourd**. Cette fois si, **le niveau 1 de consommation** (pas de consommation) est celui qui **obtient les meilleures notes**, et de loin. Cependant, **quitte à boire beaucoup de l'alcool en semaine, autant en boire énormément** car le niveau 5 obtient des meilleures notes que le niveau 4. (les résultats du niveau 5 sont sûrement tronquées par le fait que peu d'élèves soient au niveau 5, la représentativité est donc faible).
 
 ### Pour réussir, faut-il nécessairement aller en cours ?
+
+Un des premiers points sur lequel on se penche est l'absentéisme. **Un gros taux d'absence entraine-t-il une chute des notes ?**
 
 ```{r absences_grade, message = FALSE}
 #preparation des données
@@ -271,7 +261,8 @@ df <- dfMaths
 ggplot(df, aes(x = absences, y = Gmean)) +
     geom_point() +
     geom_smooth() +
-    labs(title = "Notes en fonction du nb d'absences en maths", x = "absences", y = "moyenne des notes")
+    labs(title = "Notes en fonction du nombre d'absences", x = "Absences", y = "Moyenne des notes") + 
+    theme(legend.position = "none")
 
 ```
 
@@ -279,14 +270,18 @@ Le nombre d'individus ayant plus de 15 absences est trop faible et le graphique 
 
 ### La volonté de faire des études supérieurs influe-t-elle ?
 
+On peut également se demander si **le fait de vouloir faire des grandes études** implique que **l'élève se sent plus concerné scolairement** et donc que cela si **cela ressent au niveau des notes**.
+
 ```{r higher_grade, message = FALSE}
 #preparation des données
 df <- dfMaths %>% group_by(higher) %>% mutate(mean_Gmean = mean(Gmean)) %>% distinct(higher, mean_Gmean)
 
 ggplot(df, aes(x = higher, y = mean_Gmean)) +
     geom_bar(stat = "identity", alpha = 0.8, aes(fill = higher)) +
-    labs(title = "Notes en fonction de la volonté de faire des études sup en Maths", x = "volonté de faire des études sup", y = "moyenne des notes", fill = "volonté de faire des études sup") +
-  scale_fill_brewer(palette = "Pastel2")
+    labs(title = "Notes en fonction de la volonté de faire des études supérieure", x = "Volonté de faire des études sup", y = "Moyenne des notes") +
+  scale_fill_brewer(palette = "Pastel2") + 
+    theme(legend.position = "none") +
+  scale_x_discrete(labels = c("Non","Oui"))
 
 ```
 
@@ -294,33 +289,38 @@ En effet, on peut voir que la volonté de faire des études supérieures est **t
 
 ### Le soutien scolaire, un vrai plus ?
 
-```{r paid_grade, message = FALSE}
+Certains élèves bénéficient de soutient scolaire , qui est gratuit. Il y a également des élèves qui bénéficient de cours payants, que l'on peut assimiler à du soutient scolaire scolaire payant. Vaut-il mieux pour les élèves opter pour la version payante s'ils veulent avoir de meilleures notes.
+
+```{r paid_schoolsup_grade, message = FALSE}
 #preparation des données
 df <- dfMaths %>% group_by(paid) %>% mutate(mean_Gmean = mean(Gmean)) %>% distinct(paid, mean_Gmean)
 
 paid <- ggplot(df, aes(x = paid, y = mean_Gmean)) +
     geom_bar(stat = "identity", alpha = 0.7, aes(fill = paid)) +
-    labs(title = "Notes selon soutien payant en Maths", x = "soutien scolaire payant", y = "moyenne des notes", fill = "élève soutenu") +
-    scale_fill_brewer(palette = "Pastel2")
+    labs(title = "Notes selon soutien payant", x = "Soutien scolaire payant", y = "Moyenne des notes") +
+    scale_fill_brewer(palette = "Pastel2") + 
+    theme(legend.position = "none") +
+    scale_x_discrete(labels = c("Non","Oui"))
 
-```
-
-```{r schoolsup_grade, message = FALSE}
 #preparation des données
 df <- dfMaths %>% group_by(schoolsup) %>% mutate(mean_Gmean = mean(Gmean)) %>% distinct(schoolsup, mean_Gmean)
 
 schoolsup <- ggplot(df, aes(x = schoolsup, y = mean_Gmean)) +
     geom_bar(stat = "identity", alpha = 0.7, aes(fill = schoolsup)) +
-    labs(title = "Notes selon soutien gratuit en Maths", x = "soutien scolaire gratuit", y = "moyenne des notes", fill = "élève soutenu") +
-    scale_fill_brewer(palette = "Pastel2")
+    labs(title = "Notes selon soutien gratuit", x = "Soutien scolaire gratuit", y = "Moyenne des notes") +
+    scale_fill_brewer(palette = "Pastel2") +
+    theme(legend.position = "none") + 
+    scale_x_discrete(labels = c("Non","Oui"))
 
 grid.arrange(schoolsup, paid, ncol=2, nrow = 1)
 
 ```
 
-Les élèves ayant un **soutien scolaire gratuit**, donné par l'établissement semblent obtenir de **bien moins bons résultats** que les élèves ayant un **soutien scolaire payant**. En effet, on peut donc conclure sur le fait que **le soutien scolaire gratuit est mis en place pour les élèves en difficulté**, et que le **soutien scolaire payant** est clairement **bénéfique** pour les personnes qui le prenne.
+Les élèves ayant un **soutien scolaire gratuit**, donné par l'établissement semblent obtenir de **bien moins bons résultats** que les élèves ayant un **soutien scolaire payant**. On en conclut donc que la **version payante** du soutient scolaire est donc **bénéfique pour avoir de meilleures notes**.
 
 ### Les échecs ont-ils un impact sur les notes ?
+
+Au cours de leur scolarité, certains élèves redoublent. Souvent cela se passe car ils ont de moins bons résultats que les autres élèves. Ces échecs passés influent-ils directement sur les notes actuelles de ces élèves ?  
 
 ```{r failures_grade, message = FALSE}
 dfPortugais$failures <- as.factor(dfPortugais$failures)
@@ -329,12 +329,66 @@ df <- dfPortugais %>% group_by(failures) %>% mutate(mean_Gmean = mean(Gmean)) %>
 
 ggplot(df, aes(x = failures, y = mean_Gmean)) +
     geom_bar(stat = "identity", alpha = 0.7, aes(fill = failures)) +
-    labs(title = "Notes en fonction du temps de trajet en Portugais", x = "failures", y = "moyenne des notes", fill = "nb de failures") +
-    scale_fill_discrete(type = "viridis")
+    labs(title = "Notes en fonction du redoublement", x = "Redoublement", y = "Moyenne des notes") +
+    scale_fill_discrete(type = "viridis") +
+    theme(legend.position = "none")
 
 ```
 
-Enfin, on peut voir que les échecs d'un élève **influe directement** sur ses notes. En effet, ce sont **les élèves n'ayant jamais échoués qui s'en sortent le mieux**, cela semble logique.
+On peut voir que le nombre de redoublement d'un élève **influe directement** sur ses notes. En effet, ce sont **les élèves n'ayant jamais redoublé qui s'en sortent le mieux**. Cela semble logique !
+
+### Le temps, important pour s'aérer l'esprit ?
+
+Pour finir cette partie sur l'analyse des notes, nous allons voir comment les facteurs extra-scolaire peuvent influer sur les notes. 
+
+**Est-il conseiller pour les élèves de prendre du temps libre après les cours ?**
+
+```{r freetime_grade, message = FALSE}
+dfPortugais$freetime <- as.factor(dfPortugais$freetime)
+df <- dfPortugais %>% group_by(freetime) %>% mutate(mean_Gmean = mean(Gmean)) %>% distinct(freetime, mean_Gmean)
+
+ggplot(df, aes(x = freetime, y = mean_Gmean)) +
+    geom_bar(stat = "identity", alpha = 0.7, aes(fill = freetime)) +
+    geom_line(color = "blue") +
+    labs(title = "Notes selon le temps libre", x = "Temps libre", y = "Moyenne des notes") +
+    scale_fill_discrete(type = "viridis") +
+    theme(legend.position = "none")
+  
+```
+
+On peut voir que **le fait de se libérer du temps libre est important pour réussir**. Néanmoins, ils doivent faire attention à ne pas en prendre trop pour ne pas voir leur moyenne chuter.
+
+### L'alcool c'est de l'eau ?
+
+Le lycée, c'est le moment où les élèves commencent à faire leurs premières soirées. Et qui dit premières soirées, dit premières consommation d'alcool (et premières cuites...). **L'alcool est-il néfaste sur le plan scolaire pour les élèves ? Est-ce la même conclusion pour l'alcool en semaine et le week-end ?**
+
+```{r alc_grade, message = FALSE}
+dfPortugais$Walc <- as.factor(dfPortugais$Walc)
+df <- dfPortugais %>% group_by(Walc) %>% mutate(mean_Gmean = mean(Gmean)) %>% distinct(Walc, mean_Gmean)
+
+Walc <- ggplot(df, aes(x = Walc, y = mean_Gmean)) +
+    geom_bar(stat = "identity", alpha = 0.7, aes(fill = Walc)) +
+    geom_line(color = "blue") +
+    labs(title = "Notes selon cons. alc. week-end", x = "Consommation d'alcool le week-end", y = "Moyenne des notes") +
+    scale_fill_discrete(type = "viridis") +
+    theme(legend.position = "none")
+  
+dfPortugais$Dalc <- as.factor(dfPortugais$Dalc)
+df <- dfPortugais %>% group_by(Dalc) %>% mutate(mean_Gmean = mean(Gmean)) %>% distinct(Dalc, mean_Gmean)
+
+Dalc <- ggplot(df, aes(x = Dalc, y = mean_Gmean)) +
+    geom_bar(stat = "identity", alpha = 0.7, aes(fill = Dalc)) +
+    geom_line(color = "blue") +
+    labs(title = "Notes selon cons. alc. semaine", x = "Consommation d'alcool en semaine", y = "Moyenne des notes", fill = "conso d'alcool") +
+    scale_fill_discrete(type = "viridis") + 
+    theme(legend.position = "none")
+grid.arrange(Walc, Dalc, ncol=2, nrow = 1)
+
+```
+On peut voir que **la consommation d'alcool le weekend a clairement un impact sur les notes** et que ce sont **ceux qui en consomment peu** (niveau 1 ou 2) qui **ont les meilleures résultats**. On peut donc considérer qu'**il est préférable de ne pas consommer d'alcool le weekend, ou simplement un petit verre, pour avoir les meilleurs notes** (s'amuser le weekend pour relacher les cours par exemple).<br>
+
+
+L'impact de la **consommation d'alcool en semaine** semble encore **plus lourde**. Ceux qui ne consomment pas du tout d'alcool la semaine **obtienent les meilleures notes**, et de loin. Cependant, **quitte à boire beaucoup de l'alcool en semaine, autant en boire énormément** car le niveau 5 (vraiment beaucoup) obtient des meilleures notes que le niveau 4 (beaucoup). Les résultats du niveau 5 sont sûrement tronquées par le fait que peu d'élèves soient à ce niveau, la représentativité est donc faible.
 
 ### Conclusion sur l'élève modèle
 
@@ -659,7 +713,8 @@ df <- dfPortugais %>% group_by(Walc) %>% mutate(mean_famrel = mean(famrel)) %>% 
 ggplot(df, aes(x = Walc, y = mean_famrel)) + 
   geom_bar(stat = "identity", alpha = 0.7, aes(fill = Walc)) +
   labs(title = "Relations familiales Walc", x = "Walc", y = "Relation familiale", fill = "Walc") +
-  scale_fill_discrete(type = "viridis")
+  scale_fill_discrete(type = "viridis") +
+  theme(legend.position = "none")
 ```
 
 On remarque que **plus la consommation d'alcool est importante**, **moins** les relations familiales sont bonnes.
@@ -682,9 +737,11 @@ De nos analyses, nous avons pu déceler plusieurs critères qui permettent d'avo
 
 # Comment être l'élève en meilleure santé ?
 
-Après nous être interessés aux notes et aux relations familiales des élèves, nous allons dans cette dernière partie s'interroger sur les facteurs qui font qu'un élève est en bonne santé.
+Après nous être interessés aux notes et aux relations familiales des élèves, nous allons dans cette dernière partie s'interroger sur **les facteurs qui font qu'un élève est en bonne santé**.
 
-```{r distribution etat santé, message = FALSE}
+La santé est quantifiée sur une échelle de 1 à 5, avec 1 signifiant "mauvais" et 5 "excellent".
+
+```{r health, message = FALSE}
 data <- dfMaths %>% select(health) %>% 
   add_column(all = "yes")
 statistics <- list("min" =  min(data$health),
@@ -693,8 +750,8 @@ statistics <- list("min" =  min(data$health),
                    "sd" =  sd(data$health)
                    )
 
-mean =  statistics$mean
-sd = statistics$sd
+mean =  round(statistics$mean, digits=2)
+sd = round(statistics$sd, digits=2)
 
 plot <- ggplot(data, aes(y = health)) +
   geom_violin(aes(x = "santé", fill = "purple"),width = 0.5, alpha = 0.5, size = 1) + 
@@ -711,17 +768,14 @@ plot <- ggplot(data, aes(y = health)) +
   
 plot
 ```
-L'état de santé moyen est `r statistics$mean` et l'écart type de `r statistics$sd`. La population est majoritairement en bonne santé. Par la suite nous allons présenter l'influence de certains facteurs sur l'état de santé des élèves 
 
-### Exploration de l'effet de la nature de la famille (monoparentale, biparentale) sur la santé des élèves.
+L'état de santé moyen est **`r mean`** et l'écart type de **`r sd`**. La population est majoritairement en bonne santé.
 
-L'hypothèse naturelle qu'on emmettrait est que le fait de vivre dans une famille où les parents sont séparés aurait un effet négatif sur la santé. Seulement, lorsqu'on s'intéresse à la moyenne de l'état de santé dans les deux cas, on obtient des résultats assez similaires.
+### Quel est l'impact de la famille sur la santé des étudiants ?
 
-
-```{r}
+```{r health_pstatus_guardian, message = FALSE}
 data1 <- dfMaths %>% select(Pstatus, health) %>%
-  group_by(Pstatus) %>%
-  summarise_all(funs(mean))
+  group_by(Pstatus)
 
 plot1 <- ggplot(data1, aes(x = factor(Pstatus), y = health, fill = Pstatus )) + 
   geom_col() +
@@ -732,13 +786,12 @@ plot1 <- ggplot(data1, aes(x = factor(Pstatus), y = health, fill = Pstatus )) +
 
 data2 <- dfMaths %>% filter(Pstatus == 'A') %>%
   select(guardian, health) %>%
-  group_by(guardian) %>%
-  summarise_all(funs(mean))
-
+  group_by(guardian)
+4
 plot2 <- ggplot(data2, aes(x = factor(guardian), y = health, fill = guardian )) + 
   geom_col() +
   labs( title = "Santé selon le tuteur", 
-        subtitle = "Familles monoparentes",
+        subtitle = "Familles séparées",
         x = "Tuteur", y = "Etat de santé moyen",
         fill = "guardian") + 
   scale_fill_discrete(name = "Tuteur", labels = c("Père", "Mère","Autre")) + 
@@ -747,27 +800,25 @@ plot2 <- ggplot(data2, aes(x = factor(guardian), y = health, fill = guardian )) 
 grid.arrange(plot1, plot2, nrow = 1)
 ```
 
-Cependant, lorsqu'on rentre dans le détail de chaque catégorie et qu'on s'intéresse aux tuteurs, on se rend compte que les élèves éduqués par une mère seule ont plus de soucis de santé, décrochant de près d'un point des autres cas.
-
+Nous aurions pu penser que des élèves avec des parents ensembles auraient une meilleure santé que ceux avec des parents séparés. **Mais les chiffres nous donnent tort**. <br>
+En s'interessant de plus près aux familles monoparentales, et que l'on s'interesse aux tuteurs on se rend compte que **les élèves éduqués par une mère seule ont plus de soucis de santé, décrochant de près d'un point**4 des autres cas.<br>
 Pour essayer d'expliquer cela, nous avons essayé de faire une étude sur l'emploi et l'éducation de ces femmes seules à s'occuper de leurs enfants. On pourrait imaginer qu'elles n'occupent pas des métiers à haut revenu ou qu'elles n'ont pas faites de longues études.
 
 
-```{r medu et mjob des familles mono parentales}
+```{r health_separate_pjob_pedu, message = FALSE}
 data1 <- dfMaths %>% filter(Pstatus == 'A', guardian == "mother") %>%
   select(Mjob) %>% count(Mjob)
 
 data2 <- data <- dfMaths %>% filter(Pstatus == 'A', guardian == "mother") %>%
   select(Mjob, health) %>% 
-  group_by(Mjob) %>% 
-  summarise_all(funs(mean))
+  group_by(Mjob)
 
 data3 <- dfMaths %>% filter(Pstatus == 'A', guardian == "mother") %>%
   select(Medu) %>% count(Medu)
 
 data4 <- data <- dfMaths %>% filter(Pstatus == 'A', guardian == "mother") %>%
   select(Medu, health) %>% 
-  group_by(Medu) %>% 
-  summarise_all(funs(mean))
+  group_by(Medu)
 
 plot1 <- ggplot(data1, aes(area = n, fill = Mjob, label = Mjob)) + 
   geom_treemap() +
@@ -779,7 +830,7 @@ plot1 <- ggplot(data1, aes(area = n, fill = Mjob, label = Mjob)) +
 plot2 <- ggplot(data2, aes(x = factor(Mjob) , y = health, fill = Mjob)) + 
   geom_col() + 
   labs(title = "Santé selon le métier de la mère", 
-       subtitle = "Familles monoparentale",
+       subtitle = "Familles séparées",
        x = "Travail de la mère",
        y = "État de santé") + 
   theme(legend.position = "none") + 
@@ -788,15 +839,15 @@ plot2 <- ggplot(data2, aes(x = factor(Mjob) , y = health, fill = Mjob)) +
 plot3 <- ggplot(data3, aes(area = n, fill = factor(Medu), label = Medu)) + 
   geom_treemap() +
   geom_treemap_text(fontface = "italic", colour = "white", place = "centre") +
-  scale_fill_discrete(name = "Niveau d'études", labels = c("1", "2","3","4"))
+  scale_fill_discrete(name = "Niveau d'études", labels = c("Primaire", "Collège","Lycée","Supérieur"))
 
 plot4 <- ggplot(data4, aes(x = factor(Medu) , y = health, fill = Medu)) + 
   geom_col() + 
   labs(title = "Santé selon l'éducation de la mère", 
-       subtitle = "Familles monoparentale",
+       subtitle = "Familles séparées",
        x = "Éducation de la mère",
        y = "État de santé") + 
-  scale_x_discrete(name = "Niveau d'études", labels = c("1", "2","3","4")) +
+  scale_x_discrete(name = "Niveau d'études", labels = c("Primaire", "Collège","Lycée","Supérieur")) +
   theme(legend.position = "none")
 
 grid.arrange(plot1, plot2, plot3, plot4, nrow = 2, ncol = 2)
@@ -811,14 +862,12 @@ In fine, on ne peut confirmer que la moitié de nos hypothèses. Pour ce qui est
 Nous partons sur l'idée selon laquelle de mauvaises relations familiales ont des répercutions négatives sur la santé des élèves
 
 
-```{r health according to famrel }
+```{r health_famrel, message = FALSE}
 data <- dfMaths %>% select(health, famrel) %>%
-  group_by(famrel) %>% summarise_all(funs(mean))
+  group_by(famrel)
 
 plot <- data %>% ggplot( aes(x = famrel, y = health)) +
   geom_col(aes( fill = famrel)) + 
-  geom_point(aes( colour = famrel)) +
-  geom_smooth() +
   labs( title = "Santé selon la relation familiale",
         x = "Relation familiale", y = "État de santé") + 
   theme(legend.position = "none")
@@ -832,27 +881,24 @@ En effet, nous voyons clairement une évolution progressive de la santé suivant
 
 Les systèmes de santé étant assez bien développés en Europe en général, nous ne nous attendons pas à avoir des différences significatives selon le métier des parents.
 
-```{r}
-data1 <- dfMaths %>% select(Mjob, health) %>%
-  group_by(Mjob) %>%
-  summarise_all(funs(mean))
+```{r health_pjob, message = FALSE}
+df <- dfPortugais %>% group_by(Mjob) %>% mutate(mean_health = mean(health)) %>% distinct(Mjob, mean_health)
 
-plot1 <- ggplot(data1, aes( x = factor(Mjob), y = health, fill = Mjob)) +
-  geom_col() + 
-  labs(title = "Santé selon le travail de la mère") + 
-  scale_x_discrete(name = "Secteur d'emploi", labels = c("Au foyer", "Santé","Autre","Services publics", "Enseignement"))+
-  theme(legend.position = "none")
+plot1 <- ggplot(df, aes(x = Mjob, y = mean_health)) + 
+  geom_bar(stat = "identity", alpha = 0.7, aes(fill = Mjob)) +
+  labs(title = "Santé suivant le travail de maman", x = "Travail", y = "Santé") +
+  scale_fill_discrete(type = "viridis") +
+  theme(legend.position = "none") +
+  scale_x_discrete(labels = c("Au foyer","Santé", "Autre","Serv.Public","Education"))
 
-data2 <- dfMaths %>% select(Fjob, health) %>%
-  group_by(Fjob) %>%
-  summarise_all(funs(mean))
+df2 <- dfPortugais %>% group_by(Fjob) %>% mutate(mean_health = mean(health)) %>% distinct(Fjob, mean_health)
 
-plot2 <- ggplot(data2, aes( x = factor(Fjob), y = health, fill = Fjob)) +
-  geom_col() + 
-  labs(title = "Santé selon le travail du père",
-       y = "État de santé") + 
-  scale_x_discrete(name = "Secteur d'emploi", labels = c("Au foyer", "Santé","Autre","Services publics", "Enseignement"))+
-  theme(legend.position = "none")
+plot2 <- ggplot(df2, aes(x = Fjob, y = mean_health)) + 
+  geom_bar(stat = "identity", alpha = 0.7, aes(fill = Fjob)) +
+  labs(title = "Santé suivant le travail de papa", x = "Travail", y = "Santé") +
+  scale_fill_discrete(type = "viridis") +
+  theme(legend.position = "none") +
+  scale_x_discrete(labels = c("Au foyer","Santé", "Autre","Serv.Public","Education"))
 
 grid.arrange(plot1, plot2, nrow = 1)
 ```
@@ -863,33 +909,43 @@ Effectivement, nous n'observons pas de gros écarts mais nous remarquons tout de
 
 Ici on peut faire l'hypothèse selon laquelle le fait d'avoir des parents de faible niveau d'éducation aurait des effets néfastes sur la santé des élèves.
 
-```{r}
-data1 <- dfMaths %>% select(Medu, health) %>%
-  group_by(Medu) %>%
-  summarise_all(funs(mean))
+```{r health_pedu, message = FALSE}
+df <- dfPortugais %>% group_by(Medu) %>% mutate(mean_health = mean(health)) %>% distinct(Medu, mean_health)
 
-plot1 <- ggplot(data1, aes( x = Medu, y = health, fill = Medu)) +
+plot1 <- ggplot(df, aes( x = Medu, y = mean_health, fill = Medu)) +
   geom_col() + 
-  labs(title = "Santé selon le niveau d'études de la mère",
-       x = "Niveau d'études",
-       y = "État de santé") + 
-  theme(legend.position = "none")
+  labs(title = "Santé selon l'éducation de maman",
+  x = "Niveau d'études",
+  y = "État de santé") + 
+  theme(legend.position = "none") +
+  scale_fill_discrete(type = "viridis") +
+  scale_x_discrete(labels = c("Aucune","Primaire","Collège","Lycée","Supérieur"))
 
-data2 <- dfMaths %>% select(Fedu, health) %>%
-  group_by(Fedu) %>%
-  summarise_all(funs(mean))
+df2 <- dfPortugais %>% group_by(Fedu) %>% mutate(mean_health = mean(health)) %>% distinct(Fedu, mean_health)
 
-plot2 <- ggplot(data2, aes( x = Fedu, y = health, fill = Fedu)) +
+plot2 <- ggplot(df2, aes( x = Fedu, y = mean_health, fill = Fedu)) +
   geom_col() + 
-  labs(title = "Santé selon le niveau d'études du père",
-       x = "Niveau d'études",
-       y = "État de santé") + 
-  theme(legend.position = "none")
+  labs(title = "Santé selon l'éducation de papa",
+  x = "Niveau d'études",
+  y = "État de santé") + 
+  theme(legend.position = "none") +
+  scale_fill_discrete(type = "viridis") +
+  scale_x_discrete(labels = c("Aucune","Primaire","Collège","Lycée","Supérieur"))
 
 grid.arrange(plot1, plot2, nrow = 1) 
 ```
 
 On se rend compte après étude que l'hypothèse n'est pas complètement vérifiée et on observe des comportements différents selon le sexe du parent. Alors que la santé des enfants de mères ayant le plus bas niveau d'études est la meilleur, celle des pères ayant le plus bas niveau d'études est de façon significative moins bonne que celle des autres.
 
-FIN PARTIE SANTE
----------------------------------------------------------------
+CONCLURE
+<hr>
+
+# Conclusion
+
+### Conclusion personnelle
+<ul>
+  <li>**Oscar** :</li>
+  <li>**ALbert** :</li>
+  <li>**Clément** :</li>
+</ul>
+
