@@ -39,6 +39,7 @@ library(gridExtra)
 library(tidyverse)
 library("viridis")
 library(treemapify)
+library(corrplot)
 ```
 
 ### Exploration des données
@@ -103,9 +104,19 @@ dfPortugais %>%
   head()
 ```
 
-### Quelques chiffres clés
+### Graphique de corrélationn
 
-donner répartitions filles/garçons + campagne/ville... quelques données importantes + DIAGRAMME CORELATIONS ???
+Afin d'avoir un premier apperçu lors de l'exploration de nos données, nous avons réalisé un graph de corrélation des variables numériques de notre dataset. Cela nous a permis de voir que certaines variables étaient très corrélées, positivement ou négativement.<br>
+Voici ce diagramme :
+
+```{r correlation, message = FALSE}
+
+df <- dfMaths %>% select(age, Medu, Fedu,traveltime, studytime, failures, famrel,freetime,Dalc,Walc,health,absences,Gmean)
+
+mcor <- cor(df)
+corrplot(mcor, type="upper", order="hclust", tl.col="black", tl.srt=45)
+
+```
 
 # Comment être l'élève avec les meilleurs résultats ?
 
