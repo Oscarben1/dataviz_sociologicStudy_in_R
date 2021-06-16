@@ -823,8 +823,8 @@ grid.arrange(plot1, plot2, nrow = 1)
 ```
 
 Nous aurions pu penser que des élèves avec des parents ensembles auraient une meilleure santé que ceux avec des parents séparés. **Mais les chiffres nous donnent tort**. <br>
-En s'interessant de plus près aux familles monoparentales, et que l'on s'interesse aux tuteurs on se rend compte que **les élèves éduqués par une mère seule ont plus de soucis de santé, décrochant de près d'un point**4 des autres cas.<br>
-Pour essayer d'expliquer cela, nous avons essayé de faire une étude sur l'emploi et l'éducation de ces femmes seules à s'occuper de leurs enfants. On pourrait imaginer qu'elles n'occupent pas des métiers à haut revenu ou qu'elles n'ont pas faites de longues études.
+En s'interessant de plus près aux familles monoparentales, et que l'on s'interesse aux tuteurs on se rend compte que **les élèves éduqués par une mère seule ou une personne tierce ont plus de soucis de santé, décrochant de près d'un point**4 du cas où le tuteur c'est le père.<br>
+Pour essayer d'expliquer cela, nous avons essayé de faire une étude sur l'emploi et l'éducation de ces femmes seules (pour le cas des mères) à s'occuper de leurs enfants. On pourrait imaginer qu'elles n'occupent pas des métiers à haut revenu ou qu'elles n'ont pas faites de longues études.
 
 
 ```{r health_separate_pjob_pedu, message = FALSE}
@@ -867,7 +867,7 @@ grid.arrange(plot1, plot2, plot3, plot4, nrow = 2, ncol = 2)
 
 ```
 
-In fine, on ne peut confirmer que la moitié de nos hypothèses. Pour ce qui est de l'emploi de la mère, celles exerçant des activités autres que dans les services publics, la santé et l'enseignement, qui sont aussi les plus nombreuses sont celles pour lesquelles on retrouve les moins bons états de santé chez les enfants. En ce qui concerne le niveau d'éducation, on agréablement surpris de voir que les mères ayant les plus bas niveaux d'éducation s'en sortent le mieux.
+In fine, on ne peut confirmer nos hypothèses. Pour ce qui est de l'emploi de la mère, celles exerçant dans les services publics, occupant une part considérable sont celles pour lesquelles on retrouve les moins bons états de santé chez les enfants Il ne s'agit pourtant pas des métiers les moins lucratifs. En ce qui concerne le niveau d'éducation, on agréablement surpris de voir que les mères ayant les plus bas niveaux d'éducation s'en sortent le mieux.
 
 ### Etat de santé selon la relation famlliale
 
@@ -887,9 +887,9 @@ ggplot(df, aes(x = famrel, y = mean_health)) +
 
 ```
 
-En effet, nous voyons clairement une évolution progressive de la santé suivant la qualité de la relation familiale
+En effet, nous voyons clairement une évolution progressive de la santé suivant la qualité de la relation familiale. Il faut cependant nuancer ce constat car les écarts ne sont pas très significatifs.
 
-### Etat de santé en fonction du travail des parents
+### Quel est l'impact du travail des parents sur la santé des élèves?
 
 Les systèmes de santé étant assez bien développés en Europe en général, nous ne nous attendons pas à avoir des différences significatives selon le métier des parents.
 
@@ -915,9 +915,9 @@ plot2 <- ggplot(df2, aes(x = Fjob, y = mean_health)) +
 grid.arrange(plot1, plot2, nrow = 1)
 ```
 
-Effectivement, nous n'observons pas de gros écarts mais nous remarquons tout de même que les parenrs travaillant dans le secteur de la santé ont les enfants présentant les meilleurs résultats sur cet aspect
+Effectivement, nous n'observons pas de gros écarts mais nous remarquons tout de même que les parents travaillant dans le secteur de la santé ont les enfants présentant les meilleurs résultats sur cet aspect,surtout quand il s'agit du père.
 
-### Etat de santé en fonction de l'éducation des parents
+### Quel est l'impact de l'éducation des parents sur la santé des élèves?
 
 Ici on peut faire l'hypothèse selon laquelle le fait d'avoir des parents de faible niveau d'éducation aurait des effets néfastes sur la santé des élèves.
 
@@ -943,7 +943,7 @@ plot2 <- ggplot(df2, aes(x = Fedu, y = mean_health)) +
 grid.arrange(plot1, plot2, nrow = 1) 
 ```
 
-On se rend compte après étude que l'hypothèse n'est pas complètement vérifiée et on observe des comportements différents selon le sexe du parent. Alors que la santé des enfants de mères ayant le plus bas niveau d'études est la meilleur, celle des pères ayant le plus bas niveau d'études est de façon significative moins bonne que celle des autres.
+On se rend compte après étude que l'hypothèse n'est pas complètement vérifiée et on observe des comportements différents selon le sexe du parent. Alors que la santé des enfants de mères ayant le plus bas niveau d'études est la meilleur, celle des pères ayant arrêté au Lycéeest moins bonne que celle des autres.
 
 Conclusion sur l'état de santé
 <hr>
@@ -971,7 +971,7 @@ Les 3 axes de recherche nous ont permis de bien nous répartir le travail, sans 
 ### Conclusion personnelle
 <ul>
   <li>**Oscar** : L’UE était plaisante et au goût du jour avec des outils très actuels utilisés dans la data visualisation, le projet est vraiment plaisant à réaliser et permet de bien prendre en main le langage R pour la datavizz. La chose qui pourrait je pense améliorer cette UE serait de passer un peu plus de temps sur un outil de BI (Tableau ou PowerBI), peut-être n’en choisir qu’un des deux et l’approfondir sur 3 semaines ou plus car ce sont des outils très utilisés en entreprise.</li>
-  <li>**ALbert** :</li>
+  <li>**ALbert** :L'UE était très enrichissante. L'approche adoptée, mettant l'accent sur des aspects de sémiologie, d'histoire et de compréhension des enjeuux cognitifsderrière la visualisation des données était fort surprenante dans le sens agréable du terme. Aussi, l'UE, par l'introduction à des technologies comme Power BI, Tableau a permis d'aller explorer d'autres solutions utiles en entreprise. Enfin, la pédagogie était parfaite.</li>
   <li>**Clément** :</li>
 </ul>
 
