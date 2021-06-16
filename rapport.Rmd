@@ -18,15 +18,15 @@ Ce document Rmarkdown fait office de rapport final au projet d'IF36. En effet, l
 ### Notre DataSet
 
 Nous avons choisi d’utiliser **deux datasets** portant sur **la prédiction des résultats finaux de lycéens** de **deux établissements portugais** : **Gabriel Perreira** et **Mousinho da Silveira**. Les résultats visibles dans les datasets concernent les **mathématiques** et le **portugais** et ce dernier a été conçu de telle sorte qu’on puisse connaître le niveau (la note) de chaque élève dans les deux matières.<br>
-Notre dataset contient **33 variables** avec **395 observations** pour les dataset avec les notes en mathématiques et **649 observations** pour les dataset avec les notes en portugais. Parmi les variables, on dénote **16 entiers**, **9 chaînes** et **8 booléennes**. Les entiers permettent parfois de donner des échelles chiffrés pour évaluer des situations (consommation alcool, éducation des parents, relations familiales, niveau de santé…).<br>
+Notre dataset contient **33 variables** avec **395 observations** pour les dataset avec les notes en mathématiques et **649 observations** pour les dataset avec les notes en portugais. Parmi les variables, on dénote **16 entiers**, **9 chaînes** et **8 booléennes**. Les entiers permettent parfois de donner des échelles chiffrées pour évaluer des situations (consommation alcool, éducation des parents, relations familiales, niveau de santé…).<br>
 Nous disposons donc à priori d’assez de données pour avoir un résultat significatif. <br>
-De façon générale, les variables nous donnent des informations sur **l’environnement socio-culturel** de l’élève à travers le milieu dans lequel il réside, **les activités** auxquelles il a accès et **le background académique** dont dispose ses parents. Nous retrouvons aussi des données relatives à **la charge de travail** de ces derniers ainsi que de **leur état de santé**.
+De façon générale, les variables nous donnent des informations sur **l’environnement socio-culturel** de l’élève à travers le milieu dans lequel il réside, **les activités** auxquelles il a accès et **le background académique** dont disposent ses parents. Nous retrouvons aussi des données relatives à **la charge de travail** de ces derniers ainsi que de **leur état de santé**.
 
-### Nos graphs
+### Nos graphiques
 
-Notre analyse portera sur **3 différents axes**. Dans un premier temps, l'axe principal de notre reflexion sera **l'analyse des notes** en fonction de différents critères, de différentes variables, qui nous semblaient es plus intéressantes à l'analys. Le but étant de trouver le profil "type" de **l'élève modèle** (avec les meilleurs résultats).<br>
-Puis, un deuxième axe de reflexion portera sur **les relations familiales** des élèves, en analysant quels sont les variables qui expliquent le mieux **les bonnes relations familiales** d'un élève.<br>
-Enfin, nous avons choisi de travailler sur **le plan santé**, que doit faire un élève pour avoir **la meilleure santé possible**. Notre analyse comporte 30 graphs, ce qui est assez long mais nous avons jugé chaque graph présent comme **indispensable à la bonne compréhension** des axes de développement, afin que l'analyse soit la plus **claire** et **précise** possible.
+Notre analyse portera sur **3 différents axes**. Dans un premier temps, l'axe principal de notre réflexion sera **l'analyse des notes** en fonction de différents critères, de différentes variables, qui nous semblaient plus intéressantes à l'analyse. Le but étant de trouver le profil "type" de **l'élève modèle** (avec les meilleurs résultats).<br>
+Puis, un deuxième axe de réflexion portera sur **les relations familiales** des élèves, en analysant quelles sont les variables qui expliquent le mieux **les bonnes relations familiales** d'un élève.<br>
+Enfin, nous avons choisi de travailler sur **le plan santé**, qu'est-ce qui permet à un étudiant d'avoir **la meilleure santé possible**. Notre analyse comporte une trentaine de graphes, ce qui est assez long mais nous avons jugé chaque graph présent comme **indispensable à la bonne compréhension** des axes de développement, afin que l'analyse soit la plus **claire** et **précise** possible.
 
 <!--  Importations des libraries -->
 
@@ -45,18 +45,18 @@ library(corrplot)
 ### Exploration des données
 
 La première partie de notre projet a consisté en l'exploration de nos jeux de données. En effet, les individus n'étant **pas les mêmes** sur le dataset **mathématiques** et le dataset **portugais**, il nous était impossible de les regrouper. Cependant, nous avons tout de même choisi de garder les deux en réalisant nos graph sur le dataset que nous avons jugé le plus approprié selon les variables analysées. <br>
-En effet, le dataset portugais comporte **plus d'individus** que le dataset mathématiques, donc lorsque nous avons réalisé les graph avec ce dernier c'est que nous voulions **une bonne représentativité des individus**. Au contraire, nous avons jugé que le dataset mathématiques nous était utile lorsque **le sérieux des élèves** primait sur le nombre d'élèves, car nous considérons que **les mathématiques sont une matière plus importante que le portugais** et donc que les élèves étaient plus sérieux dans cette matière.
+En effet, le dataset portugais comporte **plus d'individus** que le dataset mathématiques, donc lorsque nous avons réalisé les graphes avec ce dernier c'est que nous voulions **une bonne représentativité des individus**. Au contraire, nous avons jugé que le dataset mathématiques nous était utile lorsque **le sérieux des élèves** primait sur le nombre d'élèves, car nous considérions que **les mathématiques étaient une matière plus importante que le portugais** et donc que les élèves étaient plus sérieux dans cette matière.
 
 ### Explications des échelles numériques + données
 
-En amont de l'analyse, nous allons commencer par expliquer certaines différentes variables, qui peuvent parraitre implicite pour certains. En effet, des varaibles sont des échelles quantifées, d'autres sont des initiales qui représentent des mots.<br>
+En amont de l'analyse, nous allons commencer par expliquer certaines variables, qui peuvent parraître implicites pour certains. En effet, certaines de ces varaibles sont des échelles quantifiées, d'autres sont des initiales qui représentent des mots.<br>
 **Explication des échelles quantifiées :**
 <ul>
-  <li>Medu, Fedu (niveau d'étude de la mère et du père) : échelle allant de 0 à 4 -0 : **aucune**, 1 : **primaire**, 2 : **collège**, 3 : **lycée**, 4 : **supérieur**</li>
-  <li>traveltime (temps de trajet entre la maison et l'école) : échelle allant de 1 à 4 - 1 : **0 - 15 min**, 2 : **15 - 30 min**, 3 : **30 - 60 min**, 4 : **> 1 heure**</li>
-  <li>studytime (temps de travail) : échelle allant de 1 à 4 - 1 : **0 - 2 h**, 2 : **2 - 5 h**, 3 : **5 - 10 h**, 4 : **> 10 heure**</li>
-  <li>famrel (relations familiales), health (niveau de santé) : échelle allant de 1 à 5 - 1 : **vraiment mauvais**, 5 : **excellent**</li>
-  <li>freetime (temps libre), goout (temps de sortie avec les amis), Dalc et Walc (consommation d'alcool la semaine et le week-end): échelle allant de 1 à 5 - 1 : **vraiment peu**, 5 : **vraiment beaucoup**</li>
+  <li>Medu, Fedu (niveau d'étude de la mère et du père) : échelle allant de 0 à 4 : 0 : **aucune**, 1 : **primaire**, 2 : **collège**, 3 : **lycée**, 4 : **supérieur**</li>
+  <li>traveltime (temps de trajet entre la maison et l'école) : échelle allant de 1 à 4 : 1 : **0 - 15 min**, 2 : **15 - 30 min**, 3 : **30 - 60 min**, 4 : **> 1 heure**</li>
+  <li>studytime (temps de travail) : échelle allant de 1 à 4 : 1 : **0 - 2 h**, 2 : **2 - 5 h**, 3 : **5 - 10 h**, 4 : **> 10 heures**</li>
+  <li>famrel (relations familiales), health (niveau de santé) : échelle allant de 1 à 5 : 1 : **vraiment mauvais**, 5 : **excellent**</li>
+  <li>freetime (temps libre), goout (temps de sortie avec les amis), Dalc et Walc (consommation d'alcool la semaine et le week-end): échelle allant de 1 à 5 : 1 : **vraiment peu**, 5 : **vraiment beaucoup**</li>
 </ul><br>
 **Explication des initiales et accronymes :**
 <ul>
@@ -69,7 +69,7 @@ En amont de l'analyse, nous allons commencer par expliquer certaines différente
 
 ### Importation des dataset et datacleaning
 
-Importons dans un premier temps les datasets. Lors de notre exploration de données, nous avons pu déceler **deux problèmes** qu'il fallait résoudre : le premier, le fait que **la population de 20 ans et + était clairement négligeable** dans les datasets et nous avons donc décidé de l'enlever pour pouvoir avoir une vision plus claire sur les 15 - 19 ans (âges lycéens). 
+Importons dans un premier temps les datasets. Lors de notre exploration de données, nous avons pu déceler **deux problèmes** qu'il fallait résoudre : le premier étant le fait que **la population de 20 ans et + était clairement négligeable** dans les datasets et nous avons donc décidé de l'enlever pour pouvoir avoir une vision plus claire sur les 15 - 19 ans (âges lycéens). 
 
 ```{r repartition des ages, message = FALSE}
 dfMathsComplet <- read_csv("data/student-mat.csv")
@@ -78,11 +78,11 @@ df <- dfMathsComplet %>% select(age)
 
 ggplot(df, aes(x = age)) +
   geom_bar(alpha = 0.7, fill = viridis(8)) + 
-  labs(title = "Repartiton des effectifs selon l'age", x = "age", y = "effectifs")
+  labs(title = "Repartiton des effectifs selon l'âge", x = "Âge", y = "Effectifs")
 
 ```
 
-Le deuxième problème était **l'absence d'une moyenne générale** sur l'année des élèves. En effet, la régularité des notes étant un critère à prendre en compte dans nos analyses. Nous avons donc décidé de **créer cette nouvelle variable "Gmean"** qui est **la moyenne des notes des élèves sur les toris trimestres**. Ce sera cette variable sur laquelle nous nous baserons pour réaliser nos analyses des notes.  
+Le deuxième problème était **l'absence d'une moyenne générale** des élèves. En effet, la régularité des notes étant un critère à prendre en compte dans nos analyses. Nous avons donc décidé de **créer cette nouvelle variable "Gmean"** qui est **la moyenne des notes des élèves sur les toris trimestres**. Ce sera cette variable sur laquelle nous nous baserons pour réaliser nos analyses des notes.  
 
 ```{r import datasets et traitements, message = FALSE}
 dfMaths <- dfMathsComplet %>% filter(age < 20)
@@ -106,7 +106,7 @@ dfPortugais %>%
 
 ### Graphique de corrélationn
 
-Afin d'avoir un premier apperçu lors de l'exploration de nos données, nous avons réalisé un graph de corrélation des variables numériques de notre dataset. Cela nous a permis de voir que certaines variables étaient très corrélées, positivement ou négativement.<br>
+Afin d'avoir un premier aperçu lors de l'exploration de nos données, nous avons réalisé un graphe de corrélation des variables numériques de notre dataset. Cela nous a permis de voir que certaines variables étaient très corrélées, positivement ou négativement.<br>
 Voici ce diagramme :
 
 ```{r correlation, message = FALSE}
@@ -114,13 +114,13 @@ Voici ce diagramme :
 df <- dfMaths %>% select(age, Medu, Fedu,traveltime, studytime, failures, famrel,freetime,Dalc,Walc,health,absences,Gmean)
 
 mcor <- cor(df)
-corrplot(mcor, type="upper", order="hclust", tl.col="black", tl.srt=45)
+corrplot(mcor, type="upper", order="hclust", tl.col="black", tl.srt=90) 
 
 ```
 
 # Comment être l'élève avec les meilleurs résultats ?
 
-Dans cette première partie, nous allons essayer de trouver **quels sont les critères qui permettent de définir le profil type de "l'élève modèle"**.
+Dans cette première partie, nous allons essayer de trouver **quels sont les critères qui permettent de définir le profil type de "l'élève-modèle"**.
 
 ### Qui travaille le plus ? Et à quel prix ?
 
@@ -136,9 +136,9 @@ tempsMoyenFilles <- dfMaths %>% filter(sex == "F") %>% select(studytime) %>% mut
 tempsMoyenFilles <- tempsMoyenFilles[1,1]
 ```
 
-Voici le temps de travail en moyenne des garcons : **`r tempsMoyenGarcons`**. <br>
+Voici le temps de travail en moyenne des garcons : **`r round(tempsMoyenGarcons, digits=2)`**. <br>
 
-En comparaison au temps moyen des filles en Maths, qui est plus élevé : **`r tempsMoyenFilles`**.<br>
+En comparaison au temps moyen des filles en Maths, qui est plus élevé : **`r round(tempsMoyenFilles, digits=2)`**.<br>
 
 Regardons les notes en mathématiques selon le genre à l'aide d'un boxplot afin d'avoir plus de précision sur les différents quartiles. En y ajoutant un point blanc dans les boxplot qui symbolise la moyenne des notes.
 
@@ -151,7 +151,7 @@ ggplot(df, aes(x = sex, y = Gmean)) +
   geom_boxplot(aes(fill = sex),alpha = .8,size = 1) + 
   stat_summary(fun = "mean", geom = "point", shape= 21, size= 2, fill= "white") +
   scale_fill_brewer(palette = "Pastel2") +
-  ggtitle("Répartition des notes en fonction du genre") + 
+  labs(title = "Moyenne en fonction du sexe", x = "Sexe", y = "Moyenne des notes") +
   theme(legend.position = "none") +
   scale_x_discrete(labels = c("Filles","Garçons"))
   
@@ -217,9 +217,9 @@ df <- dfMaths %>% group_by(Fjob) %>% mutate(mean_Gmean = mean(Gmean)) %>% distin
 #Barplot 
 fJob <- ggplot(df, aes(x = Fjob, y = mean_Gmean)) + 
     geom_bar(stat = "identity", fill = viridis(5), alpha = .7) +
-    labs(x = "Job du père", y = "Gmean", title = "Moyenne selon le travail du père") + 
+    labs(x = "Job du père", y = "Moyenne des notes", title = "Moyenne selon le travail du père") + 
     theme(legend.position = "none") +
-    scale_x_discrete(labels = c("Au foyer","Santé", "Autre","Serv.Public","Education"))
+    scale_x_discrete(labels = c("Au foyer","Santé", "Autre","Ser.Public","Education"))
 ```
 
 ```{r mjob_grade, message = FALSE}
@@ -231,7 +231,7 @@ mJob <- ggplot(df, aes(x = Mjob, y = mean_Gmean)) +
     geom_bar(stat = "identity", fill = viridis(5), alpha = .7) +
     labs(x = "Job de la mère", y = "Gmean", title = "Moyenne selon le travail de la mère") + 
     theme(legend.position = "none") +
-    scale_x_discrete(labels = c("Au foyer","Santé", "Autre","Serv.Public","Education"))
+    scale_x_discrete(labels = c("Au foyer","Santé", "Autre","Ser.Public","Education"))
 
 grid.arrange(fJob, mJob, ncol=2, nrow = 1)
 ```
@@ -289,7 +289,7 @@ df <- dfMaths %>% group_by(higher) %>% mutate(mean_Gmean = mean(Gmean)) %>% dist
 
 ggplot(df, aes(x = higher, y = mean_Gmean)) +
     geom_bar(stat = "identity", alpha = 0.8, aes(fill = higher)) +
-    labs(title = "Notes en fonction de la volonté de faire des études supérieure", x = "Volonté de faire des études sup", y = "Moyenne des notes") +
+    labs(title = "Notes en fonction de la volonté de faire des études supérieures", x = "Volonté de faire des études supérieures", y = "Moyenne des notes") +
   scale_fill_brewer(palette = "Pastel2") + 
     theme(legend.position = "none") +
   scale_x_discrete(labels = c("Non","Oui"))
@@ -361,7 +361,7 @@ df <- dfPortugais %>% group_by(freetime) %>% mutate(mean_Gmean = mean(Gmean)) %>
 ggplot(df, aes(x = freetime, y = mean_Gmean)) +
     geom_bar(stat = "identity", alpha = 0.7, aes(fill = freetime)) +
     geom_line(color = "blue") +
-    labs(title = "Notes selon le temps libre", x = "Temps libre", y = "Moyenne des notes") +
+    labs(title = "Notes selon le temps libre", subtitle="1 : vraiment peu - 5 : vraiment beaucoup", x = "Temps libre", y = "Moyenne des notes") +
     scale_fill_discrete(type = "viridis") +
     theme(legend.position = "none")
   
@@ -380,7 +380,7 @@ df <- dfPortugais %>% group_by(Walc) %>% mutate(mean_Gmean = mean(Gmean)) %>% di
 Walc <- ggplot(df, aes(x = Walc, y = mean_Gmean)) +
     geom_bar(stat = "identity", alpha = 0.7, aes(fill = Walc)) +
     geom_line(color = "blue") +
-    labs(title = "Notes selon cons. alc. week-end", x = "Consommation d'alcool le week-end", y = "Moyenne des notes") +
+    labs(title = "Notes selon cons. alc. week-end", subtitle="1 : vraiment peu - 5 : vraiment beaucoup", x = "Consommation d'alcool le week-end", y = "Moyenne des notes") +
     scale_fill_discrete(type = "viridis") +
     theme(legend.position = "none")
   
@@ -390,7 +390,7 @@ df <- dfPortugais %>% group_by(Dalc) %>% mutate(mean_Gmean = mean(Gmean)) %>% di
 Dalc <- ggplot(df, aes(x = Dalc, y = mean_Gmean)) +
     geom_bar(stat = "identity", alpha = 0.7, aes(fill = Dalc)) +
     geom_line(color = "blue") +
-    labs(title = "Notes selon cons. alc. semaine", x = "Consommation d'alcool en semaine", y = "Moyenne des notes", fill = "conso d'alcool") +
+    labs(title = "Notes selon cons. alc. semaine", subtitle="1 : vraiment peu - 5 : vraiment beaucoup", x = "Consommation d'alcool en semaine", y = "Moyenne des notes", fill = "conso d'alcool") +
     scale_fill_discrete(type = "viridis") + 
     theme(legend.position = "none")
 grid.arrange(Walc, Dalc, ncol=2, nrow = 1)
@@ -551,18 +551,22 @@ Nous allons tout d'abord voir le sexe ou le lieu de vie peut avoir un impact sur
 df <- dfPortugais %>% select(address, famrel)
 
 plot1 <- ggplot(df, aes(x = address, y = famrel)) + 
-          geom_violin(aes(fill = address),alpha = 0.6,size = 1) + 
-          stat_summary(fun = "mean", geom = "point", shape= 21, size= 2, fill= "white") +
-          scale_fill_brewer(palette = "Dark2") +
-          ggtitle("Relations familiales selon l'adresse")
+  geom_violin(aes(fill = address),alpha = 0.6,size = 1) + 
+  stat_summary(fun = "mean", geom = "point", shape= 21, size= 2, fill= "white") +
+  scale_fill_brewer(palette = "Dark2") +
+  labs(title = "Relations familiales selon l'adresse", x = "Adresse", y = "Moyenne des relations familiales") +
+  scale_x_discrete(labels = c("Campagne","Ville")) + 
+  theme(legend.position = "none")
 
 df <- dfPortugais %>% select(sex, famrel)
 
 plot2 <- ggplot(df, aes(x = sex, y = famrel)) + 
-          geom_violin(aes(fill = sex),alpha = 0.6,size = 1) + 
-          stat_summary(fun = "mean", geom = "point", shape= 21, size= 2, fill= "white") +
-          scale_fill_brewer(palette = "Dark2") +
-          ggtitle("Relations familiales selon sexe")
+  geom_violin(aes(fill = sex),alpha = 0.6,size = 1) + 
+  stat_summary(fun = "mean", geom = "point", shape= 21, size= 2, fill= "white") +
+  scale_fill_brewer(palette = "Dark2") +
+  labs(title = "Relations familiales selon le sexe", x = "Sexe", y = "Moyenne des relations familiales") +
+  scale_x_discrete(labels = c("Fille","Garçons")) + 
+  theme(legend.position = "none")
 
 grid.arrange(plot1, plot2, ncol=2, nrow = 1)
 ```
@@ -572,7 +576,7 @@ Par rapport au lieu de vie, la moyenne des relations familiales des élèves hab
 
 Le sexe et le lieu de vie font peu varier les relations familiales. Néanmoins, on peut remarquer qu'en moyenne **les garçons ont de meilleures relations familiales** et faire la même remarque pour **les étudiants ruraux**.
 
-### Être plus âge permet-il de mieux s'entendre avec sa famille ?
+### L'adolescence, le déclin de la bonne entente familiales ?
 
 Arrivé à l'adolescence, les relations familiales deviennent souvent plus tendues entre les enfants et les parents. Nous pouvons donc émettre qu'**avec l'âge les relations familiales se dégradent**. 
 
@@ -583,8 +587,9 @@ df <- dfPortugais %>% group_by(age) %>% mutate(mean_famrel = mean(famrel)) %>% d
 
 ggplot(df, aes(x = age, y = mean_famrel)) +
     geom_bar(stat = "identity", alpha = 0.7, aes(fill = age)) +
-    labs(title = "Relation familiales selon l'âge", x = "Âge", y = "Relations familiales", fill = "Âge") +
-    scale_fill_discrete(type = "viridis")
+    labs(title = "Relation familiales selon l'âge", x = "Âge", y = "Moyenne des relations familiales") +
+    scale_fill_discrete(type = "viridis") + 
+    theme(legend.position = "none")
 ```
 
 Vu le faible nombre d'étudiants ayant entre 20 et 22 ans, on ne se concentre que la fourchette d'âge 15-19 ans.<br> 
@@ -608,15 +613,19 @@ df <- dfPortugais %>% filter(Pstatus == "T") %>% group_by(famsize) %>% mutate(me
 
 dfFSPT <- ggplot(df, aes(x = famsize, y = mean_famrel)) +
     geom_bar(stat = "identity", alpha = 0.7, aes(fill = famsize)) +
-    labs(title = "Parents ensembles", x = "Taille de la famille", y = "Relations familiales", fill = "Taille de la famille") +
-    scale_fill_discrete(type = "viridis")
+    labs(title = "Rel. fam. selon la taille de la famille",subtitle = "Parents ensembles", x = "Taille de la famille", y = "Moyenne des relations familiales") +
+    scale_fill_discrete(type = "viridis") +
+    scale_x_discrete(labels = c("Inférieur ou égal à 3 pers.","Supérieur à 3 personnes")) + 
+    theme(legend.position = "none")
 
 df <- dfPortugais %>% filter(Pstatus == "A") %>% group_by(famsize) %>% mutate(mean_famrel = mean(famrel)) %>% distinct(famsize, mean_famrel)
 
 dfFSPA <- ggplot(df, aes(x = famsize, y = mean_famrel)) +
     geom_bar(stat = "identity", alpha = 0.7, aes(fill = famsize)) +
-    labs(title = "Parents séparés", x = "Taille de la famille", y = "Relations familiales", fill = "Taille de la famille") +
-    scale_fill_discrete(type = "viridis")
+    labs(title = "Rel. fam. selon la taille de la famille",subtitle = "Parents séparés", x = "Taille de la famille", y = "Moyenne des relations familiales") +
+    scale_fill_discrete(type = "viridis") +
+    scale_x_discrete(labels = c("Inférieur ou égal à 3 pers.","Supérieur à 3 personnes")) + 
+    theme(legend.position = "none")
 
 grid.arrange(dfFSPT, dfFSPA, ncol=2, nrow = 1)
 ```
@@ -635,14 +644,18 @@ df <- dfPortugais %>% filter(Pstatus == "T") %>% group_by(guardian) %>% mutate(m
 
 dfGPT <- ggplot(df, aes(x = guardian, y = mean_famrel)) + 
   geom_bar(stat = "identity", alpha = 0.7, aes(fill = guardian)) +
-  labs(title = "Parents ensembles", x = "Tuteur légal", y = "Relation familiale", fill = "Tuteur légal") +
-  scale_fill_discrete(type = "viridis")
+  labs(title = "Rel. familiales selon le tuteur légal",subtitle = "Parents ensembles", x = "Tuteur légal", y = "Moyenne des relations familiales") +
+  scale_fill_discrete(type = "viridis") +
+  scale_x_discrete(labels = c("Père","Mère","Autre")) + 
+  theme(legend.position = "none")
 
 df <- dfPortugais %>% filter(Pstatus == "A") %>% group_by(guardian) %>% mutate(mean_famrel = mean(famrel)) %>% distinct(guardian, mean_famrel)
 dfGPA <- ggplot(df, aes(x = guardian, y = mean_famrel)) + 
   geom_bar(stat = "identity", alpha = 0.7, aes(fill = guardian)) +
-  labs(title = "Parents séparés", x = "Tuteur légal", y = "Relation familiale", fill = "Tuteur légal") +
-  scale_fill_discrete(type = "viridis")
+  labs(title = "Rel. familiales selon le tuteur légal",subtitle = "Parents séparés", x = "Tuteur légal", y = "Moyenne des relations familiales") +
+  scale_fill_discrete(type = "viridis") +
+  scale_x_discrete(labels = c("Père","Mère","Autre")) + 
+  theme(legend.position = "none")
 
 df <- dfPortugais %>% filter(Pstatus == "T") %>% group_by(guardian) %>% mutate(mean_famrel = mean(famrel)) %>% distinct(guardian, mean_famrel)
 
@@ -660,19 +673,23 @@ Nous allons maintenant directement nous focus sur les parents. Premièrement, en
 ```{r Pjob_famrel, message = FALSE}
 df <- dfPortugais %>% group_by(Mjob) %>% mutate(mean_famrel = mean(famrel)) %>% distinct(Mjob, mean_famrel)
 
-dfMJ <- ggplot(df, aes(x = Mjob, y = mean_famrel)) + 
+plot1 <- ggplot(df, aes(x = Mjob, y = mean_famrel)) + 
   geom_bar(stat = "identity", alpha = 0.7, aes(fill = Mjob)) +
-  labs(title = "Famrel suivant le travail de maman", x = "Travail", y = "Relation familiale", fill = "Travail") +
-    scale_fill_discrete(type = "viridis")
+  labs(title = "Rel. fam. suivant le travail de la mère", x = "Travail", y = "Moyenne des relations familiales") +
+  scale_fill_discrete(type = "viridis") +
+  scale_x_discrete(labels = c("Au foyer","Santé","Autre", "Serv. Public", "Education")) + 
+  theme(legend.position = "none")
 
 df <- dfMaths%>% group_by(Fjob) %>% mutate(mean_famrel = mean(famrel)) %>% distinct(Fjob, mean_famrel)
 
-dfFJ <- ggplot(df, aes(x = Fjob, y = mean_famrel)) + 
+plot2 <- ggplot(df, aes(x = Fjob, y = mean_famrel)) + 
   geom_bar(stat = "identity", alpha = 0.7, aes(fill = Fjob)) +
-  labs(title = "Famrel suivant le travail de papa", x = "Travail", y = "Relation familiale", fill = "Travail") +
-    scale_fill_discrete(type = "viridis")
+  labs(title = "Rel. fam. suivant le travail du père", x = "Travail", y = "Moyenne des relations familiales") +
+  scale_fill_discrete(type = "viridis") +
+  scale_x_discrete(labels = c("Au foyer","Santé","Autre", "Serv. Public", "Education")) + 
+  theme(legend.position = "none")
 
-grid.arrange(dfFJ, dfMJ, ncol=2, nrow = 1)
+grid.arrange(plot2, plot1, ncol=2, nrow = 1)
 ```
 
 Pour le père et la mère, on voit que les relations familiales sont mieux quand **l'un et l'autre** travaillent dans **le service public**.<br>
@@ -685,17 +702,23 @@ Pour **approfondir cette analyse**, nous allons regarder :
 ```{r Pjob2_famrel }
 df <- dfMaths %>% filter(Mjob == 'services') %>% group_by(Fjob) %>% mutate(mean_famrel = mean(famrel)) %>% distinct(Fjob, mean_famrel)
 
-ggplot(df, aes(x = Fjob, y = mean_famrel)) + 
-  geom_bar(stat = "identity", alpha = 0.7, aes(fill = Fjob)) +
-  labs(title = "Relations familiales suivant le travail de papa (maman dans le service public)", x = "Travail", y = "Relation familiale", fill = "Travail") +
-    scale_fill_discrete(type = "viridis")
+plot1 <- ggplot(df, aes(x = Fjob, y = mean_famrel)) + 
+          geom_bar(stat = "identity", alpha = 0.7, aes(fill = Fjob)) +
+          labs(title = "Rel. fam. suivant le travail du père", subtitle = "(maman dans le service public)", x = "Travail", y = "Moyenne des relations familiales", fill = "Travail") +
+          scale_fill_discrete(type = "viridis")  +
+          scale_x_discrete(labels = c("Au foyer","Santé","Autre", "Serv. Public", "Education")) + 
+          theme(legend.position = "none")
 
 df <- dfPortugais %>% filter(Fjob == 'services') %>% group_by(Mjob) %>% mutate(mean_famrel = mean(famrel)) %>% distinct(Mjob, mean_famrel)
 
-ggplot(df, aes(x = Mjob, y = mean_famrel)) + 
-  geom_bar(stat = "identity", alpha = 0.7, aes(fill = Mjob)) +
-  labs(title = "Relations familiales suivant le travail de maman (papa dans le service public)", x = "Travail", y = "Relation familiale", fill = "Travail") +
-    scale_fill_discrete(type = "viridis")
+plot2 <- ggplot(df, aes(x = Mjob, y = mean_famrel)) + 
+            geom_bar(stat = "identity", alpha = 0.7, aes(fill = Mjob)) +
+            labs(title = "Rel. fam. suivant le travail de la mère", subtitle = "(papa dans le service public)", x = "Travail", y = "Moyenne des relations familiales", fill = "Travail") +
+            scale_fill_discrete(type = "viridis")  +
+            scale_x_discrete(labels = c("Au foyer","Santé","Autre", "Serv. Public", "Education")) + 
+            theme(legend.position = "none")
+
+grid.arrange(plot1, plot2, ncol=2, nrow = 1)
 ```
 
 Les résulatats sont sans appels !<br>
@@ -711,20 +734,20 @@ Pour continuer sur l'étude des parents, nous allons nous interesser à leur niv
 dfPortugais$Medu <- as.factor(dfPortugais$Medu)
 df <- dfPortugais %>% group_by(Medu) %>% mutate(mean_famrel = mean(famrel)) %>% distinct(Medu, mean_famrel)
 
-dfME <- ggplot(df, aes(x = Medu, y = mean_famrel)) +
+plot1 <- ggplot(df, aes(x = Medu, y = mean_famrel)) +
     geom_bar(stat = "identity", alpha = 0.7, aes(fill = Medu)) +
-    labs(title = "Famrel selon l'éducation de maman", x = "Education", y = "Relations familiales", fill = "Education") +
+    labs(title = "Rel. fam. selon l'éducation de la mère", x = "Education", y = "Moyenne des relations familiales", fill = "Education") +
     scale_fill_discrete(labels = c("0 : Aucune", "1 : primaire", "2 : collège", "3 : lycée", "4 : Supérieur"), type = "viridis")
 
 dfPortugais$Fedu <- as.factor(dfPortugais$Fedu)
 df <- dfPortugais %>% group_by(Fedu) %>% mutate(mean_famrel = mean(famrel)) %>% distinct(Fedu, mean_famrel)
 
-dfFE <- ggplot(df, aes(x = Fedu, y = mean_famrel)) +
+plot2 <- ggplot(df, aes(x = Fedu, y = mean_famrel)) +
     geom_bar(stat = "identity", alpha = 0.7, aes(fill = Fedu)) +
-    labs(title = "Famrel selon l'éducation de papa", x = "Education", y = "Relations familiales", fill = "Education") +
-    scale_fill_discrete(labels = c("0 : Aucune", "1 : primaire", "2 : collège", "3 : lycée", "4 : sup"), type = "viridis")
+    labs(title = "Rel. fam. selon l'éducation du père", x = "Education", y = "Moyenne des relations familiales", fill = "Education") +
+    scale_fill_discrete(labels = c("0 : Aucune", "1 : primaire", "2 : collège", "3 : lycée", "4 : sup"), type = "viridis") 
 
-grid.arrange(dfME, dfFE, ncol=2, nrow = 1)
+grid.arrange(plot2, plot1, ncol=2, nrow = 1)
 ```
 
 Pour le père, le niveau d'éducation **importe peu pour les relations familiales**. En revanche, pour **la mère**, il faut **au moins qu'elle soit allée en primaire** pour garantir de bonnes relations familiales. 
@@ -739,7 +762,7 @@ df <- dfPortugais %>% group_by(Walc) %>% mutate(mean_famrel = mean(famrel)) %>% 
 
 ggplot(df, aes(x = Walc, y = mean_famrel)) + 
   geom_bar(stat = "identity", alpha = 0.7, aes(fill = Walc)) +
-  labs(title = "Relations familiales Walc", x = "Walc", y = "Relation familiale", fill = "Walc") +
+  labs(title = "Relations familiales suivant la consommation d'alcool", subtitle="1 : vraiment peu - 5 : vraiment beaucoup",  x = "Consommation d'alcool (le week-end)", y = "Moyenne des relations familiales") +
   scale_fill_discrete(type = "viridis") +
   theme(legend.position = "none")
 ```
@@ -766,7 +789,7 @@ De ces analyses, nous avons pu déceler plusieurs critères qui permettent d'avo
 
 Après nous être interessés aux notes et aux relations familiales des élèves, nous allons dans cette dernière partie s'interroger sur **les facteurs qui font qu'un élève est en bonne santé**.
 
-La santé est quantifiée sur une échelle de 1 à 5, avec 1 signifiant "mauvais" et 5 "excellent".
+La santé est quantifiée sur une échelle de 1 à 5, avec 1 signifiant **"vraiment mauvais"** et 5 **"excellent"**.
 
 ```{r health, message = FALSE}
 data <- dfMaths %>% select(health) %>% 
@@ -780,7 +803,7 @@ statistics <- list("min" =  min(data$health),
 mean =  round(statistics$mean, digits=2)
 sd = round(statistics$sd, digits=2)
 
-plot <- ggplot(data, aes(y = health)) +
+ggplot(data, aes(y = health)) +
   geom_violin(aes(x = "santé", fill = "purple"),width = 0.5, alpha = 0.5, size = 1) + 
   geom_boxplot(aes( x = "santé"), width = 0.1, colour = "grey", alpha = 0.2) +
   geom_hline(aes(yintercept =  statistics$mean, colour = "blue")) +
@@ -792,29 +815,29 @@ plot <- ggplot(data, aes(y = health)) +
   scale_fill_viridis(discrete = TRUE) +
   labs(title = "Répartition de l'état de Santé", x = "", y = "État de santé") + 
   theme(legend.position = "none")
-  
-plot
 ```
 
 L'état de santé moyen est **`r mean`** et l'écart type de **`r sd`**. La population est majoritairement en bonne santé.
 
 ### Quel est l'impact de la famille sur la santé des étudiants ?
 
+Le cadre familial peut avoir des impacts sur l'état de santé des étudiants. **Est-ce que le statut marital des parents, ou bien le tutuer légal fait influe sur l'état de santé des étudiants ?**
+
 ```{r health_pstatus_guardian, message = FALSE}
 data1 <- dfPortugais %>% group_by(Pstatus) %>% mutate(mean_health = mean(health)) %>% distinct(Pstatus, mean_health)
 
 plot1 <- ggplot(data1, aes(x = Pstatus, y = mean_health)) + 
   geom_bar(stat = "identity", alpha = 0.7, aes(fill = Pstatus)) +
-  labs(title = "Santé selon la nature de la famille", x = "Type de famille", y = "Santé") +
+  labs(title = "Santé selon la nature de la famille", x = "Type de famille", y = "Moyenne de l'état de santé") +
   scale_fill_discrete(type = "viridis") +
   theme(legend.position = "none") +
-  scale_x_discrete(labels = c("Classique", "Monoparentale"))
+  scale_x_discrete(labels = c("Parents ensembles", "Parents séparés"))
 
 data2 <- dfPortugais %>% filter(Pstatus == 'A') %>% group_by(guardian) %>% mutate(mean_health = mean(health)) %>% distinct(guardian, mean_health)
 
 plot2 <- ggplot(data2, aes(x = guardian, y = mean_health)) + 
   geom_bar(stat = "identity", alpha = 0.7, aes(fill = guardian)) +
-  labs(title = "Santé selon le tuteur", subtitle = "Familles séparées", x = "Type de famille", y = "Santé") +
+  labs(title = "Santé selon le tuteur", subtitle = "Familles séparées", x = "Tuteur légal", y = "Moyenne de l'état de santé") +
   scale_fill_discrete(type = "viridis") +
   theme(legend.position = "none") +
   scale_x_discrete(labels = c("Père", "Mère","Autre"))
@@ -823,9 +846,8 @@ grid.arrange(plot1, plot2, nrow = 1)
 ```
 
 Nous aurions pu penser que des élèves avec des parents ensembles auraient une meilleure santé que ceux avec des parents séparés. **Mais les chiffres nous donnent tort**. <br>
-En s'interessant de plus près aux familles monoparentales, et que l'on s'interesse aux tuteurs on se rend compte que **les élèves éduqués par une mère seule ont plus de soucis de santé, décrochant de près d'un point**4 des autres cas.<br>
-Pour essayer d'expliquer cela, nous avons essayé de faire une étude sur l'emploi et l'éducation de ces femmes seules à s'occuper de leurs enfants. On pourrait imaginer qu'elles n'occupent pas des métiers à haut revenu ou qu'elles n'ont pas faites de longues études.
-
+En s'interessant de plus près aux familles avec des parents sépares, et que l'on s'interesse aux tuteurs on se rend compte que **les élèves éduqués par une mère seule ont plus de soucis de santé, décrochant de près d'un point** des 2 autres cas.<br>
+Pour essayer d'expliquer cela, nous avons essayé de faire une étude sur l'emploi et l'éducation de ces mères seules. **On pourrait imaginer qu'elles n'occupent pas des métiers à haut revenu ou qu'elles n'ont pas faites de longues études**.
 
 ```{r health_separate_pjob_pedu, message = FALSE}
 data1 <- dfMaths %>% filter(Pstatus == 'A', guardian == "mother") %>%
@@ -845,10 +867,10 @@ plot1 <- ggplot(data1, aes(area = n, fill = Mjob, label = Mjob)) +
   
 plot2 <- ggplot(data2, aes(x = Mjob, y = mean_health)) +
   geom_bar(stat = "identity", alpha = 0.7, aes(fill = Mjob)) +
-  labs(title = "Santé selon le métier de la mère", x = "Travail de la mère", y = "Santé") +
+  labs(title = "Santé selon le métier de la mère", subtitle="Parents séparés", x = "Travail de la mère", y = "Moyenne de l'état de santé") +
   scale_fill_discrete(type = "viridis") +
   theme(legend.position = "none") +
-  scale_x_discrete(labels = c("Au foyer", "Santé","Autre","Services publics", "Enseignement"))
+  scale_x_discrete(labels = c("Au foyer", "Santé","Autre","Serv. Pub.", "Education"))
 
 plot3 <- ggplot(data3, aes(area = n, fill = factor(Medu), label = Medu)) + 
   geom_treemap() +
@@ -857,22 +879,21 @@ plot3 <- ggplot(data3, aes(area = n, fill = factor(Medu), label = Medu)) +
 
 plot4 <- ggplot(data4, aes(x = Medu, y = mean_health)) + 
   geom_bar(stat = "identity", alpha = 0.7, aes(fill = Medu)) +
-  labs(title = "Santé selon l'éducation de la mère", x = "Études de la mère", y = "Santé") +
+  labs(title = "Santé selon l'éducation de la mère", subtitle="Parents séparés", x = "Études de la mère", y = "Moyenne de l'état de santé") +
   scale_fill_discrete(type = "viridis") +
   theme(legend.position = "none") +
   scale_x_discrete(labels = c("Aucune", "Primaire", "Collège","Lycée","Supérieur"))
 
 grid.arrange(plot1, plot2, plot3, plot4, nrow = 2, ncol = 2)
-
-
 ```
 
-In fine, on ne peut confirmer que la moitié de nos hypothèses. Pour ce qui est de l'emploi de la mère, celles exerçant des activités autres que dans les services publics, la santé et l'enseignement, qui sont aussi les plus nombreuses sont celles pour lesquelles on retrouve les moins bons états de santé chez les enfants. En ce qui concerne le niveau d'éducation, on agréablement surpris de voir que les mères ayant les plus bas niveaux d'éducation s'en sortent le mieux.
+In fine, on ne peut confirmer que la moitié de nos hypothèses. <br>
+Pour ce qui est de l'emploi de la mère, celles exerçant des activités autres que dans les services publics, la santé et l'enseignement, qui sont aussi les plus nombreuses sont celles pour lesquelles on retrouve les moins bons états de santé chez les enfants.<br>
+En ce qui concerne le niveau d'éducation, on est agréablement surpris de voir que les mères ayant les plus bas niveaux d'éducation s'en sortent le mieux.
 
 ### Etat de santé selon la relation famlliale
 
-Nous partons sur l'idée selon laquelle de mauvaises relations familiales ont des répercutions négatives sur la santé des élèves
-
+Pour conitnuer sur l'étude de la famille, nous allons nous intéresser aux relations familiales. Nous partons sur l'idée selon laquelle **de mauvaises relations familiales ont des répercutions négatives sur la santé des élèves**.
 
 ```{r health_famrel, message = FALSE}
 dfPortugais$famrel <- as.factor(dfPortugais$famrel)
@@ -881,24 +902,25 @@ df <- dfPortugais %>% group_by(famrel) %>% mutate(mean_health = mean(health)) %>
 
 ggplot(df, aes(x = famrel, y = mean_health)) +
   geom_bar(stat = "identity", alpha = 0.7, aes(fill = famrel)) +
-  labs(title = "Santé selon la relation familiale", x = "Relations familiales", y = "État de santé") +
+  labs(title = "Santé selon la relation familiale", x = "Relations familiales", y = "Moyenne de l'état de santé") +
   scale_fill_discrete(type = "viridis") +
   theme(legend.position = "none")
 
 ```
 
-En effet, nous voyons clairement une évolution progressive de la santé suivant la qualité de la relation familiale
+Commen nous le pensions, les relations familiales ont un réel impact sur l'état de santé, qui s'améliore quand les relations familiales augmentent.
 
 ### Etat de santé en fonction du travail des parents
 
-Les systèmes de santé étant assez bien développés en Europe en général, nous ne nous attendons pas à avoir des différences significatives selon le métier des parents.
+Pour finit, nous allons nous interessés aux parents, et nous allons si l'état de santé varie selon le travail des parents.<br>
+Les systèmes de santé étant assez bien développés en Europe en général, **nous ne nous attendons pas à avoir des différences significatives selon le métier des parents**.
 
 ```{r health_pjob, message = FALSE}
 df <- dfPortugais %>% group_by(Mjob) %>% mutate(mean_health = mean(health)) %>% distinct(Mjob, mean_health)
 
 plot1 <- ggplot(df, aes(x = Mjob, y = mean_health)) + 
   geom_bar(stat = "identity", alpha = 0.7, aes(fill = Mjob)) +
-  labs(title = "Santé suivant le travail de maman", x = "Travail", y = "Santé") +
+  labs(title = "Santé suivant le travail de la mère", x = "Travail", y = "Moyenne de l'état de santé") +
   scale_fill_discrete(type = "viridis") +
   theme(legend.position = "none") +
   scale_x_discrete(labels = c("Au foyer","Santé", "Autre","Serv.Public","Education"))
@@ -907,71 +929,39 @@ df2 <- dfPortugais %>% group_by(Fjob) %>% mutate(mean_health = mean(health)) %>%
 
 plot2 <- ggplot(df2, aes(x = Fjob, y = mean_health)) + 
   geom_bar(stat = "identity", alpha = 0.7, aes(fill = Fjob)) +
-  labs(title = "Santé suivant le travail de papa", x = "Travail", y = "Santé") +
+  labs(title = "Santé suivant le travail du père", x = "Travail", y = "Moyenne de l'état de santé") +
   scale_fill_discrete(type = "viridis") +
   theme(legend.position = "none") +
-  scale_x_discrete(labels = c("Au foyer","Santé", "Autre","Serv.Public","Education"))
+  scale_x_discrete(labels = c("Au foyer","Santé", "Autre","Serv. Public","Education"))
 
 grid.arrange(plot1, plot2, nrow = 1)
 ```
 
-Effectivement, nous n'observons pas de gros écarts mais nous remarquons tout de même que les parenrs travaillant dans le secteur de la santé ont les enfants présentant les meilleurs résultats sur cet aspect
+Dans le cas du père, on remarque que le fait qu'il travaille dans le domaine de la santé augmente drastiquement l'état de santé.
+Le résultat est plus mitigé dans le cas de la mère, ou en plus du domaine de la santé, on distingue le domaine du service public qui permet d'avoir un bon état de santé.
 
-### Etat de santé en fonction de l'éducation des parents
+### Conclusion sur l'élèves qui a le meilleur état de santé
 
-Ici on peut faire l'hypothèse selon laquelle le fait d'avoir des parents de faible niveau d'éducation aurait des effets néfastes sur la santé des élèves.
+Nous nous sommes principalement concentrés sur l'impact de la famille sur l'état de santé car cela étaient les seuls analyses interessantes et pertinantes.
 
-```{r health_pedu, message = FALSE}
-df <- dfPortugais %>% group_by(Medu) %>% mutate(mean_health = mean(health)) %>% distinct(Medu, mean_health)
-
-plot1 <- ggplot(df, aes(x = Medu, y = mean_health)) + 
-  geom_bar(stat = "identity", alpha = 0.7, aes(fill = Medu)) +
-  labs(title = "Santé selon l'éducation de maman", x = "Niveau d'études", y = "Santé") +
-  scale_fill_discrete(type = "viridis") +
-  theme(legend.position = "none") +
-  scale_x_discrete(labels = c("Aucune","Primaire","Collège","Lycée","Supérieur"))
-
-df2 <- dfPortugais %>% group_by(Fedu) %>% mutate(mean_health = mean(health)) %>% distinct(Fedu, mean_health)
-
-plot2 <- ggplot(df2, aes(x = Fedu, y = mean_health)) + 
-  geom_bar(stat = "identity", alpha = 0.7, aes(fill = Fedu)) +
-  labs(title = "Santé selon l'éducation de papa", x = "Niveau d'études", y = "Santé") +
-  scale_fill_discrete(type = "viridis") +
-  theme(legend.position = "none") +
-  scale_x_discrete(labels = c("Aucune","Primaire","Collège","Lycée","Supérieur"))
-
-grid.arrange(plot1, plot2, nrow = 1) 
-```
-
-On se rend compte après étude que l'hypothèse n'est pas complètement vérifiée et on observe des comportements différents selon le sexe du parent. Alors que la santé des enfants de mères ayant le plus bas niveau d'études est la meilleur, celle des pères ayant le plus bas niveau d'études est de façon significative moins bonne que celle des autres.
-
-Conclusion sur l'état de santé
-<hr>
-
-Plusieurs critères permettent d'avoir une bonne santé. Il s'agit : 
 <ul>
-<li> La qualité de la relation familiale : Mieux elle est, meilleure est la santé.</li>
-<li> Le travail des parents : On constate une meilleure santé lorsque lepère ou la mère travaille dans le secteur de la santé.</li>
-<li> La nature de la famille : En prenant l'évènement contraire on voit que les familles monoparentales où la garde est à la mère rencontre des difficultés et que ca se passe relativement bien dans les autres cas. </li>
-
+  <li> La qualité de la relation familiale : **Mieux elle est, meilleure est la santé**</li>
+  <li> Le travail des parents : On constate un meilleur état de santé lorsque le père ou la mère **travaillent dans le secteur de la santé**</li>
+  <li> La nature de la famille : En prenant l'évènement contraire on voit que **les familles monoparentales où la garde est à la mère rencontre des difficultés** alors que **cela se passe relativement bien dans les autres cas**</li>
 </ul>
 
 # Conclusion
 
-Pour conclure sur cette analyse, on peut définir que pour être un élève "*parfait*" sur les plans scolaire, familial et social, les critères à réunir sont :
-<ul>
-  <li></li>
-</ul>
-
-Le point positif sur notre dataset est qu’il a été plaisant et intéressant à analyser. Des analyses ont validées nos théories, tandis que d’autres les ont réfutées.<br>
-En revanche, pour le point noir de ce dataset, nous pouvons notifier qu’il nous manquait des valeurs continue. En effet, la seule valeur continue que nous avions est la moyenne générale que nous avons du créer. Ce manque de diversité dans nos variables nous a obligé à faire presque que le même type de diagramme (diagramme en barre).<br>
-Avant de finir sur nos remarques personnelles, nous pouvons conclure quant au projet en lui même. Malgré l’aspect distanciel, le projet pour notre part s’est très bien déroulé. L’utilisation de GitHub a facilité cela, tout comme la mise en place d’un chanel Discord qui a permis de bien communiquer.
-Les 3 axes de recherche nous ont permis de bien nous répartir le travail, sans empiéter sur celui des autres.
+Pour conclure sur cette analyse, nous nous malheuresement pas réussi à identifier des critères qui permet d'avoir des bonnes notes, tout en ayant de bonnes relations familiales, et un bon état de santé. Sûrement car **l'étudiant parfait n'existe pas** ! <br>
+Le point positif sur notre dataset est qu’il a été **plaisant** et **intéressant** à analyser. Des analyses ont validées nos théories, tandis que d’autres les ont réfutées.<br>
+En revanche, pour **le point noir** de ce dataset, nous pouvons notifier qu’**il nous manquait des valeurs continue**. En effet, la seule valeur continue que nous avions est la moyenne générale que nous avons du créer. **Ce manque de diversité dans nos variables nous a obligé à faire presque que le même type de plot** (diagramme en barre).<br>
+Avant de finir sur nos remarques personnelles, nous pouvons conclure quant au projet en lui même. Malgré l’aspect distanciel, **le projet pour notre part s’est très bien déroulé**. L’utilisation de GitHub a facilité cela, tout comme la mise en place d’un chanel Discord qui a permis de bien communiquer.
+**Les 3 axes de recherche nous ont permis de bien nous répartir le travail, sans empiéter sur celui des autres.**
 
 ### Conclusion personnelle
 <ul>
   <li>**Oscar** : L’UE était plaisante et au goût du jour avec des outils très actuels utilisés dans la data visualisation, le projet est vraiment plaisant à réaliser et permet de bien prendre en main le langage R pour la datavizz. La chose qui pourrait je pense améliorer cette UE serait de passer un peu plus de temps sur un outil de BI (Tableau ou PowerBI), peut-être n’en choisir qu’un des deux et l’approfondir sur 3 semaines ou plus car ce sont des outils très utilisés en entreprise.</li>
-  <li>**ALbert** :</li>
-  <li>**Clément** :</li>
+  <li>**Albert** :</li>
+  <li>**Clément** : Sûrement l'une des UE les plus interessantes que j'ai suivie à l'UTT, et en tout la mieux organisée que j'ai pu faire depuis la mise en place des cours à distance. Réaliser un projet sur les 2/3 du semestre permet de bien appréhender et appliquer les différentes notions vues en cours ; sur les points que j'ai particulièrement bien aimé je peux notifier les cours qui concerne la perception et le regard sur les graphes (cours sur la sémiologie et l'éthique), en revanche je regrette la pauvreté dans nos variables ce qui nous a contraint d'une redondance sur nos types de plots ainsi que sur la Shinyapp.</li>
 </ul>
 
