@@ -13,7 +13,7 @@ knitr::opts_chunk$set(echo = FALSE)
 
 # Introduction
 
-Ce document Rmarkdown fait office de rapport final au projet d'IF36. En effet, le but étant de choisir un jeu de données existant afin de réaliser une analyse sur ce dernier à l'aide de data visualisation.
+Ce document RMarkdown fait office de rapport final au projet d'IF36. Le but de ce projet a été de **choisir un jeu de données** existant afin de **réaliser une analyse** sur ce dernier à l'aide des **différentes notions de data visualisation vues en cours**.
 
 ### Notre DataSet
 
@@ -26,7 +26,7 @@ De façon générale, les variables nous donnent des informations sur **l’envi
 
 Notre analyse portera sur **3 différents axes**. Dans un premier temps, l'axe principal de notre réflexion sera **l'analyse des notes** en fonction de différents critères, de différentes variables, qui nous semblaient plus intéressantes à l'analyse. Le but étant de trouver le profil "type" de **l'élève modèle** (avec les meilleurs résultats).<br>
 Puis, un deuxième axe de réflexion portera sur **les relations familiales** des élèves, en analysant quelles sont les variables qui expliquent le mieux **les bonnes relations familiales** d'un élève.<br>
-Enfin, nous avons choisi de travailler sur **le plan santé**, qu'est-ce qui permet à un étudiant d'avoir **la meilleure santé possible**. Notre analyse comporte une trentaine de graphes, ce qui est assez long mais nous avons jugé chaque graph présent comme **indispensable à la bonne compréhension** des axes de développement, afin que l'analyse soit la plus **claire** et **précise** possible.
+Enfin, nous avons choisi de travailler sur **le plan santé**, qu'est-ce qui permet à un étudiant d'avoir **la meilleure santé possible**. Notre analyse comporte une trentaine de graphiques, ce qui est assez long mais nous avons jugé chaque graph présent comme **indispensable à la bonne compréhension** des axes de développement, afin que l'analyse soit la plus **claire** et **précise** possible.
 
 <!--  Importations des libraries -->
 
@@ -45,11 +45,11 @@ library(corrplot)
 ### Exploration des données
 
 La première partie de notre projet a consisté en l'exploration de nos jeux de données. En effet, les individus n'étant **pas les mêmes** sur le dataset **mathématiques** et le dataset **portugais**, il nous était impossible de les regrouper. Cependant, nous avons tout de même choisi de garder les deux en réalisant nos graph sur le dataset que nous avons jugé le plus approprié selon les variables analysées. <br>
-En effet, le dataset portugais comporte **plus d'individus** que le dataset mathématiques, donc lorsque nous avons réalisé les graphes avec ce dernier c'est que nous voulions **une bonne représentativité des individus**. Au contraire, nous avons jugé que le dataset mathématiques nous était utile lorsque **le sérieux des élèves** primait sur le nombre d'élèves, car nous considérions que **les mathématiques étaient une matière plus importante que le portugais** et donc que les élèves étaient plus sérieux dans cette matière.
+En effet, le dataset portugais comporte **plus d'individus** que le dataset mathématiques, donc lorsque nous avons réalisé les graphiques avec ce dernier c'est que nous voulions **une bonne représentativité des individus**. Au contraire, nous avons jugé que le dataset mathématiques nous était utile lorsque **le sérieux des élèves** primait sur le nombre d'élèves, car nous considérions que **les mathématiques étaient une matière plus importante que le portugais** et donc que les élèves étaient plus sérieux dans cette matière.
 
 ### Explications des échelles numériques + données
 
-En amont de l'analyse, nous allons commencer par expliquer certaines variables, qui peuvent parraître implicites pour certains. En effet, certaines de ces varaibles sont des échelles quantifiées, d'autres sont des initiales qui représentent des mots.<br>
+En amont de l'analyse, nous allons commencer par expliquer certaines variables, qui peuvent paraître implicites pour certains. En effet, certaines de ces variables sont des échelles quantifiées, d'autres sont des initiales qui représentent des mots.<br>
 **Explication des échelles quantifiées :**
 <ul>
   <li>Medu, Fedu (niveau d'étude de la mère et du père) : échelle allant de 0 à 4 : 0 : **aucune**, 1 : **primaire**, 2 : **collège**, 3 : **lycée**, 4 : **supérieur**</li>
@@ -58,7 +58,7 @@ En amont de l'analyse, nous allons commencer par expliquer certaines variables, 
   <li>famrel (relations familiales), health (niveau de santé) : échelle allant de 1 à 5 : 1 : **vraiment mauvais**, 5 : **excellent**</li>
   <li>freetime (temps libre), goout (temps de sortie avec les amis), Dalc et Walc (consommation d'alcool la semaine et le week-end): échelle allant de 1 à 5 : 1 : **vraiment peu**, 5 : **vraiment beaucoup**</li>
 </ul><br>
-**Explication des initiales et accronymes :**
+**Explication des initiales et des acronymes :**
 <ul>
   <li>school (école) : GP : **Gabriel Perreira**, MS : **Mousinho da Silveira**</li>
   <li>sex (sexe de l'élève) : M : **Garçon**, F : **Fille**</li>
@@ -82,7 +82,7 @@ ggplot(df, aes(x = age)) +
 
 ```
 
-Le deuxième problème était **l'absence d'une moyenne générale** des élèves. En effet, la régularité des notes étant un critère à prendre en compte dans nos analyses. Nous avons donc décidé de **créer cette nouvelle variable "Gmean"** qui est **la moyenne des notes des élèves sur les toris trimestres**. Ce sera cette variable sur laquelle nous nous baserons pour réaliser nos analyses des notes.  
+Le deuxième problème était **l'absence d'une moyenne générale** des élèves. En effet, la régularité des notes étant un critère à prendre en compte dans nos analyses. Nous avons donc décidé de **créer cette nouvelle variable "Gmean"** qui est **la moyenne des notes des élèves sur les trois trimestres**. Ce sera cette variable sur laquelle nous nous baserons pour réaliser nos analyses des notes.  
 
 ```{r import datasets et traitements, message = FALSE}
 dfMaths <- dfMathsComplet %>% filter(age < 20)
@@ -104,9 +104,9 @@ dfPortugais %>%
   head()
 ```
 
-### Graphique de corrélationn
+### Graphique de coreélation
 
-Afin d'avoir un premier aperçu lors de l'exploration de nos données, nous avons réalisé un graphe de corrélation des variables numériques de notre dataset. Cela nous a permis de voir que certaines variables étaient très corrélées, positivement ou négativement.<br>
+Afin d'avoir un premier aperçu lors de l'exploration de nos données, nous avons réalisé un graphique de corrélation des variables numériques de notre dataset. Cela nous a permis de voir que certaines variables étaient très corrélées, positivement ou négativement.<br>
 Voici ce diagramme :
 
 ```{r correlation, message = FALSE}
@@ -124,7 +124,7 @@ Dans cette première partie, nous allons essayer de trouver **quels sont les cri
 
 ### Qui travaille le plus ? Et à quel prix ?
 
-Souvent il y a une compéition entre les filles et les garçons à l'école, et on entend souvent dire que **les filles sont meilleures que les garçons. Mais est-ce la vérité ?**
+Souvent il y a une compétition entre les filles et les garçons à l'école, et on entend souvent dire que **les filles sont meilleures que les garçons. Mais est-ce la vérité ?**
 
 ```{r studytime_sex_grade, message = FALSE}
 tempsMoyenGarcons <- dfMaths %>% filter(sex == "M") %>% select(studytime) %>% mutate(mean_studytime = mean(studytime)) %>% distinct(mean_studytime)
@@ -136,7 +136,7 @@ tempsMoyenFilles <- dfMaths %>% filter(sex == "F") %>% select(studytime) %>% mut
 tempsMoyenFilles <- tempsMoyenFilles[1,1]
 ```
 
-Voici le temps de travail en moyenne des garcons : **`r round(tempsMoyenGarcons, digits=2)`**. <br>
+Voici le temps de travail en moyenne des garçons : **`r round(tempsMoyenGarcons, digits=2)`**. <br>
 
 En comparaison au temps moyen des filles en Maths, qui est plus élevé : **`r round(tempsMoyenFilles, digits=2)`**.<br>
 
@@ -157,11 +157,11 @@ ggplot(df, aes(x = sex, y = Gmean)) +
   
 ```
 
-On peut donc voir que **les garcons ont des meilleures notes que les filles**, alors qu'ils travaillent moins en moyenne. On peut donc en conclure que les **filles sont plus studieuses que les garçons**, mais que cela ne se fait pas ressentir au niveau des notes et donc qu'**il vaut mieux être un garcon pour réussir**.
+On peut donc voir que **les garçons ont des meilleures notes que les filles**, alors qu'ils travaillent moins en moyenne. On peut donc en conclure que les **filles sont plus studieuses que les garçons**, mais que cela ne se fait pas ressentir au niveau des notes et donc qu'**il vaut mieux être un garçon pour réussir**.
 
 ### L'importance d'internet 
 
-Internet est aujourd'hui un outil qui peut parraître indispensable aux élèves. **Nous allons voir si l'accès à internet permet réellement aux élèves d'avoir de meilleures notes.**
+Internet est aujourd'hui un outil qui peut paraître indispensable aux élèves. **Nous allons voir si l'accès à internet permet réellement aux élèves d'avoir de meilleures notes.**
 
 ```{r internet_grade, message = FALSE}
 
@@ -208,7 +208,7 @@ Notre hypothèse est donc bien vérifiée ; **les notes baissent plus le temps d
 
 ### Le métier des parents influe-t-il sur les notes ?
 
-Après nous être intéressés au sexe ainsi qu'au lieu de vie des étudiants, nous allons nous interessés au cadre familial et plus particulièrement au travail des parents. Nous pouvons penser que des parents travaillant dans l'éducation permet aux élèves d'avoir de meilleurs résultats. **Mais le travail des parents a-t-il un vrai impact sur les notes des élèves ?**
+Après nous être intéressés au sexe ainsi qu'au lieu de vie des étudiants, nous allons nous intéresser au cadre familial et plus particulièrement au travail des parents. Nous pouvons penser que des parents travaillant dans l'éducation permet aux élèves d'avoir de meilleurs résultats. **Mais le travail des parents a-t-il un vrai impact sur les notes des élèves ?**
 
 ```{r fjob_grade, message = FALSE}
 #préparation des données
@@ -237,11 +237,11 @@ grid.arrange(fJob, mJob, ncol=2, nrow = 1)
 ```
 
 On peut déceler que **le métier du père et de la mère ont bien une influence sur les notes de l'étudiant**.<br>
-En effet, un **père professeur** amène généralement à de bien meilleurs résultats. Tandis que du côté de **la mère**, c'est **le travail dans la santé** qui permet d'avoir des meilleurs notes. On pourra voir par la suite si avoir une mère dans la santé implique être en bonne santé et donc conclure sur le fait qu'être en bonne santé a un impact direct sur les notes.
+En effet, un **père professeur** amène généralement à de bien meilleurs résultats. Tandis que du côté de **la mère**, c'est **le travail dans la santé** qui permet d'avoir de meilleurs notes. On pourra voir par la suite si avoir une mère dans la santé implique être en bonne santé et donc conclure sur le fait qu'être en bonne santé a un impact direct sur les notes.
 
 ### Travailler plus pour gagner plus ?
 
-Nous allons maintenant nous axer sur l'implication scolaire des étudiants : leur taux d'absence, leur volonté de faire des grandes études, s'il font du soutient scolaire, leur temps de travail...
+Nous allons maintenant nous axer sur l'implication scolaire des étudiants : leur taux d'absence, leur volonté de faire des grandes études, s'il font du soutien scolaire, leur temps de travail...
 
 **Est-ce que le fait de réviser plus est un vecteur pour avoir de meilleures notes ?**
 
@@ -258,12 +258,12 @@ ggplot(df, aes(x = studytime, y = mean_Gmean)) +
     
 ```
 
-On voit que **plus les élèves travaillent, meileures sont leurs notes**. Néanmoins, on voit que la différence n'est pas énorme, même négligeable, lorsque le temps de travail dépasse 10h. On pense alors que **travailler plus de 10h n'est pas utile pour avoir de bonnes notes**.
+On voit que **plus les élèves travaillent, meilleures sont leurs notes**. Néanmoins, on voit que la différence n'est pas énorme, même négligeable, lorsque le temps de travail dépasse 10 heures. On pense alors que **travailler plus de 10 heures n'est pas utile pour avoir de bonnes notes**.
 
 
 ### Pour réussir, faut-il nécessairement aller en cours ?
 
-Un des premiers points sur lequel on se penche est l'absentéisme. **Un gros taux d'absence entraine-t-il une chute des notes ?**
+Un des premiers points sur lequel on se penche est l'absentéisme. **Un gros taux d'absence entraîne-t-il une chute des notes ?**
 
 ```{r absences_grade, message = FALSE}
 #preparation des données
@@ -300,7 +300,7 @@ En effet, on peut voir que la volonté de faire des études supérieures est **t
 
 ### Le soutien scolaire, un vrai plus ?
 
-Certains élèves bénéficient de soutient scolaire , qui est gratuit. Il y a également des élèves qui bénéficient de cours payants, que l'on peut assimiler à du soutient scolaire scolaire payant. Vaut-il mieux pour les élèves opter pour la version payante s'ils veulent avoir de meilleures notes.
+Certains élèves bénéficient de soutien scolaire , qui est gratuit. Il y a également des élèves qui bénéficient de cours payants, que l'on peut assimiler à du soutien scolaire scolaire payant. Vaut-il mieux pour les élèves opter pour la version payante s'ils veulent avoir de meilleures notes.
 
 ```{r paid_schoolsup_grade, message = FALSE}
 #preparation des données
@@ -327,7 +327,7 @@ grid.arrange(schoolsup, paid, ncol=2, nrow = 1)
 
 ```
 
-Les élèves ayant un **soutien scolaire gratuit**, donné par l'établissement semblent obtenir de **bien moins bons résultats** que les élèves ayant un **soutien scolaire payant**. On en conclut donc que la **version payante** du soutient scolaire est donc **bénéfique pour avoir de meilleures notes**.
+Les élèves ayant un **soutien scolaire gratuit**, donné par l'établissement semblent obtenir de **bien moins bons résultats** que les élèves ayant un **soutien scolaire payant**. On en conclut donc que la **version payante** du soutien scolaire est donc **bénéfique pour avoir de meilleures notes**.
 
 ### Les échecs ont-ils un impact sur les notes ?
 
@@ -350,9 +350,9 @@ On peut voir que le nombre de redoublement d'un élève **influe directement** s
 
 ### Le temps, important pour s'aérer l'esprit ?
 
-Pour finir cette partie sur l'analyse des notes, nous allons voir comment les facteurs extra-scolaire peuvent influer sur les notes. 
+Pour finir cette partie sur l'analyse des notes, nous allons voir comment les facteurs extra-scolaires peuvent influer sur les notes. 
 
-**Est-il conseiller pour les élèves de prendre du temps libre après les cours ?**
+**Est-il conseillé pour les élèves de prendre du temps libre après les cours ?**
 
 ```{r freetime_grade, message = FALSE}
 dfPortugais$freetime <- as.factor(dfPortugais$freetime)
@@ -397,9 +397,9 @@ grid.arrange(Walc, Dalc, ncol=2, nrow = 1)
 
 ```
 
-On peut voir que **la consommation d'alcool le weekend a clairement un impact sur les notes** et que ce sont **ceux qui en consomment peu** (niveau 1 ou 2) qui **ont les meilleures résultats**. On peut donc considérer qu'**il est préférable de ne pas consommer d'alcool le weekend, ou simplement un petit verre, pour avoir les meilleurs notes** (s'amuser le weekend pour relacher les cours par exemple).<br>
+On peut voir que **la consommation d'alcool le week-end a clairement un impact sur les notes** et que ce sont **ceux qui en consomment peu** (niveau 1 ou 2) qui **ont les meilleures résultats**. On peut donc considérer qu'**il est préférable de ne pas consommer d'alcool le week-end, ou simplement un petit verre, pour avoir les meilleurs notes** (s'amuser le week-end pour relâcher les cours par exemple).<br>
 
-L'impact de la **consommation d'alcool en semaine** semble encore **plus lourde**. Ceux qui ne consomment pas du tout d'alcool la semaine **obtienent les meilleures notes**, et de loin. Cependant, **quitte à boire beaucoup de l'alcool en semaine, autant en boire énormément** car le niveau 5 (vraiment beaucoup) obtient des meilleures notes que le niveau 4 (beaucoup). Les résultats du niveau 5 sont sûrement tronquées par le fait que peu d'élèves soient à ce niveau, la représentativité est donc faible.
+L'impact de la **consommation d'alcool en semaine** semble encore **plus lourde**. Ceux qui ne consomment pas du tout d'alcool la semaine **obtiennent les meilleures notes**, et de loin. Cependant, **quitte à boire beaucoup de l'alcool en semaine, autant en boire énormément** car le niveau 5 (vraiment beaucoup) obtient des meilleures notes que le niveau 4 (beaucoup). Les résultats du niveau 5 sont sûrement tronqués par le fait que peu d'élèves soient à ce niveau, la représentativité est donc faible.
 
 ### Conclusion sur l'élève modèle
 
@@ -409,7 +409,7 @@ Enfin, on peut dire que nous avons pu déceler certains critères pour être l'�
   <li>Être un **garçon** (conclusion très théorique, basé uniquement sur les données)</li>
   <li>Se dégager **un peu de temps libre** pour s'aérer l'esprit</li>
   <li>Travailler de manière conséquente, mais **ne pas abuser du temps passé à étudier**</li>
-  <li>Ne surtout **pas consommer d'alcool en semaine** et **ne pas en consommer avec excès le weekend**</li>
+  <li>Ne surtout **pas consommer d'alcool en semaine** et **ne pas en consommer avec excès le week-end**</li>
   <li>On **imagine qu'un taux d'absentéisme élevé engendre des moins bonnes notes** mais le dataset ne nous a pas permi de conclure là-dessus</li>
   <li>Avoir comme souhait de **faire des études supérieurs**</li>
   <li>Obtenir un **soutien scolaire payant**</li>
@@ -420,7 +420,7 @@ Enfin, on peut dire que nous avons pu déceler certains critères pour être l'�
 
 # Comment être l'élève qui s'entend le mieux avec sa famille ?
 
-Après avoir vu quels critères permettaient à un élève d'avoir les meilleures notes, nous allons nous interessés dans ce second axe de recherche aux critères qui permettent d'avoir de bonne relations familiales.
+Après avoir vu quels critères permettaient à un élève d'avoir les meilleures notes, nous nous intéresserons dans ce second axe de recherche aux critères qui permettent d'avoir de bonne relations familiales.
 
 <!-- Calcul des moyennes utiles à l'analyse des relations -->
 
@@ -534,8 +534,8 @@ mean_famrel_GO <- round(mean(total_famrel_GO), digits=2)
 
 ### Comment varient les relations familiales ?
 
-Dans les datasets, les relations familailes sont évaluées de 1 à 5. 1 signifiant que les relations familiales sont très mauvaises, tandis que 5 signifie qu'elles sont excellentes. <br>
-Pour les élèves que nous étudions, la moyenne des relations familiales est de **`r mean_famrel`**. Le graphique ci-dessous permet de bien visualiser la réparition des relations familiales.
+Dans les datasets, les relations familiales sont évaluées de 1 à 5. 1 signifiant que les relations familiales sont très mauvaises, tandis que 5 signifie qu'elles sont excellentes. <br>
+Pour les élèves que nous étudions, la moyenne des relations familiales est de **`r mean_famrel`**. Le graphique ci-dessous permet de bien visualiser la répartition des relations familiales.
 
 ```{r famrel, message = FALSE}
 ggplot(dfPortugais, aes(x = famrel)) + 
@@ -576,7 +576,7 @@ Par rapport au lieu de vie, la moyenne des relations familiales des élèves hab
 
 Le sexe et le lieu de vie font peu varier les relations familiales. Néanmoins, on peut remarquer qu'en moyenne **les garçons ont de meilleures relations familiales** et faire la même remarque pour **les étudiants ruraux**.
 
-### L'adolescence, le déclin de la bonne entente familiales ?
+### L'adolescence, le déclin de la bonne entente familiale ?
 
 Arrivé à l'adolescence, les relations familiales deviennent souvent plus tendues entre les enfants et les parents. Nous pouvons donc émettre qu'**avec l'âge les relations familiales se dégradent**. 
 
@@ -600,13 +600,13 @@ Néanmoins, cette observation se retrouve un peu faussée par les étudiants de 
 Le statut marital des parents fait peu vairer les relations familailes. En effet, les étudiants avec des parents ensembles ont une moyenne de relation familiale qui est de **`r mean_famrel_PST`** tandis qu'elle est de **`r mean_famrel_PSA`** pour ceux qui ont leurs parents séparés. <br>
 Avoir des **parents ensembles** permet donc quand même d'avoir de meilleures relations familiales.
 
-Néanmoins, conjugué à d'autres paramètres, le statut marital des parents fait varier de façon plus concluantes les relations familiales des étudiants.
+Néanmoins, conjugué à d'autres paramètres, le statut marital des parents fait varier de façon plus concluante les relations familiales des étudiants.
 
 ### Relations familiales selon la taille de la famille en prenant en compte le statut marital des parents
 
 Nous allons voir dans un premier temps si la taille de la famille fait varier les relations familiales. Des familles avec peu d'enfant peut avoir des liens resserrés, tandis qu'une famille avec beaucoup d'enfants peut voir ses relations familiales varier selon l'entente entre les progénitures.<br>
-Si on s'interesse seulement à la taille de la famille, les relations varient peu entre les familles de composées de 3 personnes ou moins **(`r mean_famrel_FSLE3`)**, et celle comptant plus de 3 personnes **(`r mean_famrel_FSGT3`)**. <br>
-En revanche, regardons **si l'analyse devient plus intéressante en conjugant la taille de la famille et le statut marital des parents**.
+Si on s'intéresse seulement à la taille de la famille, les relations varient peu entre les familles de composées de 3 personnes ou moins **(`r mean_famrel_FSLE3`)**, et celle comptant plus de 3 personnes **(`r mean_famrel_FSGT3`)**. <br>
+En revanche, regardons **si l'analyse devient plus intéressante en conjuguant la taille de la famille et le statut marital des parents**.
 
 ```{r famsize_famrel, message = FALSE}
 df <- dfPortugais %>% filter(Pstatus == "T") %>% group_by(famsize) %>% mutate(mean_famrel = mean(famrel)) %>% distinct(famsize, mean_famrel)
@@ -631,13 +631,13 @@ grid.arrange(dfFSPT, dfFSPA, ncol=2, nrow = 1)
 ```
 
 
-Les relations familiales par rapport à la taille de famille, suivant que les parents soient ensembles ou non, **les chiffres deviennent plus interessants** quand les parents sont séparés.<br>
+Les relations familiales par rapport à la taille de famille, suivant que les parents soient ensembles ou non, **les chiffres deviennent plus intéressants** quand les parents sont séparés.<br>
 Ces derniers ont de **meilleures relations familiales** lorsque la **taille de la famille est égale ou inférieure à 3**.
 
 ### L'impact du tuteur légal sur les relations familiales suivant que les parents soient ensemble ou non
 
-Quand on s'interesse seulement aux relations familiales suivant le tuteur légal de l'élève, la moyenne varie peu (père : `r mean_famrel_GF`, mère : `r mean_famrel_GM`), sauf pour "autre" ou la moyenne est un poil plus bas (`r mean_famrel_GO`). <br>
-Nous allons donc continuer l'analyse en conjugant  le statut marital des parents avec le tuteur légal. Dans **les familles séparés, le tuteur légal doit sûrement avoir un impact sur l'entente familiale**.
+Quand on s'intéresse seulement aux relations familiales suivant le tuteur légal de l'élève, la moyenne varie peu (père : `r mean_famrel_GF`, mère : `r mean_famrel_GM`), sauf pour "autre" ou la moyenne est un poil plus bas (`r mean_famrel_GO`). <br>
+Nous allons donc continuer l'analyse en conjuguant  le statut marital des parents avec le tuteur légal. Dans **les familles séparés, le tuteur légal doit sûrement avoir un impact sur l'entente familiale**.
 
 ```{r guardian_famrel, message = FALSE}
 df <- dfPortugais %>% filter(Pstatus == "T") %>% group_by(guardian) %>% mutate(mean_famrel = mean(famrel)) %>% distinct(guardian, mean_famrel)
@@ -668,7 +668,7 @@ En revanche, pour des parents séparés, le résultat est bien différent. Les *
 
 ### Le travail des parents joue-t-il sur les relations familiales ?
 
-Nous allons maintenant directement nous focus sur les parents. Premièrement, en s'interessant à leur travail. Est-ce que des parents sans métier ont une bonne relation dans leur famille ?<br>
+Nous allons maintenant directement nous focaliser sur les parents. Premièrement, en s'intéressant à leur travail. Est-ce que des parents sans métier ont une bonne relation dans leur famille ?<br>
 
 ```{r Pjob_famrel, message = FALSE}
 df <- dfPortugais %>% group_by(Mjob) %>% mutate(mean_famrel = mean(famrel)) %>% distinct(Mjob, mean_famrel)
@@ -721,13 +721,13 @@ plot2 <- ggplot(df, aes(x = Mjob, y = mean_famrel)) +
 grid.arrange(plot1, plot2, ncol=2, nrow = 1)
 ```
 
-Les résulatats sont sans appels !<br>
+Les résultats sont sans appels !<br>
 Quand **le père** travaille dans **le service public**, il vaut que **la mère soit au foyer** pour avoir des meilleures relations familiales. 
 En revanche, quand c'est **la mère** qui travaille dans **le service public**, les relations familiales se portent mieux si **le père est professeur**.
 
 ### Les relations familiales sont-elles meilleures quand les parents ont fait de grandes études ?
 
-Pour continuer sur l'étude des parents, nous allons nous interesser à leur niveau d'étude. **Est-ce que un haut niveau d'étude garantit de bonnes relations familiales ?**
+Pour continuer sur l'étude des parents, nous allons nous intéresser à leur niveau d'étude. **Est-ce que un haut niveau d'étude garantit de bonnes relations familiales ?**
 
 ```{r Pedu_famrel, message = FALSE}
 #preparation des données
@@ -752,7 +752,7 @@ grid.arrange(plot2, plot1, ncol=2, nrow = 1)
 
 Pour le père, le niveau d'éducation **importe peu pour les relations familiales**. En revanche, pour **la mère**, il faut **au moins qu'elle soit allée en primaire** pour garantir de bonnes relations familiales. 
 
-### La consomation d'alcool le week-end, un facteur de mauvaises relations familiales ?
+### La consommation d'alcool le week-end, un facteur de mauvaises relations familiales ?
 
 Pour finir, nous allons voir si comme pour les notes, la consommation d'alcool a un impact négatif sur les notes.
 
@@ -787,7 +787,7 @@ De ces analyses, nous avons pu déceler plusieurs critères qui permettent d'avo
 
 # Comment être l'élève en meilleure santé ?
 
-Après nous être interessés aux notes et aux relations familiales des élèves, nous allons dans cette dernière partie s'interroger sur **les facteurs qui font qu'un élève est en bonne santé**.
+Après nous être intéressés aux notes et aux relations familiales des élèves, nous allons dans cette dernière partie s'interroger sur **les facteurs qui font qu'un élève est en bonne santé**.
 
 La santé est quantifiée sur une échelle de 1 à 5, avec 1 signifiant **"vraiment mauvais"** et 5 **"excellent"**.
 
@@ -846,14 +846,8 @@ grid.arrange(plot1, plot2, nrow = 1)
 ```
 
 Nous aurions pu penser que des élèves avec des parents ensembles auraient une meilleure santé que ceux avec des parents séparés. **Mais les chiffres nous donnent tort**. <br>
-<<<<<<< HEAD
-En s'interessant de plus près aux familles avec des parents sépares, et que l'on s'interesse aux tuteurs on se rend compte que **les élèves éduqués par une mère seule ont plus de soucis de santé, décrochant de près d'un point** des 2 autres cas.<br>
+En s'intéressant de plus près aux familles avec des parents sépares, et que l'on s'intéresse aux tuteurs on se rend compte que **les élèves éduqués par une mère seule ont plus de soucis de santé, décrochant de près d'un point** des 2 autres cas.<br>
 Pour essayer d'expliquer cela, nous avons essayé de faire une étude sur l'emploi et l'éducation de ces mères seules. **On pourrait imaginer qu'elles n'occupent pas des métiers à haut revenu ou qu'elles n'ont pas faites de longues études**.
-=======
-En s'interessant de plus près aux familles monoparentales, et que l'on s'interesse aux tuteurs on se rend compte que **les élèves éduqués par une mère seule ou une personne tierce ont plus de soucis de santé, décrochant de près d'un point**4 du cas où le tuteur c'est le père.<br>
-Pour essayer d'expliquer cela, nous avons essayé de faire une étude sur l'emploi et l'éducation de ces femmes seules (pour le cas des mères) à s'occuper de leurs enfants. On pourrait imaginer qu'elles n'occupent pas des métiers à haut revenu ou qu'elles n'ont pas faites de longues études.
-
->>>>>>> b7a9b5cf71e0c2d0a4a9486950bea42c9cd476c4
 
 ```{r health_separate_pjob_pedu, message = FALSE}
 data1 <- dfMaths %>% filter(Pstatus == 'A', guardian == "mother") %>%
@@ -893,17 +887,11 @@ plot4 <- ggplot(data4, aes(x = Medu, y = mean_health)) +
 grid.arrange(plot1, plot2, plot3, plot4, nrow = 2, ncol = 2)
 ```
 
-<<<<<<< HEAD
-In fine, on ne peut confirmer que la moitié de nos hypothèses. <br>
-Pour ce qui est de l'emploi de la mère, celles exerçant des activités autres que dans les services publics, la santé et l'enseignement, qui sont aussi les plus nombreuses sont celles pour lesquelles on retrouve les moins bons états de santé chez les enfants.<br>
-En ce qui concerne le niveau d'éducation, on est agréablement surpris de voir que les mères ayant les plus bas niveaux d'éducation s'en sortent le mieux.
-=======
 In fine, on ne peut confirmer nos hypothèses. Pour ce qui est de l'emploi de la mère, celles exerçant dans les services publics, occupant une part considérable sont celles pour lesquelles on retrouve les moins bons états de santé chez les enfants Il ne s'agit pourtant pas des métiers les moins lucratifs. En ce qui concerne le niveau d'éducation, on agréablement surpris de voir que les mères ayant les plus bas niveaux d'éducation s'en sortent le mieux.
->>>>>>> b7a9b5cf71e0c2d0a4a9486950bea42c9cd476c4
 
-### Etat de santé selon la relation famlliale
+### Les relations familiales font-elles varier l'état de santé des étudiants ?
 
-Pour conitnuer sur l'étude de la famille, nous allons nous intéresser aux relations familiales. Nous partons sur l'idée selon laquelle **de mauvaises relations familiales ont des répercutions négatives sur la santé des élèves**.
+Pour continuer sur l'étude de la famille, nous allons nous intéresser aux relations familiales. Nous partons sur l'idée selon laquelle **de mauvaises relations familiales ont des répercussions négatives sur la santé des élèves**.
 
 ```{r health_famrel, message = FALSE}
 dfPortugais$famrel <- as.factor(dfPortugais$famrel)
@@ -918,15 +906,12 @@ ggplot(df, aes(x = famrel, y = mean_health)) +
 
 ```
 
-<<<<<<< HEAD
-Commen nous le pensions, les relations familiales ont un réel impact sur l'état de santé, qui s'améliore quand les relations familiales augmentent.
-=======
-En effet, nous voyons clairement une évolution progressive de la santé suivant la qualité de la relation familiale. Il faut cependant nuancer ce constat car les écarts ne sont pas très significatifs.
->>>>>>> b7a9b5cf71e0c2d0a4a9486950bea42c9cd476c4
 
-### Quel est l'impact du travail des parents sur la santé des élèves?
+Comme nous le pensions, les relations familiales ont un réel impact sur l'état de santé, qui s'améliore quand les relations familiales augmentent. Il faut cependant nuancer ce constat car les écarts ne sont pas très significatifs.
 
-Pour finit, nous allons nous interessés aux parents, et nous allons si l'état de santé varie selon le travail des parents.<br>
+### Quel est l'impact du travail des parents sur la santé des élèves ?
+
+Pour finir, nous allons nous intéressés aux parents, et nous allons si l'état de santé varie selon le travail des parents.<br>
 Les systèmes de santé étant assez bien développés en Europe en général, **nous ne nous attendons pas à avoir des différences significatives selon le métier des parents**.
 
 ```{r health_pjob, message = FALSE}
@@ -951,70 +936,31 @@ plot2 <- ggplot(df2, aes(x = Fjob, y = mean_health)) +
 grid.arrange(plot1, plot2, nrow = 1)
 ```
 
-<<<<<<< HEAD
-Dans le cas du père, on remarque que le fait qu'il travaille dans le domaine de la santé augmente drastiquement l'état de santé.
-Le résultat est plus mitigé dans le cas de la mère, ou en plus du domaine de la santé, on distingue le domaine du service public qui permet d'avoir un bon état de santé.
-=======
-Effectivement, nous n'observons pas de gros écarts mais nous remarquons tout de même que les parents travaillant dans le secteur de la santé ont les enfants présentant les meilleurs résultats sur cet aspect,surtout quand il s'agit du père.
-
-### Quel est l'impact de l'éducation des parents sur la santé des élèves?
->>>>>>> b7a9b5cf71e0c2d0a4a9486950bea42c9cd476c4
+Dans le cas du père, on remarque que le fait qu'il **travaille dans le domaine de la santé** augmente drastiquement l'état de santé.
+Le résultat est plus mitigé dans le cas de la mère, ou en plus du **domaine de la santé**, on distingue le domaine du **service public** qui permet d'avoir un bon état de santé.
 
 ### Conclusion sur l'élèves qui a le meilleur état de santé
 
-Nous nous sommes principalement concentrés sur l'impact de la famille sur l'état de santé car cela étaient les seuls analyses interessantes et pertinantes.
-
-<<<<<<< HEAD
-=======
-plot1 <- ggplot(df, aes(x = Medu, y = mean_health)) + 
-  geom_bar(stat = "identity", alpha = 0.7, aes(fill = Medu)) +
-  labs(title = "Santé selon l'éducation de maman", x = "Niveau d'études", y = "Santé") +
-  scale_fill_discrete(type = "viridis") +
-  theme(legend.position = "none") +
-  scale_x_discrete(labels = c("Aucune","Primaire","Collège","Lycée","Supérieur"))
-
-df2 <- dfPortugais %>% group_by(Fedu) %>% mutate(mean_health = mean(health)) %>% distinct(Fedu, mean_health)
-
-plot2 <- ggplot(df2, aes(x = Fedu, y = mean_health)) + 
-  geom_bar(stat = "identity", alpha = 0.7, aes(fill = Fedu)) +
-  labs(title = "Santé selon l'éducation de papa", x = "Niveau d'études", y = "Santé") +
-  scale_fill_discrete(type = "viridis") +
-  theme(legend.position = "none") +
-  scale_x_discrete(labels = c("Aucune","Primaire","Collège","Lycée","Supérieur"))
-
-grid.arrange(plot1, plot2, nrow = 1) 
-```
-
-On se rend compte après étude que l'hypothèse n'est pas complètement vérifiée et on observe des comportements différents selon le sexe du parent. Alors que la santé des enfants de mères ayant le plus bas niveau d'études est la meilleur, celle des pères ayant arrêté au Lycéeest moins bonne que celle des autres.
-
-Conclusion sur l'état de santé
-<hr>
-
+Nous nous sommes principalement concentrés sur l'impact de la famille sur l'état de santé car cela étaient les seules analyses intéressantes et pertinentes.<br>
 Plusieurs critères permettent d'avoir une bonne santé. Il s'agit : 
->>>>>>> b7a9b5cf71e0c2d0a4a9486950bea42c9cd476c4
 <ul>
-  <li> La qualité de la relation familiale : **Mieux elle est, meilleure est la santé**</li>
-  <li> Le travail des parents : On constate un meilleur état de santé lorsque le père ou la mère **travaillent dans le secteur de la santé**</li>
-  <li> La nature de la famille : En prenant l'évènement contraire on voit que **les familles monoparentales où la garde est à la mère rencontre des difficultés** alors que **cela se passe relativement bien dans les autres cas**</li>
+  <li> de la qualité de la relation familiale : **Mieux elle est, meilleure est la santé**</li>
+  <li> du travail des parents : On constate un meilleur état de santé lorsque le père ou la mère **travaillent dans le secteur de la santé**</li>
+  <li> de la nature de la famille : En prenant l'évènement contraire on voit que **les familles monoparentales où la garde est à la mère rencontre des difficultés** alors que **cela se passe relativement bien dans les autres cas**</li>
 </ul>
 
 # Conclusion
 
-Pour conclure sur cette analyse, nous nous malheuresement pas réussi à identifier des critères qui permet d'avoir des bonnes notes, tout en ayant de bonnes relations familiales, et un bon état de santé. Sûrement car **l'étudiant parfait n'existe pas** ! <br>
+Pour conclure sur cette analyse, n'avons malheureusement pas réussi à identifier des critères qui permettent d'avoir de bonnes notes, tout en ayant de bonnes relations familiales et un bon état de santé. Sûrement car **l'étudiant parfait n'existe pas** ! <br>
 Le point positif sur notre dataset est qu’il a été **plaisant** et **intéressant** à analyser. Des analyses ont validées nos théories, tandis que d’autres les ont réfutées.<br>
-En revanche, pour **le point noir** de ce dataset, nous pouvons notifier qu’**il nous manquait des valeurs continue**. En effet, la seule valeur continue que nous avions est la moyenne générale que nous avons du créer. **Ce manque de diversité dans nos variables nous a obligé à faire presque que le même type de plot** (diagramme en barre).<br>
-Avant de finir sur nos remarques personnelles, nous pouvons conclure quant au projet en lui même. Malgré l’aspect distanciel, **le projet pour notre part s’est très bien déroulé**. L’utilisation de GitHub a facilité cela, tout comme la mise en place d’un chanel Discord qui a permis de bien communiquer.
+En revanche, pour **le point noir** de ce dataset, nous pouvons notifier qu’**il nous manquait des valeurs continue**. En effet, la seule valeur continue que nous avions est la moyenne générale que nous avons dû créer. **Ce manque de diversité dans nos variables nous a obligé à faire presque que le même type de plot** (diagramme en barre).<br>
+Avant de finir sur nos remarques personnelles, nous pouvons conclure quant au projet en lui-même. Malgré l’aspect distanciel, **le projet pour notre part s’est très bien déroulé**. L’utilisation de GitHub a facilité cela, tout comme la mise en place d’un chanel Discord qui a permis de bien communiquer.
 **Les 3 axes de recherche nous ont permis de bien nous répartir le travail, sans empiéter sur celui des autres.**
 
 ### Conclusion personnelle
 <ul>
-  <li>**Oscar** : L’UE était plaisante et au goût du jour avec des outils très actuels utilisés dans la data visualisation, le projet est vraiment plaisant à réaliser et permet de bien prendre en main le langage R pour la datavizz. La chose qui pourrait je pense améliorer cette UE serait de passer un peu plus de temps sur un outil de BI (Tableau ou PowerBI), peut-être n’en choisir qu’un des deux et l’approfondir sur 3 semaines ou plus car ce sont des outils très utilisés en entreprise.</li>
-<<<<<<< HEAD
-  <li>**Albert** :</li>
-  <li>**Clément** : Sûrement l'une des UE les plus interessantes que j'ai suivie à l'UTT, et en tout la mieux organisée que j'ai pu faire depuis la mise en place des cours à distance. Réaliser un projet sur les 2/3 du semestre permet de bien appréhender et appliquer les différentes notions vues en cours ; sur les points que j'ai particulièrement bien aimé je peux notifier les cours qui concerne la perception et le regard sur les graphes (cours sur la sémiologie et l'éthique), en revanche je regrette la pauvreté dans nos variables ce qui nous a contraint d'une redondance sur nos types de plots ainsi que sur la Shinyapp.</li>
-=======
-  <li>**ALbert** :L'UE était très enrichissante. L'approche adoptée, mettant l'accent sur des aspects de sémiologie, d'histoire et de compréhension des enjeuux cognitifsderrière la visualisation des données était fort surprenante dans le sens agréable du terme. Aussi, l'UE, par l'introduction à des technologies comme Power BI, Tableau a permis d'aller explorer d'autres solutions utiles en entreprise. Enfin, la pédagogie était parfaite.</li>
-  <li>**Clément** :</li>
->>>>>>> b7a9b5cf71e0c2d0a4a9486950bea42c9cd476c4
+  <li>**Oscar** : L’UE était plaisante et au goût du jour avec des outils très actuels utilisés dans la data visualisation, le projet est vraiment plaisant à réaliser et permet de bien prendre en main le langage R pour la dataviz. La chose qui pourrait je pense améliorer cette UE serait de passer un peu plus de temps sur un outil de BI (Tableau ou PowerBI), peut-être n’en choisir qu’un des deux et l’approfondir sur 3 semaines ou plus car ce sont des outils très utilisés en entreprise.</li>
+  <li>**Albert** : L'UE était très enrichissante. L'approche adoptée, mettant l'accent sur des aspects de sémiologie, d'histoire et de compréhension des enjeux cognitifs derrière la visualisation des données était fort surprenante dans le sens agréable du terme. Aussi, l'UE, par l'introduction à des technologies comme Power BI et Tableau a permis d'aller explorer d'autres solutions utiles en entreprise. Je regrette néamoins de n'avoir pas eu plus de temps pour pouvoir utiliser Tableau dans ce projet.</li>
+  <li>**Clément** : Sûrement l'une des UE les plus intéressantes que j'ai suivie à l'UTT, et en tout la mieux organisée que j'ai pu faire depuis la mise en place des cours à distance. Réaliser un projet sur les 2/3 du semestre permet de bien appréhender et appliquer les différentes notions vues en cours ; sur les points que j'ai particulièrement bien aimé je peux notifier les cours qui concerne la perception et le regard sur les graphiques (cours sur la sémiologie et l'éthique), en revanche je regrette la pauvreté dans nos variables ce qui nous a contraint d'une redondance sur nos types de plots ainsi que sur la Shinyapp.</li>
 </ul>
 
