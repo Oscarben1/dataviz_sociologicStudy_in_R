@@ -104,7 +104,7 @@ dfPortugais %>%
   head()
 ```
 
-### Graphique de corélation
+### Graphique de corrélation
 
 Afin d'avoir un premier aperçu lors de l'exploration de nos données, nous avons réalisé un graphique de corrélation des variables numériques de notre dataset. Cela nous a permis de voir que certaines variables étaient très corrélées, positivement ou négativement.<br>
 Voici ce diagramme :
